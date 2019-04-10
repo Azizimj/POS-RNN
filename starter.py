@@ -90,7 +90,11 @@ class DatasetReader(object):
         [2, 4]
       )
     """
-    pass
+    for sentence in dataset:
+      aa = 1
+
+
+
 
   @staticmethod
   def ReadData(train_filename, test_filename=None):
