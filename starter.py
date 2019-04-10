@@ -29,13 +29,13 @@ class DatasetReader(object):
       The parsed file as a list of lists: [parsedLine1, parsedLine2, ...]
       each parsedLine is a list: [(term1, tag1), (term2, tag2), ...] 
     """
+
     infile = io.open(filename, 'r', encoding="utf8")
     sentences = infile.readlines()
     infile.close()
     # tags = [[wordtag.rsplit('/', 1)[-1] for wordtag in sentence.strip().split()] for sentence in sentences]
     # words = [[wordtag.rsplit('/', 1)[0] for wordtag in sentence.strip().split()] for sentence in sentences]
     # parsed_file = [[(wordtag.rsplit('/', 1)[0],wordtag.rsplit('/', 1)[-1]) for wordtag in sentence.strip().split()] for sentence in sentences]
-
     parsed_file = []
     term_index_count = 0
     tag_index_count = 0
@@ -53,7 +53,8 @@ class DatasetReader(object):
           tag_index[tag] = tag_index_count
           tag_index_count += 1
       parsed_file.append(parsed_sentence)
-
+    # self.ta
+    # self.tag_index = tag_index
     return parsed_file
 
 
@@ -90,14 +91,22 @@ class DatasetReader(object):
         [2, 4]
       )
     """
-    for sentence in dataset:
-      aa = 1
 
+    lengths_arr = numpy.array(list(map(len, dataset)))
+    T = max(lengths_arr)
+    N = lengths_arr.shape[0]
+    terms_matrix = numpy.zeros((N, T))
+    tags_matrix = numpy.zeros((N, T))
+    for sen_counter, sentence in enumerate(dataset):
+      for (word_counter, (word, tag)) in enumerate(sentence):
+        terms_matrix[sen_counter, word_counter] = term_index[word]
+        tags_matrix[sen_counter, word_counter] = tag_index[tag]
 
+    return
 
 
   @staticmethod
-  def ReadData(train_filename, test_filename=None):
+  def ReadData(self, train_filename, test_filename=None):
     """Returns numpy arrays and indices for train (and optionally test) data.
 
     NOTE: Please do not change this method. The grader will use an identitical
@@ -124,6 +133,8 @@ class DatasetReader(object):
     """
     term_index = {'__oov__': 0}  # Out-of-vocab is term 0.
     tag_index = {}
+    # self.term_index = {'__oov__': 0}  # Out-of-vocab is term 0.
+    # self.tag_index = {}
     
     train_data = DatasetReader.ReadFile(train_filename, term_index, tag_index)
     train_terms, train_tags, train_lengths = DatasetReader.BuildMatrices(train_data)
