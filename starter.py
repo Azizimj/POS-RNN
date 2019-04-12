@@ -44,7 +44,7 @@ class DatasetReader():
     # words = [[wordtag.rsplit('/', 1)[0] for wordtag in sentence.strip().split()] for sentence in sentences]
     # parsed_file = [[(wordtag.rsplit('/', 1)[0],wordtag.rsplit('/', 1)[-1]) for wordtag in sentence.strip().split()] for sentence in sentences]
     parsed_file = []
-    term_index_count = 0
+    term_index_count = 1
     tag_index_count = 0
     for sentence in sentences:
       parsed_sentence = []
@@ -242,6 +242,33 @@ class SequenceModel(object):
           - You might use tf.reshape, tf.cast, and/or tensor broadcasting.
         """
         # TODO(student): make logits an RNN on x.
+        lens_to_bin = self.lengths_vector_to_binary_matrix(self.lengths)
+        self.size_embed = 40 #HYP
+        self.state_size = 10 #HYP
+        # L = tf.Variable(embeddings, dtype=tf.float32, trainable=False)
+        self.embed = tf.get_variable('embed', shape=[self.num_terms, self.size_embed],
+                                dtype=tf.float32,initializer=None,regularizer=None,trainable=True,
+                                collections=None,caching_device=None,partitioner=None,validate_shape=True,
+                                use_resource=None,custom_getter=None,aggregation=tf.VariableAggregation.NONE,
+                                constraint=None,synchronization=tf.VariableSynchronization.AUTO
+                                )
+        terms_batch = self.x #####
+        xemb = tf.nn.embedding_lookup(params=self.embed, ids=terms_batch,partition_strategy='mod',name=None,
+                                      validate_indices=True,max_norm=None)
+        rnn_cell = tf.keras.layers.SimpleRNNCell(state_size, activation=tf.nn.tanh, use_bias=True,
+                                                 kernel_initializer='glorot_uniform',
+                                                 recurrent_initializer='orthogonal',recurrent_dropout=0.0,
+                                                 bias_initializer='zeros',kernel_regularizer=None,
+                                                 recurrent_regularizer=None,bias_regularizer=None,
+                                                 kernel_constraint=None,recurrent_constraint=None,
+                                                 bias_constraint=None, dropout=0.0)
+        states = []
+        cur_state = tf.zeros(shape=[1, self.state_size])
+        for i in range(self.max_length):
+            cur_state = rnn_cell(xemb[:, i, :], [cur_state])[0]  # shape (batch, state_size)
+            states.append(cur_state)
+        stacked_states = tf.stack(states, axis=1)  # Shape (batch, max_length, state_size)
+        self.logits =
         self.logits = tf.zeros([tf.shape(self.x)[0], self.max_length, self.num_tags])
 
     # TODO(student): You must implement this.
@@ -262,7 +289,10 @@ class SequenceModel(object):
           *not* process the output tags beyond the sentence length i.e. you can have
           arbitrary values beyond length.
         """
-        return numpy.zeros_like(tags)
+        session = tf.Session()
+        logits = session.run(self.logits, {self.x: tags, self.lengths: lengths})
+        return numpy.argmax(logits, axis=2)
+        # return numpy.zeros_like(tags)
 
     # TODO(student): You must implement this.
     def build_training(self):
@@ -280,6 +310,7 @@ class SequenceModel(object):
         pass
 
     def train_epoch(self, terms, tags, lengths, batch_size=32, learn_rate=1e-7):
+        #HYP
         """Performs updates on the model given training training data.
 
         This will be called with numpy arrays similar to the ones created in
