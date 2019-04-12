@@ -194,6 +194,7 @@ class SequenceModel(object):
         self.num_tags = num_tags
         self.x = tf.placeholder(tf.int64, [None, self.max_length], 'X')
         self.lengths = tf.placeholder(tf.int32, [None], 'lengths')
+        self.cell_type = 'rnn'  # 'lstm'
 
     # TODO(student): You must implement this.
     def lengths_vector_to_binary_matrix(self, length_vector):
@@ -242,8 +243,8 @@ class SequenceModel(object):
           - You might use tf.reshape, tf.cast, and/or tensor broadcasting.
         """
         # TODO(student): make logits an RNN on x.
-        lens_to_bin = self.lengths_vector_to_binary_matrix(self.lengths)
-        self.size_embed = 40 #HYP
+        self.lens_to_bin = self.lengths_vector_to_binary_matrix(self.lengths)
+        self.size_embed = 15 #HYP
         self.state_size = 10 #HYP
         # L = tf.Variable(embeddings, dtype=tf.float32, trainable=False)
         self.embed = tf.get_variable('embed', shape=[self.num_terms, self.size_embed],
@@ -252,23 +253,52 @@ class SequenceModel(object):
                                 use_resource=None,custom_getter=None,aggregation=tf.VariableAggregation.NONE,
                                 constraint=None,synchronization=tf.VariableSynchronization.AUTO
                                 )
-        terms_batch = self.x #####
-        xemb = tf.nn.embedding_lookup(params=self.embed, ids=terms_batch,partition_strategy='mod',name=None,
+        # terms_batch = tf.placeholder(tf.int32, shape=[None, None]) #####
+        xemb = tf.nn.embedding_lookup(params=self.embed, ids=self.x, partition_strategy='mod',name=None,
                                       validate_indices=True,max_norm=None)
-        rnn_cell = tf.keras.layers.SimpleRNNCell(state_size, activation=tf.nn.tanh, use_bias=True,
-                                                 kernel_initializer='glorot_uniform',
-                                                 recurrent_initializer='orthogonal',recurrent_dropout=0.0,
-                                                 bias_initializer='zeros',kernel_regularizer=None,
-                                                 recurrent_regularizer=None,bias_regularizer=None,
-                                                 kernel_constraint=None,recurrent_constraint=None,
-                                                 bias_constraint=None, dropout=0.0)
+        if self.cell_type == 'rnn':
+            rnn_cell = tf.keras.layers.SimpleRNNCell(self.state_size, activation='tanh', use_bias=True,
+                                                     kernel_initializer='glorot_uniform',
+                                                     recurrent_initializer='orthogonal',recurrent_dropout=0.0,
+                                                     bias_initializer='zeros',kernel_regularizer=None,
+                                                     recurrent_regularizer=None,bias_regularizer=None,
+                                                     kernel_constraint=None,recurrent_constraint=None,
+                                                     bias_constraint=None, dropout=0.0)
+        elif self.cell_type == 'lstm':
+            rnn_cell = tf.keras.layers.LSTMCell__init__(units=self.state_size, activation='tanh',
+                                                        recurrent_activation='hard_sigmoid', use_bias=True,
+                                                        kernel_initializer='glorot_uniform',
+                                                        recurrent_initializer='orthogonal', bias_initializer='zeros',
+                                                        unit_forget_bias=True,kernel_regularizer=None,
+                                                        recurrent_regularizer=None, bias_regularizer=None,
+                                                        kernel_constraint=None,recurrent_constraint=None,
+                                                        bias_constraint=None, dropout=0.0,
+                                                        recurrent_dropout=0.0, implementation=1)
+        else:
+            # cell_fw = tf.contrib.rnn.LSTMCell(self.state_size, state_is_tuple=True)
+            # cell_bw = tf.contrib.rnn.LSTMCell(self.state_size, state_is_tuple=True)
+            # _, ((_, output_fw), (_, output_bw)) = tf.nn.bidirectional_dynamic_rnn(cell_fw,
+            #                                                                       cell_bw, char_embeddings,
+            #                                                                       sequence_length=word_lengths,
+            #                                                                       dtype=tf.float32)
+            print("Wrong cell type")
+
         states = []
         cur_state = tf.zeros(shape=[1, self.state_size])
+
+        # 2. put the time dimension on axis=1 for dynamic_rnn
+        s = tf.shape(xemb)  # store old shape
+        # shape = (batch x sentence, word, dim of char embeddings)
+        char_embeddings = tf.reshape(xemb, shape=[-1, s[-2], s[-1]])
+        # word_lengths = tf.reshape(self.word_lengths, shape=[-1])
+
         for i in range(self.max_length):
             cur_state = rnn_cell(xemb[:, i, :], [cur_state])[0]  # shape (batch, state_size)
             states.append(cur_state)
         stacked_states = tf.stack(states, axis=1)  # Shape (batch, max_length, state_size)
-        self.logits =
+        # logits: A Tensor of shape[batch_size, sequence_length, num_decoder_symbols] and dtype float.
+        # self.logits
+
         self.logits = tf.zeros([tf.shape(self.x)[0], self.max_length, self.num_tags])
 
     # TODO(student): You must implement this.
@@ -307,7 +337,19 @@ class SequenceModel(object):
             an exception). Equivalently, tf.losses.get_losses() should return a
             non-empty list.
         """
-        pass
+        self.targets =  tf.placeholder(tf.int32, shape=[None, None], name="labels")
+        # targets: A Tensor of shape[batch_size, sequence_length] and dtype int.
+        # weights: A Tensor of shape[batch_size, sequence_length] and dtype float
+        self.loss = tf.contrib.seq2seq.sequence_loss(self.logits, self.targets, weights= self.lens_to_bin,
+                                         average_across_timesteps=True, average_across_batch=True,
+                                         softmax_loss_function=None, name=None)
+        opt = tf.train.AdamOptimizer() #HYP
+        tf.train.
+        self.train_op = opt.minimize(self.loss)
+
+        # tf.losses.get_total_loss()
+        # tf.losses.get_losses()
+
 
     def train_epoch(self, terms, tags, lengths, batch_size=32, learn_rate=1e-7):
         #HYP
@@ -325,6 +367,7 @@ class SequenceModel(object):
             but it is only here so that you can experiment with a "good learn rate"
             from your main block.
         """
+
         pass
 
     # TODO(student): You can implement this to help you, but we will not call it.
