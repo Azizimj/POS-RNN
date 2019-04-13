@@ -199,7 +199,10 @@ class SequenceModel(object):
         self.cell_type = 'rnn'  # 'lstm'
         self.log_step = 50
         self.sess = tf.Session()
-        # self.logits = None
+        self.size_embed = 15  # HYP
+        self.state_size = 10  # HYP
+        self.embed = tf.get_variable('embed', shape=[self.num_terms, self.size_embed],
+                                     dtype=tf.float32, initializer=None, trainable=True)
         self._accuracy()
 
 
@@ -257,11 +260,6 @@ class SequenceModel(object):
         """
         # TODO(student): make logits an RNN on x.
         self.lens_to_bin = self.lengths_vector_to_binary_matrix(self.lengths)
-        self.size_embed = 15 #HYP
-        self.state_size = 10 #HYP
-        # L = tf.Variable(embeddings, dtype=tf.float32, trainable=False)
-        self.embed = tf.get_variable('embed', shape=[self.num_terms, self.size_embed],
-                                     dtype=tf.float32, initializer=None, trainable=True)
         # terms_batch = tf.placeholder(tf.int32, shape=[None, None]) #####
         xemb_ = tf.nn.embedding_lookup(params=self.embed, ids=self.x, partition_strategy='mod', name=None,
                                       validate_indices=True,max_norm=None)
