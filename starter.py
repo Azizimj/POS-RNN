@@ -195,7 +195,7 @@ class SequenceModel(object):
         self.num_tags = num_tags
         self.x = tf.placeholder(tf.int64, [None, self.max_length], 'X')
         self.lengths = tf.placeholder(tf.int32, [None], 'lengths')
-        self.targets = tf.placeholder(tf.int64, [None, self.max_length], 'targets')
+        self.tags = tf.placeholder(tf.int64, [None, self.max_length], 'tags')
         self.cell_type = 'rnn'  # 'lstm'
         self.log_step = 50
         self.sess = tf.Session()
@@ -350,11 +350,10 @@ class SequenceModel(object):
             an exception). Equivalently, tf.losses.get_losses() should return a
             non-empty list.
         """
-        self.targets = tf.placeholder(tf.int32, shape=[None, self.max_length], name="targets")
         # logits: A Tensor of shape [batch_size, sequence_length, num_decoder_symbols] and dtype float.
         # targets: A Tensor of shape[batch_size, sequence_length] and dtype int.
         # weights: A Tensor of shape[batch_size, sequence_length] and dtype float
-        self.loss = tf.contrib.seq2seq.sequence_loss(logits=self.logits, targets=self.targets,
+        self.loss = tf.contrib.seq2seq.sequence_loss(logits=self.logits, targets=self.tags,
                                                      weights=self.lens_to_bin, average_across_timesteps=True,
                                                      average_across_batch=True, softmax_loss_function=None, name=None)
         opt = tf.train.AdamOptimizer() #HYP
@@ -366,7 +365,7 @@ class SequenceModel(object):
 
     def _accuracy(self):
         predict = self.run_inference(self.x, self.lengths)
-        correct = tf.equal(predict, self.targets)
+        correct = tf.equal(predict, self.tags)
         self.accuracy_op = tf.reduce_mean(tf.cast(correct, tf.float32))
         return self.accuracy_op
 
@@ -397,7 +396,7 @@ class SequenceModel(object):
             tags_batch = tags[i * batch_size:(i + 1) * batch_size]
             lengths_batch = lengths[i * batch_size:(i + 1) * batch_size]
             feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
-                         self.targets: tags_batch.astype(numpy.int64),
+                         self.tags: tags_batch.astype(numpy.int64),
                          self.b: numpy.repeat(lengths_batch.reshape(self.batch_size, 1), self.max_length, axis=1)}
             fetches = [self.train_op, self.loss, self.accuracy_op]
             _, loss, accuracy = self.sess.run(fetches, feed_dict=feed_dict)
@@ -420,7 +419,7 @@ class SequenceModel(object):
     # TODO(student): You can implement this to help you, but we will not call it.
     def evaluate(self, terms, tags, lengths):
         feed_dict = {self.x: terms, self.lengths: lengths,
-                     self.targets: tags.astype(numpy.int64),
+                     self.tags: tags.astype(numpy.int64),
                      self.b: numpy.repeat(lengths.reshape(self.batch_size, 1), self.max_length, axis=1)}
         fetches = [self.train_op, self.loss, self.accuracy_op]
         _, loss, accuracy = self.sess.run(fetches, feed_dict=feed_dict)
