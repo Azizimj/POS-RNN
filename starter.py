@@ -262,11 +262,9 @@ class SequenceModel(object):
         self.state_size = 10 #HYP
         # L = tf.Variable(embeddings, dtype=tf.float32, trainable=False)
         self.embed = tf.get_variable('embed', shape=[self.num_terms, self.size_embed],
-                                dtype=tf.float32,initializer=None,regularizer=None,trainable=True,
-                                collections=None,caching_device=None,partitioner=None,validate_shape=True,
-                                use_resource=None,custom_getter=None,aggregation=tf.VariableAggregation.NONE,
-                                constraint=None,synchronization=tf.VariableSynchronization.AUTO
-                                )
+                                     dtype=tf.float32, initializer=None, regularizer=None, trainable=True,
+                                     collections=None, caching_device=None, partitioner=None,
+                                     validate_shape=True)
         # terms_batch = tf.placeholder(tf.int32, shape=[None, None]) #####
         xemb = tf.nn.embedding_lookup(params=self.embed, ids=self.x, partition_strategy='mod',name=None,
                                       validate_indices=True,max_norm=None)
@@ -303,8 +301,9 @@ class SequenceModel(object):
         # 2. put the time dimension on axis=1 for dynamic_rnn
         s = tf.shape(xemb)  # store old shape
         # shape = (batch x sentence, word, dim of char embeddings)
-        char_embeddings = tf.reshape(xemb, shape=[-1, s[-2], s[-1]])
+        xemb = tf.reshape(xemb, shape=[-1, s[-2], s[-1]]) # (batch_size, timesteps, features)
         # word_lengths = tf.reshape(self.word_lengths, shape=[-1])
+
 
         for i in range(self.max_length):
             cur_state = rnn_cell(xemb[:, i, :], [cur_state])[0]  # shape (batch, state_size)
@@ -354,15 +353,14 @@ class SequenceModel(object):
         self.targets =  tf.placeholder(tf.int32, shape=[None, None], name="labels")
         # targets: A Tensor of shape[batch_size, sequence_length] and dtype int.
         # weights: A Tensor of shape[batch_size, sequence_length] and dtype float
-        self.loss = tf.contrib.seq2seq.sequence_loss(self.logits, self.targets, weights= self.lens_to_bin,
-                                         average_across_timesteps=True, average_across_batch=True,
-                                         softmax_loss_function=None, name=None)
+        self.loss = tf.contrib.seq2seq.sequence_loss(logits=self.logits, targets=self.targets,
+                                                     weights=self.lens_to_bin, average_across_timesteps=True,
+                                                     average_across_batch=True,softmax_loss_function=None, name=None)
         opt = tf.train.AdamOptimizer() #HYP
-        # tf.train.
         self.train_op = opt.minimize(self.loss)
+        print(tf.losses.get_total_loss())
+        print(tf.losses.get_losses())
 
-        # tf.losses.get_total_loss()
-        # tf.losses.get_losses()
 
 
     def train_epoch(self, terms, tags, lengths, batch_size=32, learn_rate=1e-7):
