@@ -418,12 +418,20 @@ class SequenceModel(object):
 
     # TODO(student): You can implement this to help you, but we will not call it.
     def evaluate(self, terms, tags, lengths):
-        feed_dict = {self.x: terms, self.lengths: lengths,
-                     self.tags: tags.astype(numpy.int64),
-                     self.b: numpy.repeat(lengths.reshape(lengths.shape()[0], 1), self.max_length, axis=1)}
-        fetches = [self.train_op, self.loss, self.accuracy_op]
-        _, loss, accuracy = self.sess.run(fetches, feed_dict=feed_dict)
-        print('accuracy on test: {}'.format(accuracy))
+        eval_accuracy = 0.0
+        eval_iter = 0
+        for i in range(terms.shape[0] // self.batch_size):
+            x_batch = terms[i * self.batch_size:(i + 1) * self.batch_size][:]
+            tags_batch = tags[i * self.batch_size:(i + 1) * self.batch_size]
+            lengths_batch = lengths[i * self.batch_size:(i + 1) * self.batch_size]
+            feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
+                         self.tags: tags_batch.astype(numpy.int64),
+                         self.b: numpy.repeat(lengths_batch.reshape(self.batch_size, 1), self.max_length, axis=1)}
+            fetches = [self.train_op, self.loss, self.accuracy_op]
+            _, loss, accuracy = self.sess.run(fetches, feed_dict=feed_dict)
+            eval_accuracy += accuracy
+            eval_iter += 1
+        print('accuracy on val: {}'.format(eval_accuracy / eval_iter))
 
 
 def main():
