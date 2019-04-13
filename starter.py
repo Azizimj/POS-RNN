@@ -386,7 +386,6 @@ class SequenceModel(object):
         step = 0
         losses = []
         accuracies = []
-        print('-' * 5 + '  Start training  ' + '-' * 5)
         num_training = len(terms)
         self.sess.run(tf.global_variables_initializer())
         for i in range(num_training // batch_size):
@@ -448,13 +447,13 @@ def main():
     time0 = time.time()
     K = 300
     epoch = 0
-    while (time.time()-time0 <= K):
+    print('-' * 5 + '  Start training  ' + '-' * 5)
+    while time.time()-time0 <= K:
+        print("train epoch {}".format(epoch+1))
         model.train_epoch(train_terms, train_tags, train_lengths)
         print('Finished epoch %i. Evaluating ...' % (epoch + 1))
         model.evaluate(test_terms, test_tags, test_lengths)
         epoch += 1
-
-
 
 if __name__ == '__main__':
     main()
