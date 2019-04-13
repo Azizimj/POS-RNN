@@ -206,11 +206,25 @@ class SequenceModel(object):
         However, since we are using tensorflow rather than numpy in this function,
         you cannot set the range as described.
         """
-        b = numpy.zeros((tf.shape(length_vector), self.max_length))
-        for i in range(len(length_vector)):
-            b[i, :length_vector[i]] = 1
-        b = tf.convert_to_tensor(b, dtype=tf.float32)
+        # idx1 = tf.constant(length_vector)
+        # result = tf.gather_nd(x, tf.stack((idx1, idx2), -1))
+        # with tf.Session() as sess:
+        #     print(sess.run(result))
+
+        # b = tf.placeholder("b", shape=[length_vector.shape[0], self.max_length], dtype=tf.float32,
+        #                     initializer=None, regularizer=None, trainable=False)
+
+        num_batch_ = length_vector.shape[0].value
+        if num_batch_ == None :
+            b = tf.placeholder(tf.float32, [None], 'b')
+        elif num_batch_ > 0:
+            b = numpy.zeros((num_batch_, self.max_length))
+            for i in range(num_batch_):
+                b[i, :length_vector[i]] = 1
+            b = tf.convert_to_tensor(b, dtype=tf.float32)
+
         return b
+
         # return tf.ones([tf.shape(length_vector), self.max_length], dtype=tf.float32)
 
     # TODO(student): You must implement this.
@@ -344,7 +358,7 @@ class SequenceModel(object):
                                          average_across_timesteps=True, average_across_batch=True,
                                          softmax_loss_function=None, name=None)
         opt = tf.train.AdamOptimizer() #HYP
-        tf.train.
+        # tf.train.
         self.train_op = opt.minimize(self.loss)
 
         # tf.losses.get_total_loss()
