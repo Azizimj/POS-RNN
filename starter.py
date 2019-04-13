@@ -195,11 +195,13 @@ class SequenceModel(object):
         self.num_tags = num_tags
         self.x = tf.placeholder(tf.int64, [None, self.max_length], 'X')
         self.lengths = tf.placeholder(tf.int32, [None], 'lengths')
+        self.targets = tf.placeholder(tf.int64, [None], 'targets')
         self.cell_type = 'rnn'  # 'lstm'
         self.log_step = 50
         self.sess = tf.Session()
-        self.accuracy_op = None
-        self.logits = None
+        # self.logits = None
+        self._accuracy()
+
 
 
     # TODO(student): You must implement this.
@@ -315,7 +317,7 @@ class SequenceModel(object):
                                                    weights_regularizer=None, biases_initializer=tf.zeros_initializer(),
                                                    biases_regularizer=None, reuse=None, variables_collections=None,
                                                    outputs_collections=None, trainable=True, scope=None)
-        return
+        return self.logits
 
     # TODO(student): You must implement this.
     def run_inference(self, terms, lengths):
@@ -335,8 +337,9 @@ class SequenceModel(object):
           *not* process the output tags beyond the sentence length i.e. you can have
           arbitrary values beyond length.
         """
-        logits = self.sess.run(self.logits, {self.x: terms, self.lengths: lengths})
-        return numpy.argmax(logits, axis=2)
+        # logits = self.sess.run(self.logits, {self.x: terms, self.lengths: lengths})
+        logits = self.build_inference()
+        return tf.argmax(logits, axis=2)
         # return numpy.zeros_like(tags)
 
     # TODO(student): You must implement this.
@@ -400,7 +403,7 @@ class SequenceModel(object):
             lengths_batch = lengths[i * batch_size:(i + 1) * batch_size]
             feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
                          self.targets: tags_batch,
-                         self.b: numpy.repeat(lengths_batch.reshape(self.batch_size,1), self.max_length,axis=1)}
+                         self.b: numpy.repeat(lengths_batch.reshape(self.batch_size, 1), self.max_length, axis=1)}
             fetches = [self.train_op, self.loss, self.accuracy_op]
             _, loss, accuracy = self.sess.run(fetches, feed_dict=feed_dict)
             losses.append(loss)
