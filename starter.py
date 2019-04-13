@@ -198,6 +198,9 @@ class SequenceModel(object):
         self.cell_type = 'rnn'  # 'lstm'
         self.log_step = 50
         self.sess = tf.Session()
+        self.accuracy_op = None
+        self.logits = None
+
 
     # TODO(student): You must implement this.
     def lengths_vector_to_binary_matrix(self, length_vector):
@@ -218,7 +221,6 @@ class SequenceModel(object):
             for i in range(num_batch_):
                 b[i, :length_vector[i]] = 1
             b = tf.convert_to_tensor(b, dtype=tf.float32)
-
         return b
 
         # return tf.ones([tf.shape(length_vector), self.max_length], dtype=tf.float32)
@@ -313,9 +315,6 @@ class SequenceModel(object):
                                                    weights_regularizer=None, biases_initializer=tf.zeros_initializer(),
                                                    biases_regularizer=None, reuse=None, variables_collections=None,
                                                    outputs_collections=None, trainable=True, scope=None)
-        # self.logits = tf.nn.softmax(output, axis=None, name=None)
-
-        # self.logits = tf.zeros([tf.shape(self.x)[0], self.max_length, self.num_tags])
         return
 
     # TODO(student): You must implement this.
@@ -367,9 +366,9 @@ class SequenceModel(object):
         # print(tf.losses.get_losses())  # should return anon-empty list
         return
 
-    def _accuracy(self, tags):
+    def _accuracy(self):
         predict = self.run_inference(self.x, self.lengths)
-        correct = tf.equal(predict, tags)
+        correct = tf.equal(predict, self.targets)
         self.accuracy_op = tf.reduce_mean(tf.cast(correct, tf.float32))
         return self.accuracy_op
 
@@ -389,6 +388,7 @@ class SequenceModel(object):
             but it is only here so that you can experiment with a "good learn rate"
             from your main block.
         """
+        self.batch_size = batch_size
         step = 0
         losses = []
         accuracies = []
@@ -399,7 +399,8 @@ class SequenceModel(object):
             tags_batch = tags[i * batch_size:(i + 1) * batch_size]
             lengths_batch = lengths[i * batch_size:(i + 1) * batch_size]
             feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
-                         self.targets: tags_batch, self.b: lengths_batch}
+                         self.targets: tags_batch,
+                         self.b: numpy.repeat(lengths_batch.reshape(self.batch_size,1), self.max_length,axis=1)}
             fetches = [self.train_op, self.loss, self.accuracy_op]
             _, loss, accuracy = self.sess.run(fetches, feed_dict=feed_dict)
             losses.append(loss)
@@ -421,7 +422,7 @@ class SequenceModel(object):
     # TODO(student): You can implement this to help you, but we will not call it.
     def evaluate(self, terms, tags, lengths):
         feed_dict = {self.x: terms, self.lengths: lengths,
-                     self.targets: tags, self.b: lengths}
+                     self.targets: tags}
         fetches = [self.train_op, self.loss, self.accuracy_op]
         _, loss, accuracy = self.sess.run(fetches, feed_dict=feed_dict)
         print('accuracy on test: {}'.format(accuracy))
