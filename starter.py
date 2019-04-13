@@ -404,8 +404,8 @@ class SequenceModel(object):
             accuracies.append(accuracy)
 
             if step % self.log_step == 0:
-                print('iteration (%d): train batch loss = %.3f, train batch accuracy = %.3f' %
-                      (step, loss, accuracy))
+                print('iteration (%d)/(%d): train batch loss = %.3f, train batch accuracy = %.3f' %
+                      (step,num_training // batch_size, loss, accuracy))
             step += 1
 
         # plt.title('Training loss')
@@ -420,7 +420,7 @@ class SequenceModel(object):
     def evaluate(self, terms, tags, lengths):
         feed_dict = {self.x: terms, self.lengths: lengths,
                      self.tags: tags.astype(numpy.int64),
-                     self.b: numpy.repeat(lengths.reshape(self.batch_size, 1), self.max_length, axis=1)}
+                     self.b: numpy.repeat(lengths.reshape(lengths.shape()[0], 1), self.max_length, axis=1)}
         fetches = [self.train_op, self.loss, self.accuracy_op]
         _, loss, accuracy = self.sess.run(fetches, feed_dict=feed_dict)
         print('accuracy on test: {}'.format(accuracy))
@@ -453,6 +453,7 @@ def main():
         print('Finished epoch %i. Evaluating ...' % (epoch + 1))
         model.evaluate(test_terms, test_tags, test_lengths)
         epoch += 1
+    print('time {}'.format(time.time()-time0))
 
 if __name__ == '__main__':
     main()
