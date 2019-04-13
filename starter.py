@@ -452,7 +452,7 @@ def main():
     model.build_inference()
     model.build_training()
     time0 = time.time()
-    K = 300
+    K = 30
     epoch = 0
     print('-' * 5 + '  Start training  ' + '-' * 5)
     while time.time()-time0 <= K:
