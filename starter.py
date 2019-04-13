@@ -367,6 +367,12 @@ class SequenceModel(object):
         # print(tf.losses.get_losses())  # should return anon-empty list
         return
 
+    def _accuracy(self, tags):
+        predict = self.run_inference(self.x, self.lengths)
+        correct = tf.equal(predict, tags)
+        self.accuracy_op = tf.reduce_mean(tf.cast(correct, tf.float32))
+        return self.accuracy_op
+
     def train_epoch(self, terms, tags, lengths, batch_size=32, learn_rate=1e-7):
         #HYP
         """Performs updates on the model given training training data.
@@ -411,12 +417,6 @@ class SequenceModel(object):
         # plt.gcf().set_size_inches(15, 12)
         # plt.show()
         return
-
-    def _accuracy(self, tags):
-        predict = self.run_inference(self.x, self.lengths)
-        correct = tf.equal(predict, tags)
-        self.accuracy_op = tf.reduce_mean(tf.cast(correct, tf.float32))
-        return self.accuracy_op
 
     # TODO(student): You can implement this to help you, but we will not call it.
     def evaluate(self, terms, tags, lengths):
