@@ -266,7 +266,7 @@ class SequenceModel(object):
                                      collections=None, caching_device=None, partitioner=None,
                                      validate_shape=True)
         # terms_batch = tf.placeholder(tf.int32, shape=[None, None]) #####
-        xemb = tf.nn.embedding_lookup(params=self.embed, ids=self.x, partition_strategy='mod',name=None,
+        xemb_ = tf.nn.embedding_lookup(params=self.embed, ids=self.x, partition_strategy='mod', name=None,
                                       validate_indices=True,max_norm=None)
         if self.cell_type == 'rnn':
             rnn_cell = tf.keras.layers.SimpleRNNCell(self.state_size, activation='tanh', use_bias=True,
@@ -299,9 +299,10 @@ class SequenceModel(object):
         cur_state = tf.zeros(shape=[1, self.state_size])
 
         # 2. put the time dimension on axis=1 for dynamic_rnn
-        s = tf.shape(xemb)  # store old shape
+        s = tf.shape(xemb_)  # store old shape
         # shape = (batch x sentence, word, dim of char embeddings)
-        xemb = tf.reshape(xemb, shape=[-1, s[-2], s[-1]]) # (batch_size, timesteps, features)
+        # xemb = tf.reshape(xemb_, shape=[-1, s[-2], s[-1]])  # (batch_size, timesteps, features)
+        xemb = xemb_
         # word_lengths = tf.reshape(self.word_lengths, shape=[-1])
 
 
@@ -310,7 +311,8 @@ class SequenceModel(object):
             states.append(cur_state)
         stacked_states = tf.stack(states, axis=1)  # Shape (batch, max_length, state_size)
         # logits: A Tensor of shape[batch_size, sequence_length, num_decoder_symbols] and dtype float.
-        # self.logits
+        self.logits = tf.nn.softmax(logits,axis=None,name=None)
+
 
         self.logits = tf.zeros([tf.shape(self.x)[0], self.max_length, self.num_tags])
 
