@@ -398,24 +398,22 @@ class SequenceModel(object):
         with tf.Session() as sess:
             sess.run(tf.global_variables_initializer())
             self.sess = sess
-
             for i in range(num_training // batch_size):
                 x_batch = terms[i * batch_size:(i + 1) * batch_size][:]
-                y_batch = tags[i * batch_size:(i + 1) * batch_size]
+                tags_batch = tags[i * batch_size:(i + 1) * batch_size]
                 lengths_batch = lengths[i * batch_size:(i + 1) * batch_size]
+                feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
+                             self.targets: tags_batch, self.b: lengths_batch}
+                fetches = [self.train_op, self.loss]
+                _, loss = sess.run(fetches, feed_dict=feed_dict)
+                losses.append(loss)
+                accuracy = 0 ####
+                # accuracies.append(accuracy)
 
-            sess.run(tf.global_variables_initializer())
-            feed_dict = {self.x: x_batch, self.lengths: lengths_batch, self.targets: y_batch, self.b: lengths_batch}
-            fetches = [self.train_op, self.loss]
-            _, loss = sess.run(fetches, feed_dict=feed_dict)
-            losses.append(loss)
-            accuracy = 0 ####
-            # accuracies.append(accuracy)
-
-            if step % self.log_step == 0:
-                print('iteration (%d): loss = %.3f, accuracy = %.3f' %
-                      (step, loss, accuracy))
-            step += 1
+                if step % self.log_step == 0:
+                    print('iteration (%d): loss = %.3f, accuracy = %.3f' %
+                          (step, loss, accuracy))
+                step += 1
 
         # plt.title('Training loss')
         # loss_hist_ = losses[1::100]  # sparse the curve a bit
@@ -429,7 +427,12 @@ class SequenceModel(object):
     # TODO(student): You can implement this to help you, but we will not call it.
     def evaluate(self, terms, tags, lengths):
 
-        pass
+        num_correct, total, total_tags = 0, 0, 0
+        # counter = 0
+        for sentence_ in terms:
+            aa =1
+
+
 
 
 def main():
