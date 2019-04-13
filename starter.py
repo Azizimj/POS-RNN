@@ -203,7 +203,6 @@ class SequenceModel(object):
         self._accuracy()
 
 
-
     # TODO(student): You must implement this.
     def lengths_vector_to_binary_matrix(self, length_vector):
 
@@ -262,9 +261,7 @@ class SequenceModel(object):
         self.state_size = 10 #HYP
         # L = tf.Variable(embeddings, dtype=tf.float32, trainable=False)
         self.embed = tf.get_variable('embed', shape=[self.num_terms, self.size_embed],
-                                     dtype=tf.float32, initializer=None, regularizer=None, trainable=True,
-                                     collections=None, caching_device=None, partitioner=None,
-                                     validate_shape=True)
+                                     dtype=tf.float32, initializer=None, trainable=True)
         # terms_batch = tf.placeholder(tf.int32, shape=[None, None]) #####
         xemb_ = tf.nn.embedding_lookup(params=self.embed, ids=self.x, partition_strategy='mod', name=None,
                                       validate_indices=True,max_norm=None)
