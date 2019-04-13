@@ -216,7 +216,7 @@ class SequenceModel(object):
 
         num_batch_ = length_vector.shape[0].value
         if num_batch_ == None :
-            b = tf.placeholder(tf.float32, [None], 'b')
+            b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
         elif num_batch_ > 0:
             b = numpy.zeros((num_batch_, self.max_length))
             for i in range(num_batch_):
