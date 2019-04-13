@@ -3,6 +3,7 @@ import numpy
 import tensorflow as tf
 import io
 import pickle
+import time
 
 
 USC_EMAIL = 'azizim@usc.edu'  # TODO(student): Fill to compete on rankings.
@@ -196,6 +197,7 @@ class SequenceModel(object):
         self.lengths = tf.placeholder(tf.int32, [None], 'lengths')
         self.cell_type = 'rnn'  # 'lstm'
         self.log_step = 50
+        self.sess = tf.Session()
 
     # TODO(student): You must implement this.
     def lengths_vector_to_binary_matrix(self, length_vector):
@@ -207,14 +209,6 @@ class SequenceModel(object):
         However, since we are using tensorflow rather than numpy in this function,
         you cannot set the range as described.
         """
-        # idx1 = tf.constant(length_vector)
-        # result = tf.gather_nd(x, tf.stack((idx1, idx2), -1))
-        # with tf.Session() as sess:
-        #     print(sess.run(result))
-
-        # b = tf.placeholder("b", shape=[length_vector.shape[0], self.max_length], dtype=tf.float32,
-        #                     initializer=None, regularizer=None, trainable=False)
-
         num_batch_ = length_vector.shape[0].value
         if num_batch_ == None:
             self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
@@ -242,10 +236,10 @@ class SequenceModel(object):
     def load_model(self, filename):
         """Loads model from a file."""
         # import pickle
-        sess = tf.Session()
+        # sess = tf.Session()
         var_values = pickle.load(open(filename))
         assign_ops = [v.assign(var_values[v.name]) for v in tf.global_variables()]
-        sess.run(assign_ops)
+        self.sess.run(assign_ops)
         return
 
     # TODO(student): You must implement this.
@@ -325,7 +319,7 @@ class SequenceModel(object):
         return
 
     # TODO(student): You must implement this.
-    def run_inference(self, tags, lengths):
+    def run_inference(self, terms, lengths):
         """Evaluates self.logits given self.x and self.lengths.
 
         Hint: This function is straight forward and you might find this code useful:
@@ -342,8 +336,7 @@ class SequenceModel(object):
           *not* process the output tags beyond the sentence length i.e. you can have
           arbitrary values beyond length.
         """
-        session = tf.Session()
-        logits = session.run(self.logits, {self.x: tags, self.lengths: lengths})
+        logits = self.sess.run(self.logits, {self.x: terms, self.lengths: lengths})
         return numpy.argmax(logits, axis=2)
         # return numpy.zeros_like(tags)
 
@@ -395,25 +388,22 @@ class SequenceModel(object):
         accuracies = []
         print('-' * 5 + '  Start training  ' + '-' * 5)
         num_training = len(terms)
-        with tf.Session() as sess:
-            sess.run(tf.global_variables_initializer())
-            self.sess = sess
-            for i in range(num_training // batch_size):
-                x_batch = terms[i * batch_size:(i + 1) * batch_size][:]
-                tags_batch = tags[i * batch_size:(i + 1) * batch_size]
-                lengths_batch = lengths[i * batch_size:(i + 1) * batch_size]
-                feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
-                             self.targets: tags_batch, self.b: lengths_batch}
-                fetches = [self.train_op, self.loss]
-                _, loss = sess.run(fetches, feed_dict=feed_dict)
-                losses.append(loss)
-                accuracy = 0 ####
-                # accuracies.append(accuracy)
+        self.sess.run(tf.global_variables_initializer())
+        for i in range(num_training // batch_size):
+            x_batch = terms[i * batch_size:(i + 1) * batch_size][:]
+            tags_batch = tags[i * batch_size:(i + 1) * batch_size]
+            lengths_batch = lengths[i * batch_size:(i + 1) * batch_size]
+            feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
+                         self.targets: tags_batch, self.b: lengths_batch}
+            fetches = [self.train_op, self.loss, self.accuracy_op]
+            _, loss, accuracy = self.sess.run(fetches, feed_dict=feed_dict)
+            losses.append(loss)
+            accuracies.append(accuracy)
 
-                if step % self.log_step == 0:
-                    print('iteration (%d): loss = %.3f, accuracy = %.3f' %
-                          (step, loss, accuracy))
-                step += 1
+            if step % self.log_step == 0:
+                print('iteration (%d): train batch loss = %.3f, train batch accuracy = %.3f' %
+                      (step, loss, accuracy))
+            step += 1
 
         # plt.title('Training loss')
         # loss_hist_ = losses[1::100]  # sparse the curve a bit
@@ -421,18 +411,21 @@ class SequenceModel(object):
         # plt.xlabel('epoch')
         # plt.gcf().set_size_inches(15, 12)
         # plt.show()
-
         return
+
+    def _accuracy(self, tags):
+        predict = self.run_inference(self.x, self.lengths)
+        correct = tf.equal(predict, tags)
+        self.accuracy_op = tf.reduce_mean(tf.cast(correct, tf.float32))
+        return self.accuracy_op
 
     # TODO(student): You can implement this to help you, but we will not call it.
     def evaluate(self, terms, tags, lengths):
-
-        num_correct, total, total_tags = 0, 0, 0
-        # counter = 0
-        for sentence_ in terms:
-            aa =1
-
-
+        feed_dict = {self.x: terms, self.lengths: lengths,
+                     self.targets: tags, self.b: lengths}
+        fetches = [self.train_op, self.loss, self.accuracy_op]
+        _, loss, accuracy = self.sess.run(fetches, feed_dict=feed_dict)
+        print('accuracy on test: {}'.format(accuracy))
 
 
 def main():
@@ -452,10 +445,15 @@ def main():
     model = SequenceModel(train_tags.shape[1], len(term_index), len(tag_index))
     model.build_inference()
     model.build_training()
-    for j in range(10):
-      model.train_epoch(train_terms, train_tags, train_lengths)
-      print('Finished epoch %i. Evaluating ...' % (j+1))
-      # model.evaluate(test_terms, test_tags, test_lengths)
+    time0 = time.time()
+    K = 300
+    epoch = 0
+    while (time.time()-time0 <= K):
+        model.train_epoch(train_terms, train_tags, train_lengths)
+        print('Finished epoch %i. Evaluating ...' % (epoch + 1))
+        model.evaluate(test_terms, test_tags, test_lengths)
+        epoch += 1
+
 
 
 if __name__ == '__main__':
