@@ -231,9 +231,9 @@ class SequenceModel(object):
     def save_model(self, filename):
         """Saves model to a file."""
         # import pickle
-        sess = tf.Session()
+        # sess = tf.Session()
         var_dict = {v.name: v for v in tf.global_variables()}
-        pickle.dump(sess.run(var_dict), open(filename, 'w'))
+        pickle.dump(self.sess.run(var_dict), open(filename, 'w'))
         return
 
   # TODO(student): You must implement this.
@@ -311,10 +311,16 @@ class SequenceModel(object):
             states.append(cur_state)
         stacked_states = tf.stack(states, axis=1)  # Shape (batch, max_length, state_size)
         # logits: A Tensor of shape[batch_size, sequence_length, num_decoder_symbols] and dtype float.
-        self.logits = tf.nn.softmax(logits,axis=None,name=None)
+        self.logits = tf.contrib.layers.fully_connected(stacked_states, self.num_tags, activation_fn=tf.nn.softmax,
+                                                   normalizer_fn=None, normalizer_params=None,
+                                                   weights_initializer=tf.contrib.layers.xavier_initializer(),
+                                                   weights_regularizer=None, biases_initializer=tf.zeros_initializer(),
+                                                   biases_regularizer=None, reuse=None, variables_collections=None,
+                                                   outputs_collections=None, trainable=True, scope=None)
+        # self.logits = tf.nn.softmax(output, axis=None, name=None)
 
-
-        self.logits = tf.zeros([tf.shape(self.x)[0], self.max_length, self.num_tags])
+        # self.logits = tf.zeros([tf.shape(self.x)[0], self.max_length, self.num_tags])
+        return
 
     # TODO(student): You must implement this.
     def run_inference(self, tags, lengths):
@@ -352,18 +358,19 @@ class SequenceModel(object):
             an exception). Equivalently, tf.losses.get_losses() should return a
             non-empty list.
         """
-        self.targets =  tf.placeholder(tf.int32, shape=[None, None], name="labels")
+        self.targets = tf.placeholder(tf.int32, shape=[None, self.max_length], name="targets")
+        # logits: A Tensor of shape [batch_size, sequence_length, num_decoder_symbols] and dtype float.
         # targets: A Tensor of shape[batch_size, sequence_length] and dtype int.
         # weights: A Tensor of shape[batch_size, sequence_length] and dtype float
         self.loss = tf.contrib.seq2seq.sequence_loss(logits=self.logits, targets=self.targets,
                                                      weights=self.lens_to_bin, average_across_timesteps=True,
-                                                     average_across_batch=True,softmax_loss_function=None, name=None)
+                                                     average_across_batch=True, softmax_loss_function=None, name=None)
         opt = tf.train.AdamOptimizer() #HYP
         self.train_op = opt.minimize(self.loss)
-        print(tf.losses.get_total_loss())
-        print(tf.losses.get_losses())
-
-
+        # print(tf.losses.get_total_loss(add_regularization_losses=True,
+        #                                name='total_loss'))  # should return a valid tensor
+        # print(tf.losses.get_losses())  # should return anon-empty list
+        return
 
     def train_epoch(self, terms, tags, lengths, batch_size=32, learn_rate=1e-7):
         #HYP
@@ -381,8 +388,18 @@ class SequenceModel(object):
             but it is only here so that you can experiment with a "good learn rate"
             from your main block.
         """
-
-        pass
+        feed_dict = {self.x: terms, self.lengths: lengths, self.targets: tags}
+        fetches = [self.train_op, self.loss]
+        losses = []
+        accuracies = []
+        with tf.Session() as sess:
+            # with tf.device('/cpu:0'):
+            self.sess = sess
+            sess.run(tf.global_variables_initializer())
+            _, loss = sess.run(fetches, feed_dict=feed_dict)
+            losses.append(loss)
+            # accuracies.append(accuracy)
+        return
 
     # TODO(student): You can implement this to help you, but we will not call it.
     def evaluate(self, terms, tags, lengths):
@@ -409,7 +426,7 @@ def main():
     for j in range(10):
       model.train_epoch(train_terms, train_tags, train_lengths)
       print('Finished epoch %i. Evaluating ...' % (j+1))
-      model.evaluate(test_terms, test_tags, test_lengths)
+      # model.evaluate(test_terms, test_tags, test_lengths)
 
 
 if __name__ == '__main__':
