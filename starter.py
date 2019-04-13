@@ -199,8 +199,8 @@ class SequenceModel(object):
         self.cell_type = 'rnn'  # 'lstm'
         self.log_step = 50
         self.sess = tf.Session()
-        self.size_embed = 15  # HYP
-        self.state_size = 10  # HYP
+        self.size_embed = 40  # HYP
+        self.state_size = 20  # HYP
         self.embed = tf.get_variable('embed', shape=[self.num_terms, self.size_embed],
                                      dtype=tf.float32, initializer=None, trainable=True)
         self._accuracy()
@@ -452,7 +452,7 @@ def main():
     model.build_inference()
     model.build_training()
     time0 = time.time()
-    K = 30
+    K = 300
     epoch = 0
     print('-' * 5 + '  Start training  ' + '-' * 5)
     while time.time()-time0 <= K:
