@@ -195,6 +195,7 @@ class SequenceModel(object):
         self.x = tf.placeholder(tf.int64, [None, self.max_length], 'X')
         self.lengths = tf.placeholder(tf.int32, [None], 'lengths')
         self.cell_type = 'rnn'  # 'lstm'
+        self.log_step = 50
 
     # TODO(student): You must implement this.
     def lengths_vector_to_binary_matrix(self, length_vector):
@@ -215,8 +216,9 @@ class SequenceModel(object):
         #                     initializer=None, regularizer=None, trainable=False)
 
         num_batch_ = length_vector.shape[0].value
-        if num_batch_ == None :
-            b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
+        if num_batch_ == None:
+            self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
+            b = self.b
         elif num_batch_ > 0:
             b = numpy.zeros((num_batch_, self.max_length))
             for i in range(num_batch_):
@@ -388,21 +390,45 @@ class SequenceModel(object):
             but it is only here so that you can experiment with a "good learn rate"
             from your main block.
         """
-        feed_dict = {self.x: terms, self.lengths: lengths, self.targets: tags}
-        fetches = [self.train_op, self.loss]
+        step = 0
         losses = []
         accuracies = []
+        print('-' * 5 + '  Start training  ' + '-' * 5)
+        num_training = len(terms)
         with tf.Session() as sess:
-            # with tf.device('/cpu:0'):
-            self.sess = sess
             sess.run(tf.global_variables_initializer())
+            self.sess = sess
+
+            for i in range(num_training // batch_size):
+                x_batch = terms[i * batch_size:(i + 1) * batch_size][:]
+                y_batch = tags[i * batch_size:(i + 1) * batch_size]
+                lengths_batch = lengths[i * batch_size:(i + 1) * batch_size]
+
+            sess.run(tf.global_variables_initializer())
+            feed_dict = {self.x: x_batch, self.lengths: lengths_batch, self.targets: y_batch, self.b: lengths_batch}
+            fetches = [self.train_op, self.loss]
             _, loss = sess.run(fetches, feed_dict=feed_dict)
             losses.append(loss)
+            accuracy = 0 ####
             # accuracies.append(accuracy)
+
+            if step % self.log_step == 0:
+                print('iteration (%d): loss = %.3f, accuracy = %.3f' %
+                      (step, loss, accuracy))
+            step += 1
+
+        # plt.title('Training loss')
+        # loss_hist_ = losses[1::100]  # sparse the curve a bit
+        # plt.plot(loss_hist_, '-o')
+        # plt.xlabel('epoch')
+        # plt.gcf().set_size_inches(15, 12)
+        # plt.show()
+
         return
 
     # TODO(student): You can implement this to help you, but we will not call it.
     def evaluate(self, terms, tags, lengths):
+
         pass
 
 
