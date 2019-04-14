@@ -366,7 +366,7 @@ class SequenceModel(object):
     def _accuracy(self):
         self.predict = self.run_inference(self.x, self.lengths)
         self.lens_to_bin = self.lengths_vector_to_binary_matrix(self.lengths)
-        correct = tf.multiply(tf.cast(tf.equal(self.predict, self.tags), tf.float32), self.lens_to_bin)
+        correct = tf.multiply(tf.cast(tf.equal(self.predict, self.tags), tf.int32), self.lens_to_bin)
         # self.accuracy_op = tf.reduce_mean(tf.cast(correct, tf.float32))
         self.accuracy_op = tf.divide(correct, tf.reduce_sum(self.lengths))
         return self.accuracy_op
