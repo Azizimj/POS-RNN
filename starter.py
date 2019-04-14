@@ -197,12 +197,15 @@ class SequenceModel(object):
         self.lengths = tf.placeholder(tf.int32, [None], 'lengths')
         self.tags = tf.placeholder(tf.int64, [None, self.max_length], 'tags')
         self.cell_type = 'rnn'  # 'lstm'
+        self.cell_type = 'rnn'  # 'lstm'
         self.log_step = 50
         self.sess = tf.Session()
         self.size_embed = 40  # HYP
         self.state_size = 20  # HYP
         self.embed = tf.get_variable('embed', shape=[self.num_terms, self.size_embed],
                                      dtype=tf.float32, initializer=None, trainable=True)
+        self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
+        self.learn_rate = 1
         self._accuracy()
 
 
@@ -216,15 +219,18 @@ class SequenceModel(object):
         However, since we are using tensorflow rather than numpy in this function,
         you cannot set the range as described.
         """
-        num_batch_ = length_vector.shape[0].value
-        if num_batch_ == None:
-            self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
-            self.lens_to_bin = self.b
-        elif num_batch_ > 0:
-            self.lens_to_bin = numpy.zeros((num_batch_, self.max_length))
-            for i in range(num_batch_):
-                self.lens_to_bin[i, :length_vector[i]] = 1
-            self.lens_to_bin = tf.convert_to_tensor(self.lens_to_bin, dtype=tf.float32)
+        # num_batch_ = length_vector.shape[0].value
+        # if num_batch_ == None:
+        self.lens_to_bin = self.b
+
+        # if self.is_build:
+        #     self.lens_to_bin = self.b
+        # else:
+        #     num_batch_ = len(length_vector)
+        #     self.lens_to_bin = numpy.zeros((num_batch_, self.max_length))
+        #     for i in range(num_batch_):
+        #         self.lens_to_bin[i, :length_vector[i]] = 1
+        #     self.lens_to_bin = tf.convert_to_tensor(self.lens_to_bin, dtype=tf.float32)
         return self.lens_to_bin
 
         # return tf.ones([tf.shape(length_vector), self.max_length], dtype=tf.float32)
@@ -356,7 +362,10 @@ class SequenceModel(object):
         self.loss = tf.contrib.seq2seq.sequence_loss(logits=self.logits, targets=self.tags,
                                                      weights=self.lens_to_bin, average_across_timesteps=True,
                                                      average_across_batch=True, softmax_loss_function=None, name=None)
-        opt = tf.train.AdamOptimizer() #HYP
+        # g_s = tf.Variable(0, trainable=False)
+        # l_r = tf.train.exponential_decay(self.learn_rate, g_s, 500, .96, staircase=True)
+        l_r = self.learn_rate
+        opt = tf.train.AdamOptimizer(l_r) #HYP
         self.train_op = opt.minimize(self.loss)
         # print(tf.losses.get_total_loss(add_regularization_losses=True,
         #                                name='total_loss'))  # should return a valid tensor
@@ -366,10 +375,17 @@ class SequenceModel(object):
     def _accuracy(self):
         self.predict = self.run_inference(self.x, self.lengths)
         self.lens_to_bin = self.lengths_vector_to_binary_matrix(self.lengths)
-        correct = tf.multiply(tf.cast(tf.equal(self.predict, self.tags), tf.float32), self.lens_to_bin)
+        self.correct = tf.multiply(tf.cast(tf.equal(self.predict, self.tags), tf.float32), self.lens_to_bin)
         # self.accuracy_op = tf.reduce_mean(tf.cast(correct, tf.float32))
-        self.accuracy_op = tf.divide(correct, tf.cast(tf.reduce_sum(self.lengths), tf.float32))
+        self.accuracy_op = tf.divide(tf.reduce_sum(self.correct), tf.cast(tf.reduce_sum(self.lengths), tf.float32))
         return self.accuracy_op
+
+    def lengths_to_binary(self, length_vector):
+        num_batch_ = len(length_vector)
+        b_ = numpy.zeros((num_batch_, self.max_length))
+        for i in range(num_batch_):
+            b_[i, :length_vector[i]] = 1
+        return b_.astype(float)
 
     def train_epoch(self, terms, tags, lengths, batch_size=32, learn_rate=1e-7):
         #HYP
@@ -387,6 +403,7 @@ class SequenceModel(object):
             but it is only here so that you can experiment with a "good learn rate"
             from your main block.
         """
+        # self.learn_rate = learn_rate
         self.batch_size = batch_size
         step = 0
         losses = []
@@ -397,11 +414,12 @@ class SequenceModel(object):
             x_batch = terms[i * batch_size:(i + 1) * batch_size][:]
             tags_batch = tags[i * batch_size:(i + 1) * batch_size]
             lengths_batch = lengths[i * batch_size:(i + 1) * batch_size]
+            b_ = self.lengths_to_binary(lengths_batch)
             feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
                          self.tags: tags_batch.astype(numpy.int64),
-                         self.b: numpy.repeat(lengths_batch.reshape(self.batch_size, 1).astype(float), self.max_length, axis=1)}
-            fetches = [self.train_op, self.loss, self.accuracy_op]
-            _, loss, accuracy = self.sess.run(fetches, feed_dict=feed_dict)
+                         self.b: b_}
+            fetches = [self.train_op, self.loss, self.accuracy_op, self.correct, self.lengths]
+            _, loss, accuracy, correct, lens = self.sess.run(fetches, feed_dict=feed_dict)
             losses.append(loss)
             accuracies.append(accuracy)
 
@@ -410,12 +428,6 @@ class SequenceModel(object):
                       (step, num_training // batch_size, loss, accuracy))
             step += 1
 
-        # plt.title('Training loss')
-        # loss_hist_ = losses[1::100]  # sparse the curve a bit
-        # plt.plot(loss_hist_, '-o')
-        # plt.xlabel('epoch')
-        # plt.gcf().set_size_inches(15, 12)
-        # plt.show()
         return
 
     # TODO(student): You can implement this to help you, but we will not call it.
@@ -426,9 +438,10 @@ class SequenceModel(object):
             x_batch = terms[i * self.batch_size:(i + 1) * self.batch_size][:]
             tags_batch = tags[i * self.batch_size:(i + 1) * self.batch_size]
             lengths_batch = lengths[i * self.batch_size:(i + 1) * self.batch_size]
+            b_ = self.lengths_to_binary(lengths_batch)
             feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
                          self.tags: tags_batch.astype(numpy.int64),
-                         self.b: numpy.repeat(lengths_batch.reshape(self.batch_size, 1).astype(float), self.max_length, axis=1)}
+                         self.b: b_}
             fetches = [self.train_op, self.loss, self.accuracy_op, self.predict]
             _, loss, accuracy, predict = self.sess.run(fetches, feed_dict=feed_dict)
             eval_accuracy += accuracy
