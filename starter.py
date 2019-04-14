@@ -201,11 +201,11 @@ class SequenceModel(object):
         self.log_step = 50
         self.sess = tf.Session()
         self.size_embed = 40  # HYP
-        self.state_size = 20  # HYP
+        self.state_size = 50  # HYP
         self.embed = tf.get_variable('embed', shape=[self.num_terms, self.size_embed],
                                      dtype=tf.float32, initializer=None, trainable=True)
         self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
-        self.learn_rate = 1e-5
+        self.learn_rate = 1e-7 #HYP
         self._accuracy()
 
 
@@ -366,12 +366,13 @@ class SequenceModel(object):
                                                      average_across_batch=True, softmax_loss_function=None, name=None)
         # g_s = tf.Variable(0, trainable=False)
         # l_r = tf.train.exponential_decay(self.learn_rate, g_s, 500, .96, staircase=True)
-        l_r = self.learn_rate
-        opt = tf.train.AdamOptimizer(l_r) #HYP
+        # l_r = self.learn_rate
+        # opt = tf.train.AdamOptimizer(l_r) #HYP
+        opt = tf.train.AdamOptimizer()  # HYP
         self.train_op = opt.minimize(self.loss)
         # print(tf.losses.get_total_loss(add_regularization_losses=True,
         #                                name='total_loss'))  # should return a valid tensor
-        # print(tf.losses.get_losses())  # should return anon-empty list
+        # print(tf.losses.get_losses())  # should return a non-empty list
         return
 
     def _accuracy(self):
@@ -478,6 +479,8 @@ def main():
         print('Finished epoch %i. Evaluating ...' % (epoch + 1))
         model.evaluate(test_terms, test_tags, test_lengths)
         epoch += 1
+    model.save_model('model.pkl')
+    model.load_model('model.pkl')
     print('time {}'.format(time.time()-time0))
 
 if __name__ == '__main__':
