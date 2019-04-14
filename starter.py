@@ -366,9 +366,9 @@ class SequenceModel(object):
     def _accuracy(self):
         self.predict = self.run_inference(self.x, self.lengths)
         self.lens_to_bin = self.lengths_vector_to_binary_matrix(self.lengths)
-        correct = tf.multiply(tf.cast(tf.equal(self.predict, self.tags), tf.int32), self.lens_to_bin)
+        correct = tf.multiply(tf.cast(tf.equal(self.predict, self.tags), tf.float32), self.lens_to_bin)
         # self.accuracy_op = tf.reduce_mean(tf.cast(correct, tf.float32))
-        self.accuracy_op = tf.divide(correct, tf.reduce_sum(self.lengths))
+        self.accuracy_op = tf.divide(correct, tf.cast(tf.reduce_sum(self.lengths), tf.float32))
         return self.accuracy_op
 
     def train_epoch(self, terms, tags, lengths, batch_size=32, learn_rate=1e-7):
@@ -399,7 +399,7 @@ class SequenceModel(object):
             lengths_batch = lengths[i * batch_size:(i + 1) * batch_size]
             feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
                          self.tags: tags_batch.astype(numpy.int64),
-                         self.b: numpy.repeat(lengths_batch.reshape(self.batch_size, 1), self.max_length, axis=1)}
+                         self.b: numpy.repeat(lengths_batch.reshape(self.batch_size, 1).astype(float), self.max_length, axis=1)}
             fetches = [self.train_op, self.loss, self.accuracy_op]
             _, loss, accuracy = self.sess.run(fetches, feed_dict=feed_dict)
             losses.append(loss)
@@ -428,7 +428,7 @@ class SequenceModel(object):
             lengths_batch = lengths[i * self.batch_size:(i + 1) * self.batch_size]
             feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
                          self.tags: tags_batch.astype(numpy.int64),
-                         self.b: numpy.repeat(lengths_batch.reshape(self.batch_size, 1), self.max_length, axis=1)}
+                         self.b: numpy.repeat(lengths_batch.reshape(self.batch_size, 1).astype(float), self.max_length, axis=1)}
             fetches = [self.train_op, self.loss, self.accuracy_op, self.predict]
             _, loss, accuracy, predict = self.sess.run(fetches, feed_dict=feed_dict)
             eval_accuracy += accuracy
