@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="490b93da-5ee1-4499-8ec0-b74e7ce1a9b6" name="Default Changelist" comment="Saturday" />
+    <list default="true" id="490b93da-5ee1-4499-8ec0-b74e7ce1a9b6" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/starter.py" beforeDir="false" afterPath="$PROJECT_DIR$/starter.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,20 +16,22 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/starter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="401" column="101" selection-start-line="401" selection-start-column="101" selection-end-line="401" selection-end-column="101" />
+            <state relative-caret-position="314">
+              <caret line="200" column="26" lean-forward="true" selection-start-line="200" selection-start-column="26" selection-end-line="200" selection-end-column="26" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
                 <element signature="e#297#7234#0" />
-                <element signature="e#7356#8231#0" />
+                <element signature="e#8790#9687#0" />
                 <element signature="e#9527#9752#0" />
                 <element signature="e#9842#10100#0" />
-                <element signature="e#9979#14996#0" />
                 <element signature="e#10187#10490#1" />
                 <element signature="e#11411#12100#0" />
-                <element signature="e#12152#13060#0" />
+                <element signature="e#12855#12934#0" />
                 <element signature="e#13087#13702#0" />
                 <element signature="e#15160#16122#0" />
+                <element signature="e#17414#17853#0" />
+                <element signature="e#18081#18272#0" />
+                <element signature="e#19914#21210#0" />
               </folding>
             </state>
           </provider>
@@ -45,6 +50,7 @@
       <find>train_on_</find>
       <find>self.targ</find>
       <find>_accuracy</find>
+      <find>is_build</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -96,6 +102,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunDashboard">
@@ -139,7 +146,7 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="E:\program\Anaconda\envs\tf_gpu\python.exe" />
+      <option name="SDK_HOME" value="E:\program\Anaconda\envs\tf_2\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -413,7 +420,14 @@
       <option name="project" value="LOCAL" />
       <updated>1555216447029</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="Saturday">
+      <created>1555224429468</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1555224429468</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TodoView">
@@ -434,14 +448,14 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3289689" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.45662847" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.36988544" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924356" visible="true" weight="0.26350245" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.29787233" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3289689" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.3289689" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.13584287" />
-      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50075644" side_tool="true" weight="0.30932897" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.3289689" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -462,18 +476,23 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/starter.py</url>
-          <line>433</line>
+          <line>448</line>
           <option name="timeStamp" value="31" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/starter.py</url>
-          <line>370</line>
-          <option name="timeStamp" value="32" />
+          <line>226</line>
+          <option name="timeStamp" value="45" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/starter.py</url>
-          <line>399</line>
-          <option name="timeStamp" value="34" />
+          <line>424</line>
+          <option name="timeStamp" value="46" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/starter.py</url>
+          <line>312</line>
+          <option name="timeStamp" value="47" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -481,121 +500,116 @@
   <component name="debuggerHistoryManager">
     <expressions id="evaluateCodeFragment">
       <expression>
-        <expression-string>feed_dict = {self.x: terms, self.lengths: lengths,
-                     self.tags: tags.astype(numpy.int64),
-                     self.b: numpy.repeat(lengths.reshape(lengths.shape[0], 1), self.max_length, axis=1)}
+        <expression-string>num_batch_ = length_vector.shape[0]
+self.lens_to_bin = numpy.zeros((num_batch_, self.max_length))
+for i in range(num_batch_):
+    self.lens_to_bin[i, :length_vector[i]] = 1
+self.lens_to_bin = tf.convert_to_tensor(self.lens_to_bin, dtype=tf.float32)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>num_batch_ = len(length_vector)
+self.lens_to_bin = numpy.zeros((num_batch_, self.max_length))
+for i in range(num_batch_):
+    self.lens_to_bin[i, :length_vector[i]] = 1
+self.lens_to_bin = tf.convert_to_tensor(self.lens_to_bin, dtype=tf.float32)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>a = self.sess.run(self.lengths, feed_dict)[0]
+b = numpy.zeros((32, 310))
+b[1, :a[1]] = 1</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>a = self.sess.run(self.lengths, feed_dict)[0]
+print(a)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>a = self.sess.run(self.lengths, feed_dict)[0]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
+                         self.tags: tags_batch.astype(numpy.int64),
+                         self.b: numpy.repeat(lengths_batch.reshape(self.batch_size, 1).astype(float), self.max_length, axis=1), self.b: numpy.repeat(lengths_batch.reshape(self.batch_size, 1).astype(float), self.max_length, axis=1)}
 fetches = [self.train_op, self.loss, self.accuracy_op]
 _, loss, accuracy = self.sess.run(fetches, feed_dict=feed_dict)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
-                         self.targets: tags_batch.astype(numpy.int32),
-                         self.b: numpy.repeat(lengths_batch.reshape(self.batch_size, 1), self.max_length, axis=1)}
-fetches = [self.train_op, self.loss, self.accuracy_op]
-_, loss, accuracy = self.sess.run(fetches, feed_dict=feed_dict)</expression-string>
+        <expression-string>tf.all_variables()</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>def get_all_variables_with_name(var_name):
+    name = var_name + ':0'
+    return [var for var in tf.all_variables() if var.name.endswith(name)]
+get_all_variables_with_name('b')</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
         <expression-string>feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
-                         self.targets: tags_batch.astype(numpy.int64),
-                         self.b: numpy.repeat(lengths_batch.reshape(self.batch_size, 1), self.max_length, axis=1)}</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
-                         self.targets: tags_batch.astype(numpy.int64),
-                         self.b: numpy.repeat(lengths_batch.reshape(self.batch_size, 1), self.max_length, axis=1)}
-fetches = [self.train_op, self.loss, self.accuracy_op]
-_, loss, accuracy = self.sess.run(fetches, feed_dict=feed_dict)</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
-                         self.targets: tags_batch.astype(numpy.int64),
-                         self.b: numpy.repeat(lengths_batch.reshape(self.batch_size, 1), self.max_length, axis=1)}
-            fetches = [self.train_op, self.loss, self.accuracy_op]
-            _, loss, accuracy = self.sess.run(fetches, feed_dict=feed_dict)</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>tf.get_variable('embed', shape=[self.num_terms, self.size_embed],
-                                     dtype=tf.float32, initializer=None, trainable=True)</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
-                         self.targets: tags_batch,
-                         self.b: numpy.repeat(lengths_batch.reshape(self.batch_size, 1), self.max_length, axis=1)}</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>tf.losses.get_total_loss(add_regularization_losses=True,
-                                       name='total_loss')</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>tf.contrib.layers.fully_connected(stacked_states, self.num_tags, activation_fn=tf.nn.softmax,
-                                                   normalizer_fn=None, normalizer_params=None,
-                                                   weights_initializer=tf.contrib.layers.xavier_initializer(),
-                                                   weights_regularizer=None, biases_initializer=tf.zeros_initializer(),
-                                                   biases_regularizer=None, reuse=None, variables_collections=None,
-                                                   outputs_collections=None, trainable=True, scope=None)</expression-string>
+                         self.tags: tags_batch.astype(numpy.int64),
+                         self.b: numpy.repeat(lengths_batch.reshape(self.batch_size, 1).astype(float), self.max_length, axis=1)}
+fetches = [self.train_op, self.loss, self.accuracy_op, self.predict]
+_, loss, accuracy, predict = self.sess.run(fetches, feed_dict=feed_dict)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
     </expressions>
     <expressions id="evaluateExpression">
       <expression>
-        <expression-string>(predict== tags_batch).astype(int)*self.lens_to_bin</expression-string>
+        <expression-string>tf.nn.rnn_cell.LSTMCell(self.state_size,)(xemb[:, i, :], cur_state)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>(predict== tags_batch).astype(int)</expression-string>
+        <expression-string>xemb</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>self.sess.run((predict== tags_batch).astype(int)*self.lens_to_bin)</expression-string>
+        <expression-string>tf.nn.rnn_cell.LSTMCell(self.state_size,)(xemb[:, i, :], [cur_state])</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>1-loss/numpy.sum(lengths_batch), accuracy</expression-string>
+        <expression-string>tf.nn.rnn_cell.LSTMCell(self.state_size,)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>loss/numpy.sum(lengths_batch), accuracy</expression-string>
+        <expression-string>tf.nn.rnn_cell.LSTMCell()</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>loss/numpy.sum(lengths_batch)</expression-string>
+        <expression-string>tf.nn.rnn_cell.LSTMCell</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>loss</expression-string>
+        <expression-string>tf.nn.rnn_cell</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>self.loss</expression-string>
+        <expression-string>rnn_cell(xemb[:, i, :], cur_state)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>accuracy*32*310/numpy.sum(lengths_batch)</expression-string>
+        <expression-string>rnn_cell(xemb[:, i, :], [cur_state])</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -690,20 +704,22 @@ _, loss, accuracy = self.sess.run(fetches, feed_dict=feed_dict)</expression-stri
     </entry>
     <entry file="file://$PROJECT_DIR$/starter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="401" column="101" selection-start-line="401" selection-start-column="101" selection-end-line="401" selection-end-column="101" />
+        <state relative-caret-position="314">
+          <caret line="200" column="26" lean-forward="true" selection-start-line="200" selection-start-column="26" selection-end-line="200" selection-end-column="26" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
             <element signature="e#297#7234#0" />
-            <element signature="e#7356#8231#0" />
+            <element signature="e#8790#9687#0" />
             <element signature="e#9527#9752#0" />
             <element signature="e#9842#10100#0" />
-            <element signature="e#9979#14996#0" />
             <element signature="e#10187#10490#1" />
             <element signature="e#11411#12100#0" />
-            <element signature="e#12152#13060#0" />
+            <element signature="e#12855#12934#0" />
             <element signature="e#13087#13702#0" />
             <element signature="e#15160#16122#0" />
+            <element signature="e#17414#17853#0" />
+            <element signature="e#18081#18272#0" />
+            <element signature="e#19914#21210#0" />
           </folding>
         </state>
       </provider>

@@ -196,8 +196,8 @@ class SequenceModel(object):
         self.x = tf.placeholder(tf.int64, [None, self.max_length], 'X')
         self.lengths = tf.placeholder(tf.int32, [None], 'lengths')
         self.tags = tf.placeholder(tf.int64, [None, self.max_length], 'tags')
-        self.cell_type = 'rnn'  # 'lstm'
-        self.cell_type = 'rnn'  # 'lstm'
+        self.cell_type = 'rnn'
+        # self.cell_type = 'lstm'
         self.log_step = 50
         self.sess = tf.Session()
         self.size_embed = 40  # HYP
@@ -205,7 +205,7 @@ class SequenceModel(object):
         self.embed = tf.get_variable('embed', shape=[self.num_terms, self.size_embed],
                                      dtype=tf.float32, initializer=None, trainable=True)
         self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
-        self.learn_rate = 1
+        self.learn_rate = 1e-5
         self._accuracy()
 
 
@@ -278,15 +278,17 @@ class SequenceModel(object):
                                                      kernel_constraint=None,recurrent_constraint=None,
                                                      bias_constraint=None, dropout=0.0)
         elif self.cell_type == 'lstm':
-            rnn_cell = tf.keras.layers.LSTMCell__init__(units=self.state_size, activation='tanh',
-                                                        recurrent_activation='hard_sigmoid', use_bias=True,
-                                                        kernel_initializer='glorot_uniform',
-                                                        recurrent_initializer='orthogonal', bias_initializer='zeros',
-                                                        unit_forget_bias=True,kernel_regularizer=None,
-                                                        recurrent_regularizer=None, bias_regularizer=None,
-                                                        kernel_constraint=None,recurrent_constraint=None,
-                                                        bias_constraint=None, dropout=0.0,
-                                                        recurrent_dropout=0.0, implementation=1)
+            rnn_cell = tf.keras.layers.LSTMCell(units=self.state_size, activation='tanh')
+            rnn_cell = tf.nn.rnn_cell.LSTMCell(self.state_size,)
+            # rnn_cell = tf.keras.layers.LSTMCell(units=self.state_size, activation='tanh',
+            #                                     recurrent_activation='hard_sigmoid', use_bias=True,
+            #                                     kernel_initializer='glorot_uniform',
+            #                                     recurrent_initializer='orthogonal', bias_initializer='zeros',
+            #                                     unit_forget_bias=True, kernel_regularizer=None,
+            #                                     recurrent_regularizer=None, bias_regularizer=None,
+            #                                     kernel_constraint=None, recurrent_constraint=None,
+            #                                     bias_constraint=None, dropout=0.0,
+            #                                     recurrent_dropout=0.0, implementation=1)
         else:
             # cell_fw = tf.contrib.rnn.LSTMCell(self.state_size, state_is_tuple=True)
             # cell_bw = tf.contrib.rnn.LSTMCell(self.state_size, state_is_tuple=True)
@@ -387,7 +389,7 @@ class SequenceModel(object):
             b_[i, :length_vector[i]] = 1
         return b_.astype(float)
 
-    def train_epoch(self, terms, tags, lengths, batch_size=32, learn_rate=1e-7):
+    def train_epoch(self, terms, tags, lengths, batch_size=100, learn_rate=1e-7):
         #HYP
         """Performs updates on the model given training training data.
 
