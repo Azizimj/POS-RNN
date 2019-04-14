@@ -219,13 +219,13 @@ class SequenceModel(object):
         num_batch_ = length_vector.shape[0].value
         if num_batch_ == None:
             self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
-            b = self.b
+            self.lens_to_bin = self.b
         elif num_batch_ > 0:
-            b = numpy.zeros((num_batch_, self.max_length))
+            self.lens_to_bin = numpy.zeros((num_batch_, self.max_length))
             for i in range(num_batch_):
-                b[i, :length_vector[i]] = 1
-            b = tf.convert_to_tensor(b, dtype=tf.float32)
-        return b
+                self.lens_to_bin[i, :length_vector[i]] = 1
+            self.lens_to_bin = tf.convert_to_tensor(self.lens_to_bin, dtype=tf.float32)
+        return self.lens_to_bin
 
         # return tf.ones([tf.shape(length_vector), self.max_length], dtype=tf.float32)
 
@@ -364,9 +364,11 @@ class SequenceModel(object):
         return
 
     def _accuracy(self):
-        predict = self.run_inference(self.x, self.lengths)
-        correct = tf.equal(predict, self.tags)
-        self.accuracy_op = tf.reduce_mean(tf.cast(correct, tf.float32))
+        self.predict = self.run_inference(self.x, self.lengths)
+        self.lens_to_bin = self.lengths_vector_to_binary_matrix(self.lengths)
+        correct = tf.multiply(tf.cast(tf.equal(self.predict, self.tags), tf.float32), self.lens_to_bin)
+        # self.accuracy_op = tf.reduce_mean(tf.cast(correct, tf.float32))
+        self.accuracy_op = tf.divide(correct, tf.reduce_sum(self.lengths))
         return self.accuracy_op
 
     def train_epoch(self, terms, tags, lengths, batch_size=32, learn_rate=1e-7):
@@ -405,7 +407,7 @@ class SequenceModel(object):
 
             if step % self.log_step == 0:
                 print('iteration (%d)/(%d): train batch loss = %.3f, train batch accuracy = %.3f' %
-                      (step,num_training // batch_size, loss, accuracy))
+                      (step, num_training // batch_size, loss, accuracy))
             step += 1
 
         # plt.title('Training loss')
@@ -427,8 +429,8 @@ class SequenceModel(object):
             feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
                          self.tags: tags_batch.astype(numpy.int64),
                          self.b: numpy.repeat(lengths_batch.reshape(self.batch_size, 1), self.max_length, axis=1)}
-            fetches = [self.train_op, self.loss, self.accuracy_op]
-            _, loss, accuracy = self.sess.run(fetches, feed_dict=feed_dict)
+            fetches = [self.train_op, self.loss, self.accuracy_op, self.predict]
+            _, loss, accuracy, predict = self.sess.run(fetches, feed_dict=feed_dict)
             eval_accuracy += accuracy
             eval_iter += 1
         print('accuracy on val: {}'.format(eval_accuracy / eval_iter))
