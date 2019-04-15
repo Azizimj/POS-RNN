@@ -199,17 +199,17 @@ class SequenceModel(object):
         # I usually prefer int32 for space and speed, but the embedding_lookup function expects int64
         # self.cell_type = 'rnn'
         # self.cell_type = 'lstm'
-        # self.cell_type = 'bidic_rnn'
-        self.cell_type = 'bidic_lstm'
+        self.cell_type = 'bidic_rnn'
+        # self.cell_type = 'bidic_lstm'
         self.log_step = 10
         self.sess = tf.Session()
         self.size_embed = 10  # HYP
-        self.state_size = 10  # HYP
+        self.state_size = 6  # HYP
         self.embed = tf.get_variable('embed', shape=[self.num_terms, self.size_embed],
                                      dtype=tf.float32, initializer=None, trainable=True)
         self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
         self.learn_rate = 1e-7 #HYP
-        self.dropout_keep_prob = 1
+        self.dropout_keep_prob = .5
         self._accuracy()
 
 
@@ -289,7 +289,7 @@ class SequenceModel(object):
         self.lens_to_bin = self.lengths_vector_to_binary_matrix(self.lengths)
         # terms_batch = tf.placeholder(tf.int32, shape=[None, None]) #####
         xemb_ = tf.nn.embedding_lookup(params=self.embed, ids=self.x, partition_strategy='mod', name=None,
-                                      validate_indices=True,max_norm=None)
+                                      validate_indices=True, max_norm=None)
         states = []
         cur_state = tf.zeros(shape=[1, self.state_size])
 
@@ -423,7 +423,7 @@ class SequenceModel(object):
         # opt = tf.train.AdamOptimizer(l_r) #HYP
         opt = tf.train.AdamOptimizer()  # HYP
         # opt = tf.train.AdamOptimizer(learning_rate=0.001,beta1=0.9,beta2=0.999,epsilon=1e-08,use_locking=False,name='Adam')
-        self.train_op = opt.minimize(self.loss)
+        self.train_op = opt.minimize(self.loss, var_list=tf.trainable_variables())
         print('tf.losses.get_total_loss', tf.losses.get_total_loss(add_regularization_losses=True,
                                        name='total_loss'))  # should return a valid tensor
         print('tf.losses.get_losses', tf.losses.get_losses())  # should return a non-empty list
@@ -444,7 +444,7 @@ class SequenceModel(object):
             b_[i, :length_vector[i]] = 1
         return b_.astype(float)
 
-    def train_epoch(self, terms, tags, lengths, batch_size=10, learn_rate=1e-7):
+    def train_epoch(self, terms, tags, lengths, batch_size=15, learn_rate=1e-7):
         #HYP
         """Performs updates on the model given training training data.
 
@@ -467,8 +467,8 @@ class SequenceModel(object):
         accuracies = []
         num_training = len(terms)
         self.sess.run(tf.global_variables_initializer())
-        # for i in range(num_training // batch_size):
-        for i in range(1):
+        for i in range(num_training // batch_size):
+        # for i in range(1):
             x_batch = terms[i * batch_size:(i + 1) * batch_size][:]
             tags_batch = tags[i * batch_size:(i + 1) * batch_size]
             lengths_batch = lengths[i * batch_size:(i + 1) * batch_size]
@@ -526,7 +526,7 @@ def main():
     model.build_inference()
     model.build_training()
     time0 = time.time()
-    K = 5
+    K = 500
     epoch = 0
     print('-' * 5 + '  Start training  ' + '-' * 5)
     while time.time()-time0 <= K:
