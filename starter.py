@@ -240,18 +240,22 @@ class SequenceModel(object):
         """Saves model to a file."""
         # import pickle
         # sess = tf.Session()
-        var_dict = {v.name: v for v in tf.global_variables()}
-        pickle.dump(self.sess.run(var_dict), open(filename, 'w'))
+        # var_dict = {v.name: v for v in tf.global_variables()}
+        # pickle.dump(self.sess.run(var_dict), open(filename, 'w'))
+        saver = tf.train.Saver()
+        model_path = saver.save(self.sess, "model.ckpt")
         return
 
   # TODO(student): You must implement this.
     def load_model(self, filename):
         """Loads model from a file."""
         # import pickle
-        # sess = tf.Session()
-        var_values = pickle.load(open(filename))
-        assign_ops = [v.assign(var_values[v.name]) for v in tf.global_variables()]
-        self.sess.run(assign_ops)
+        self.sess = tf.Session()
+        # var_values = pickle.load(open(filename))
+        # assign_ops = [v.assign(var_values[v.name]) for v in tf.global_variables()]
+        # self.sess.run(assign_ops)
+        saver = tf.train.Saver()
+        saver.restore(self.sess, "model.ckpt")
         return
 
     # TODO(student): You must implement this.
@@ -369,6 +373,7 @@ class SequenceModel(object):
         # l_r = self.learn_rate
         # opt = tf.train.AdamOptimizer(l_r) #HYP
         opt = tf.train.AdamOptimizer()  # HYP
+        # opt = tf.train.AdamOptimizer(learning_rate=0.001,beta1=0.9,beta2=0.999,epsilon=1e-08,use_locking=False,name='Adam')
         self.train_op = opt.minimize(self.loss)
         # print(tf.losses.get_total_loss(add_regularization_losses=True,
         #                                name='total_loss'))  # should return a valid tensor
@@ -413,7 +418,8 @@ class SequenceModel(object):
         accuracies = []
         num_training = len(terms)
         self.sess.run(tf.global_variables_initializer())
-        for i in range(num_training // batch_size):
+        # for i in range(num_training // batch_size):
+        for i in range(1):
             x_batch = terms[i * batch_size:(i + 1) * batch_size][:]
             tags_batch = tags[i * batch_size:(i + 1) * batch_size]
             lengths_batch = lengths[i * batch_size:(i + 1) * batch_size]
@@ -427,10 +433,10 @@ class SequenceModel(object):
             accuracies.append(accuracy)
 
             if step % self.log_step == 0:
-                print('iteration (%d)/(%d): train batch loss = %.3f, train batch accuracy = %.3f' %
-                      (step, num_training // batch_size, loss, accuracy))
+                train_acc = self.evaluate(terms, tags, lengths)
+                print('iteration (%d)/(%d): train batch loss = %.3f, train batch accuracy = %.3f, train acc= %.3f' %
+                      (step, num_training // batch_size, loss, accuracy, train_acc))
             step += 1
-
         return
 
     # TODO(student): You can implement this to help you, but we will not call it.
@@ -450,6 +456,7 @@ class SequenceModel(object):
             eval_accuracy += accuracy
             eval_iter += 1
         print('accuracy on val: {}'.format(eval_accuracy / eval_iter))
+        return eval_accuracy / eval_iter
 
 
 def main():
@@ -470,7 +477,7 @@ def main():
     model.build_inference()
     model.build_training()
     time0 = time.time()
-    K = 300
+    K = 5
     epoch = 0
     print('-' * 5 + '  Start training  ' + '-' * 5)
     while time.time()-time0 <= K:
@@ -481,6 +488,10 @@ def main():
         epoch += 1
     model.save_model('model.pkl')
     model.load_model('model.pkl')
+    model.build_inference()
+    model.run_inference(test_terms, test_lengths)
+    model.evaluate(test_terms, test_tags, test_lengths)
+
     print('time {}'.format(time.time()-time0))
 
 if __name__ == '__main__':

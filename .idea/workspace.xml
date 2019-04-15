@@ -16,24 +16,25 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/starter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="198">
-              <caret line="370" column="37" selection-start-line="370" selection-start-column="37" selection-end-line="370" selection-end-column="37" />
+            <state relative-caret-position="181">
+              <caret line="257" column="27" selection-start-line="257" selection-start-column="27" selection-end-line="257" selection-end-column="27" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
-                <element signature="e#297#7234#0" />
-                <element signature="e#8790#9687#0" />
-                <element signature="e#9527#9752#0" />
-                <element signature="e#9842#10100#0" />
-                <element signature="e#9979#14996#0" />
-                <element signature="e#10187#10490#1" />
-                <element signature="e#11411#12100#0" />
-                <element signature="e#12855#12934#0" />
-                <element signature="e#13087#13702#0" />
-                <element signature="e#15160#16122#0" />
-                <element signature="e#17414#17853#0" />
-                <element signature="e#18081#18272#0" />
-                <element signature="e#17962#20818#0" />
-                <element signature="e#19914#21210#0" />
+                <element signature="e#309#7246#0" />
+                <element signature="e#496#2604#0" />
+                <element signature="e#2699#4459#0" />
+                <element signature="e#4532#7246#0" />
+                <element signature="e#7356#8662#0" />
+                <element signature="e#8782#9773#0" />
+                <element signature="e#10532#15161#0" />
+                <element signature="e#11269#11958#0" />
+                <element signature="e#12010#13021#0" />
+                <element signature="e#13048#13663#0" />
+                <element signature="e#15262#16224#0" />
+                <element signature="e#16310#17999#0" />
+                <element signature="e#18034#18498#0" />
+                <element signature="e#18556#18752#0" />
+                <element signature="e#21056#21968#0" />
               </folding>
             </state>
           </provider>
@@ -89,7 +90,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -101,6 +101,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -436,7 +437,14 @@
       <option name="project" value="LOCAL" />
       <updated>1555226429468</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="Saturday">
+      <created>1555227726482</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1555227726482</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TodoView">
@@ -452,13 +460,13 @@
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12708019" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12859304" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3289689" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924356" visible="true" weight="0.3584288" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.29787233" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49924356" weight="0.47790506" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.40589198" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3289689" />
@@ -483,31 +491,37 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+        <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/starter.py</url>
-          <line>449</line>
+          <line>455</line>
           <option name="timeStamp" value="31" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+        <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/starter.py</url>
           <line>226</line>
           <option name="timeStamp" value="45" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+        <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/starter.py</url>
-          <line>425</line>
+          <line>431</line>
           <option name="timeStamp" value="46" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/starter.py</url>
-          <line>312</line>
-          <option name="timeStamp" value="47" />
+          <line>243</line>
+          <option name="timeStamp" value="51" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateCodeFragment">
+      <expression>
+        <expression-string>saver = tf.train.Saver()
+model_path = saver.save(self.sess, &quot;model.ckpt&quot;)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>num_batch_ = length_vector.shape[0]
 self.lens_to_bin = numpy.zeros((num_batch_, self.max_length))
@@ -566,59 +580,50 @@ get_all_variables_with_name('b')</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
-      <expression>
-        <expression-string>feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
-                         self.tags: tags_batch.astype(numpy.int64),
-                         self.b: numpy.repeat(lengths_batch.reshape(self.batch_size, 1).astype(float), self.max_length, axis=1)}
-fetches = [self.train_op, self.loss, self.accuracy_op, self.predict]
-_, loss, accuracy, predict = self.sess.run(fetches, feed_dict=feed_dict)</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
     </expressions>
     <expressions id="evaluateExpression">
       <expression>
-        <expression-string>tf.nn.rnn_cell.static_rnn(rnn_cell, xemb[:, i, :], dtype=tf.float32)</expression-string>
+        <expression-string>saver = tf.train.Saver()         model_path = saver.save(sess, &quot;lib/tf_models/problem2/csci-599_sample.ckpt&quot;)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.nn.rnn_cell.LSTMCell(self.state_size,)(xemb[:, i, :], cur_state)</expression-string>
+        <expression-string>pickle.dump(self.sess.run(var_dict), open('www', 'w'))</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>xemb</expression-string>
+        <expression-string>pickle.dump(map(str, self.sess.run(var_dict)), open('www', 'w'))</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.nn.rnn_cell.LSTMCell(self.state_size,)(xemb[:, i, :], [cur_state])</expression-string>
+        <expression-string>map(str, self.sess.run(var_dict))</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.nn.rnn_cell.LSTMCell(self.state_size,)</expression-string>
+        <expression-string>self.sess.run(var_dict)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.nn.rnn_cell.LSTMCell()</expression-string>
+        <expression-string>pickle.dump(map(str, self.sess.run(var_dict)), open(filename, 'w'))</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.nn.rnn_cell.LSTMCell</expression-string>
+        <expression-string>pickle.dump(str(self.sess.run(var_dict)), open(filename, 'w'))</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.nn.rnn_cell</expression-string>
+        <expression-string>pickle.dump(self.sess.run(var_dict), open(filename, 'w'))</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>rnn_cell(xemb[:, i, :], cur_state)</expression-string>
+        <expression-string>tf.global_variables()</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -713,24 +718,25 @@ _, loss, accuracy, predict = self.sess.run(fetches, feed_dict=feed_dict)</expres
     </entry>
     <entry file="file://$PROJECT_DIR$/starter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="370" column="37" selection-start-line="370" selection-start-column="37" selection-end-line="370" selection-end-column="37" />
+        <state relative-caret-position="181">
+          <caret line="257" column="27" selection-start-line="257" selection-start-column="27" selection-end-line="257" selection-end-column="27" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#297#7234#0" />
-            <element signature="e#8790#9687#0" />
-            <element signature="e#9527#9752#0" />
-            <element signature="e#9842#10100#0" />
-            <element signature="e#9979#14996#0" />
-            <element signature="e#10187#10490#1" />
-            <element signature="e#11411#12100#0" />
-            <element signature="e#12855#12934#0" />
-            <element signature="e#13087#13702#0" />
-            <element signature="e#15160#16122#0" />
-            <element signature="e#17414#17853#0" />
-            <element signature="e#18081#18272#0" />
-            <element signature="e#17962#20818#0" />
-            <element signature="e#19914#21210#0" />
+            <element signature="e#309#7246#0" />
+            <element signature="e#496#2604#0" />
+            <element signature="e#2699#4459#0" />
+            <element signature="e#4532#7246#0" />
+            <element signature="e#7356#8662#0" />
+            <element signature="e#8782#9773#0" />
+            <element signature="e#10532#15161#0" />
+            <element signature="e#11269#11958#0" />
+            <element signature="e#12010#13021#0" />
+            <element signature="e#13048#13663#0" />
+            <element signature="e#15262#16224#0" />
+            <element signature="e#16310#17999#0" />
+            <element signature="e#18034#18498#0" />
+            <element signature="e#18556#18752#0" />
+            <element signature="e#21056#21968#0" />
           </folding>
         </state>
       </provider>
