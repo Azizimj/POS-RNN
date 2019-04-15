@@ -16,19 +16,18 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/starter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="91">
-              <caret line="241" column="12" selection-start-line="241" selection-start-column="12" selection-end-line="241" selection-end-column="50" />
+            <state relative-caret-position="240">
+              <caret line="344" column="92" selection-start-line="344" selection-start-column="92" selection-end-line="344" selection-end-column="92" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
                 <element signature="e#309#7246#0" />
                 <element signature="e#496#2604#0" />
                 <element signature="e#4532#7246#0" />
-                <element signature="e#7356#8769#0" />
+                <element signature="e#8884#10539#0" />
                 <element signature="e#9865#10090#0" />
                 <element signature="e#10180#10445#0" />
-                <element signature="e#10715#15370#0" />
-                <element signature="e#11269#11958#0" />
-                <element signature="e#12010#13021#0" />
+                <element signature="e#12682#13712#0" />
+                <element signature="e#13760#15328#0" />
                 <element signature="e#13048#13663#0" />
                 <element signature="e#15262#16224#0" />
                 <element signature="e#16310#17999#0" />
@@ -479,7 +478,14 @@
       <option name="project" value="LOCAL" />
       <updated>1555300676581</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="Sunday">
+      <created>1555303117475</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1555303117475</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TodoView">
@@ -493,14 +499,15 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12859304" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3289689" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49924356" weight="0.19148937" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.40589198" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924356" visible="true" weight="0.4729951" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.23567921" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3289689" />
@@ -528,22 +535,17 @@
       <breakpoints>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/starter.py</url>
-          <line>470</line>
+          <line>505</line>
           <option name="timeStamp" value="31" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/starter.py</url>
-          <line>446</line>
-          <option name="timeStamp" value="46" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/starter.py</url>
-          <line>257</line>
+          <line>260</line>
           <option name="timeStamp" value="51" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/starter.py</url>
-          <line>241</line>
+          <line>244</line>
           <option name="timeStamp" value="57" />
         </line-breakpoint>
       </breakpoints>
@@ -551,6 +553,59 @@
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateCodeFragment">
+      <expression>
+        <expression-string>tf.contrib.layers.fully_connected(stacked_states, self.num_tags, activation_fn=tf.nn.softmax,
+                                                   normalizer_fn=None, normalizer_params=None,
+                                                   weights_initializer=tf.contrib.layers.xavier_initializer(),
+                                                   weights_regularizer=None, biases_initializer=tf.zeros_initializer(),
+                                                   biases_regularizer=None, reuse=None, variables_collections=None,
+                                                   outputs_collections=None, trainable=True, scope=None)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>tf.nn.bidirectional_dynamic_rnn(lstm_fw_cell, lstm_bw_cell, xemb,
+                                                         dtype=tf.float32)[0]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>tf.contrib.layers.fully_connected(stacked_states[0], self.num_tags, activation_fn=tf.nn.softmax,
+                                                   normalizer_fn=None, normalizer_params=None,
+                                                   weights_initializer=tf.contrib.layers.xavier_initializer(),
+                                                   weights_regularizer=None, biases_initializer=tf.zeros_initializer(),
+                                                   biases_regularizer=None, reuse=None, variables_collections=None,
+                                                   outputs_collections=None, trainable=True, scope=None)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>tf.nn.bidirectional_dynamic_rnn(lstm_fw_cell, lstm_bw_cell, xemb,
+                                                         dtype=tf.float32)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>self.logits = tf.contrib.layers.fully_connected(tf.nn.dynamic_rnn(rnn_cell, inputs=xemb, dtype=tf.float32), self.num_tags, activation_fn=tf.nn.softmax,
+                                                   normalizer_fn=None, normalizer_params=None,
+                                                   weights_initializer=tf.contrib.layers.xavier_initializer(),
+                                                   weights_regularizer=None, biases_initializer=tf.zeros_initializer(),
+                                                   biases_regularizer=None, reuse=None, variables_collections=None,
+                                                   outputs_collections=None, trainable=True, scope=None)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>cur_state = rnn_cell(xemb[:, i, :], [cur_state])[0]  # shape (batch, state_size)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>for i in tf.range(self.lengths[1]):
+    cur_state = rnn_cell(xemb[:, i, :], [cur_state])[0]  # shape (batch, state_size)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>len_to_bin_f = lambda x: tf.concat([tf.broadcast_to(1, [1, x]),tf.broadcast_to(0, [1, self.max_length - x])], 1)
 tf.map_fn(len_to_bin_f, length_vector)</expression-string>
@@ -563,100 +618,50 @@ model_path = saver.save(self.sess, &quot;model.ckpt&quot;)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
-      <expression>
-        <expression-string>num_batch_ = length_vector.shape[0]
-self.lens_to_bin = numpy.zeros((num_batch_, self.max_length))
-for i in range(num_batch_):
-    self.lens_to_bin[i, :length_vector[i]] = 1
-self.lens_to_bin = tf.convert_to_tensor(self.lens_to_bin, dtype=tf.float32)</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>num_batch_ = len(length_vector)
-self.lens_to_bin = numpy.zeros((num_batch_, self.max_length))
-for i in range(num_batch_):
-    self.lens_to_bin[i, :length_vector[i]] = 1
-self.lens_to_bin = tf.convert_to_tensor(self.lens_to_bin, dtype=tf.float32)</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>a = self.sess.run(self.lengths, feed_dict)[0]
-b = numpy.zeros((32, 310))
-b[1, :a[1]] = 1</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>a = self.sess.run(self.lengths, feed_dict)[0]
-print(a)</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>a = self.sess.run(self.lengths, feed_dict)[0]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
-                         self.tags: tags_batch.astype(numpy.int64),
-                         self.b: numpy.repeat(lengths_batch.reshape(self.batch_size, 1).astype(float), self.max_length, axis=1), self.b: numpy.repeat(lengths_batch.reshape(self.batch_size, 1).astype(float), self.max_length, axis=1)}
-fetches = [self.train_op, self.loss, self.accuracy_op]
-_, loss, accuracy = self.sess.run(fetches, feed_dict=feed_dict)</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>tf.all_variables()</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
     </expressions>
     <expressions id="evaluateExpression">
       <expression>
-        <expression-string>tf.map_fn(len_to_bin_f, length_vector)</expression-string>
+        <expression-string>stacked_states</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.map_fn(len_to_bin_f, tf.transpose(length_vector))</expression-string>
+        <expression-string>stacked_states[0]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.reshape(tf.map_fn(len_to_bin_f, length_vector), [length_vector.shape[0],self.max_length])</expression-string>
+        <expression-string>tf.nn.dynamic_rnn(rnn_cell, inputs=xemb, dtype=tf.float32)[0]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.reshape(tf.map_fn(len_to_bin_f, length_vector), [length_vector.shape,self.max_length])</expression-string>
+        <expression-string>tf.keras.layers.RNN(rnn_cell, xemb, dtype=tf.float32)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.reshape(tf.map_fn(len_to_bin_f, length_vector), [2,self.max_length] )</expression-string>
+        <expression-string>tf.keras.layers.RNN(rnn_cell,xemb, dtype=tf.float32)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.reshape(tf.map_fn(len_to_bin_f, length_vector), [length_vector.shape[0], self.max_length])</expression-string>
+        <expression-string>tf.keras.layers.RNN(rnn_cell,xemb, dtype=tf.float32)[0]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.reshape(tf.map_fn(len_to_bin_f, length_vector), length_vector.shape[0])</expression-string>
+        <expression-string>tf.keras.layers.RNN(rnn_cell, inputs=xemb, dtype=tf.float32)[0]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>len_to_bin_f(2)</expression-string>
+        <expression-string>tf.contrib.layers.fully_connected(tf.nn.dynamic_rnn(rnn_cell, inputs=xemb, dtype=tf.float32)[0], self.num_tags)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>len_to_bin_f(length_vector[0])</expression-string>
+        <expression-string>tf.nn.dynamic_rnn(rnn_cell, inputs=xemb, dtype=tf.float32)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -756,21 +761,27 @@ _, loss, accuracy = self.sess.run(fetches, feed_dict=feed_dict)</expression-stri
         </state>
       </provider>
     </entry>
+    <entry file="file://E:/program/Anaconda/envs/tf_2/Lib/site-packages/tensorflow/python/ops/variable_scope.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="842" selection-start-line="842" selection-end-line="842" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/starter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="91">
-          <caret line="241" column="12" selection-start-line="241" selection-start-column="12" selection-end-line="241" selection-end-column="50" />
+        <state relative-caret-position="240">
+          <caret line="344" column="92" selection-start-line="344" selection-start-column="92" selection-end-line="344" selection-end-column="92" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
             <element signature="e#309#7246#0" />
             <element signature="e#496#2604#0" />
             <element signature="e#4532#7246#0" />
-            <element signature="e#7356#8769#0" />
+            <element signature="e#8884#10539#0" />
             <element signature="e#9865#10090#0" />
             <element signature="e#10180#10445#0" />
-            <element signature="e#10715#15370#0" />
-            <element signature="e#11269#11958#0" />
-            <element signature="e#12010#13021#0" />
+            <element signature="e#12682#13712#0" />
+            <element signature="e#13760#15328#0" />
             <element signature="e#13048#13663#0" />
             <element signature="e#15262#16224#0" />
             <element signature="e#16310#17999#0" />

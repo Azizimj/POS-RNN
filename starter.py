@@ -197,8 +197,10 @@ class SequenceModel(object):
         self.lengths = tf.placeholder(tf.int64, [None], 'lengths')
         self.tags = tf.placeholder(tf.int64, [None, self.max_length], 'tags')
         # I usually prefer int32 for space and speed, but the embedding_lookup function expects int64
-        self.cell_type = 'rnn'
+        # self.cell_type = 'rnn'
         # self.cell_type = 'lstm'
+        # self.cell_type = 'bidic_rnn'
+        self.cell_type = 'bidic_lstm'
         self.log_step = 10
         self.sess = tf.Session()
         self.size_embed = 10  # HYP
@@ -207,6 +209,7 @@ class SequenceModel(object):
                                      dtype=tf.float32, initializer=None, trainable=True)
         self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
         self.learn_rate = 1e-7 #HYP
+        self.dropout_keep_prob = 1
         self._accuracy()
 
 
@@ -287,35 +290,6 @@ class SequenceModel(object):
         # terms_batch = tf.placeholder(tf.int32, shape=[None, None]) #####
         xemb_ = tf.nn.embedding_lookup(params=self.embed, ids=self.x, partition_strategy='mod', name=None,
                                       validate_indices=True,max_norm=None)
-        if self.cell_type == 'rnn':
-            rnn_cell = tf.keras.layers.SimpleRNNCell(self.state_size, activation='tanh', use_bias=True,
-                                                     kernel_initializer='glorot_uniform',
-                                                     recurrent_initializer='orthogonal',recurrent_dropout=0.0,
-                                                     bias_initializer='zeros',kernel_regularizer=None,
-                                                     recurrent_regularizer=None,bias_regularizer=None,
-                                                     kernel_constraint=None,recurrent_constraint=None,
-                                                     bias_constraint=None, dropout=0.0)
-        elif self.cell_type == 'lstm':
-            rnn_cell = tf.keras.layers.LSTMCell(units=self.state_size, activation='tanh')
-            rnn_cell = tf.nn.rnn_cell.LSTMCell(self.state_size,)
-            # rnn_cell = tf.keras.layers.LSTMCell(units=self.state_size, activation='tanh',
-            #                                     recurrent_activation='hard_sigmoid', use_bias=True,
-            #                                     kernel_initializer='glorot_uniform',
-            #                                     recurrent_initializer='orthogonal', bias_initializer='zeros',
-            #                                     unit_forget_bias=True, kernel_regularizer=None,
-            #                                     recurrent_regularizer=None, bias_regularizer=None,
-            #                                     kernel_constraint=None, recurrent_constraint=None,
-            #                                     bias_constraint=None, dropout=0.0,
-            #                                     recurrent_dropout=0.0, implementation=1)
-        else:
-            # cell_fw = tf.contrib.rnn.LSTMCell(self.state_size, state_is_tuple=True)
-            # cell_bw = tf.contrib.rnn.LSTMCell(self.state_size, state_is_tuple=True)
-            # _, ((_, output_fw), (_, output_bw)) = tf.nn.bidirectional_dynamic_rnn(cell_fw,
-            #                                                                       cell_bw, char_embeddings,
-            #                                                                       sequence_length=word_lengths,
-            #                                                                       dtype=tf.float32)
-            print("Wrong cell type")
-
         states = []
         cur_state = tf.zeros(shape=[1, self.state_size])
 
@@ -326,11 +300,71 @@ class SequenceModel(object):
         xemb = xemb_
         # word_lengths = tf.reshape(self.word_lengths, shape=[-1])
 
-        # tmp_max_length = tf.reduce_max(self.lengths)
-        for i in range(self.max_length):
-            cur_state = rnn_cell(xemb[:, i, :], [cur_state])[0]  # shape (batch, state_size)
-            states.append(cur_state)
-        stacked_states = tf.stack(states, axis=1)  # Shape (batch, max_length, state_size)
+        if self.cell_type == 'rnn':
+            rnn_cell = tf.keras.layers.SimpleRNNCell(self.state_size, activation='tanh', use_bias=True,
+                                                     kernel_initializer='glorot_uniform',
+                                                     recurrent_initializer='orthogonal',recurrent_dropout=0.0,
+                                                     bias_initializer='zeros',kernel_regularizer=None,
+                                                     recurrent_regularizer=None,bias_regularizer=None,
+                                                     kernel_constraint=None,recurrent_constraint=None,
+                                                     bias_constraint=None, dropout=0.0)
+            # tmp_max_length = tf.reduce_max(self.lengths)
+            for i in range(self.max_length):
+                cur_state = rnn_cell(xemb[:, i, :], [cur_state])[0]  # shape (batch, state_size)
+                states.append(cur_state)
+            stacked_states = tf.stack(states, axis=1)  # Shape (batch, max_length, state_size)
+        elif self.cell_type == 'lstm':
+            # rnn_cell = tf.keras.layers.LSTMCell(units=self.state_size, activation='tanh')
+            # rnn_cell = tf.nn.rnn_cell.LSTMCell(self.state_size,)
+            # rnn_cell = tf.nn.rnn_cell.BasicLSTMCell(num_units=self.state_size,
+            #                                         forget_bias=1.0, state_is_tuple=True,
+            #                                         activation=None, reuse=None, name=None, dtype=None)
+            rnn_cell = tf.nn.rnn_cell.BasicLSTMCell(num_units=self.state_size, reuse=tf.AUTO_REUSE)
+            # rnn_cell = tf.keras.layers.LSTMCell(units=self.state_size, activation='tanh',
+            #                                     recurrent_activation='hard_sigmoid', use_bias=True,
+            #                                     kernel_initializer='glorot_uniform',
+            #                                     recurrent_initializer='orthogonal', bias_initializer='zeros',
+            #                                     unit_forget_bias=True, kernel_regularizer=None,
+            #                                     recurrent_regularizer=None, bias_regularizer=None,
+            #                                     kernel_constraint=None, recurrent_constraint=None,
+            #                                     bias_constraint=None, dropout=0.0,
+            #                                     recurrent_dropout=0.0, implementation=1)
+            rnn_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_cell, output_keep_prob=1)
+            stacked_states = tf.nn.dynamic_rnn(rnn_cell, inputs=xemb, dtype=tf.float32)[0]
+        elif self.cell_type == "bidic_rnn":
+            rnn_fw_cell = tf.nn.rnn_cell.BasicRNNCell(self.state_size, reuse=tf.AUTO_REUSE)  # forward direction cell
+            rnn_bw_cell = tf.nn.rnn_cell.BasicRNNCell(self.state_size, reuse=tf.AUTO_REUSE)  # backward direction cell
+            if self.dropout_keep_prob is not None:
+                rnn_fw_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_fw_cell, output_keep_prob=self.dropout_keep_prob)
+                rnn_bw_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_bw_cell, output_keep_prob=self.dropout_keep_prob)
+            # bidirectional_dynamic_rnn: input: [batch_size, max_time, input_size]
+            #                            output: A tuple (outputs, output_states)
+            #                                    where:outputs: A tuple (output_fw, output_bw) containing the forward and the backward rnn output `Tensor`.
+            stacked_states = tf.concat(tf.nn.bidirectional_dynamic_rnn(rnn_fw_cell, rnn_bw_cell, xemb,
+                                                                       dtype=tf.float32)[0], axis=2)  # [batch_size,sequence_length,hidden_size*2]
+        elif self.cell_type == 'bidic_lstm':
+            lstm_fw_cell = tf.nn.rnn_cell.BasicLSTMCell(self.state_size,reuse=tf.AUTO_REUSE)  # forward direction cell
+            lstm_bw_cell = tf.nn.rnn_cell.BasicLSTMCell(self.state_size,reuse=tf.AUTO_REUSE)  # backward direction cell
+            if self.dropout_keep_prob is not None:
+                lstm_fw_cell = tf.nn.rnn_cell.DropoutWrapper(lstm_fw_cell, output_keep_prob=self.dropout_keep_prob)
+                lstm_bw_cell = tf.nn.rnn_cell.DropoutWrapper(lstm_bw_cell, output_keep_prob=self.dropout_keep_prob)
+            # bidirectional_dynamic_rnn: input: [batch_size, max_time, input_size]
+            #                            output: A tuple (outputs, output_states)
+            #                                    where:outputs: A tuple (output_fw, output_bw) containing the forward and the backward rnn output `Tensor`.
+            stacked_states = tf.concat(tf.nn.bidirectional_dynamic_rnn(lstm_fw_cell, lstm_bw_cell, xemb,
+                                                         dtype=tf.float32)[0], axis=2) #[batch_size,sequence_length,hidden_size*2]
+
+
+        else:
+            # cell_fw = tf.contrib.rnn.LSTMCell(self.state_size, state_is_tuple=True)
+            # cell_bw = tf.contrib.rnn.LSTMCell(self.state_size, state_is_tuple=True)
+            # _, ((_, output_fw), (_, output_bw)) = tf.nn.bidirectional_dynamic_rnn(cell_fw,
+            #                                                                       cell_bw, char_embeddings,
+            #                                                                       sequence_length=word_lengths,
+            #                                                                       dtype=tf.float32)
+            stacked_states = 0
+            print("Wrong cell type")
+
         # logits: A Tensor of shape[batch_size, sequence_length, num_decoder_symbols] and dtype float.
         self.logits = tf.contrib.layers.fully_connected(stacked_states, self.num_tags, activation_fn=tf.nn.softmax,
                                                    normalizer_fn=None, normalizer_params=None,
