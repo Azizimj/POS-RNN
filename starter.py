@@ -232,6 +232,19 @@ class SequenceModel(object):
         #     for i in range(num_batch_):
         #         self.lens_to_bin[i, :length_vector[i]] = 1
         #     self.lens_to_bin = tf.convert_to_tensor(self.lens_to_bin, dtype=tf.float32)
+
+        # lengths is a placeholder.Your task here is to use it to make a binary matrix.For this, you might
+        # find the following useful:
+        # TensorFlow broadcasting[automatic, google for it].tf.expand_dims, tf.range, casting, and comparator
+        # operators. Or, you can do while -loops in TensorFlow, though if I was programming, I would look for
+        # a mathematical expression i.e.the functions above.
+        # len_to_bin_f = lambda x: tf.concat([tf.broadcast_to(1, [1, x]),tf.broadcast_to(0, [1, self.max_length - x])], 1)
+        # a = tf.map_fn(len_to_bin_f, length_vector)
+        # for i in tf.range(length_vector.shape[0]):
+        #     b[i] =
+
+
+
         return self.lens_to_bin
 
         # return tf.ones([tf.shape(length_vector), self.max_length], dtype=tf.float32)

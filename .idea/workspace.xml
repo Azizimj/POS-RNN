@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="490b93da-5ee1-4499-8ec0-b74e7ce1a9b6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/starter.py" beforeDir="false" afterPath="$PROJECT_DIR$/starter.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,16 +16,14 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/starter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="461" column="11" selection-start-line="461" selection-start-column="11" selection-end-line="461" selection-end-column="11" />
+            <state relative-caret-position="91">
+              <caret line="241" column="12" selection-start-line="241" selection-start-column="12" selection-end-line="241" selection-end-column="50" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
                 <element signature="e#309#7246#0" />
                 <element signature="e#496#2604#0" />
-                <element signature="e#2699#4459#0" />
                 <element signature="e#4532#7246#0" />
-                <element signature="e#7283#22207#0" />
-                <element signature="e#8782#9773#0" />
+                <element signature="e#7356#8769#0" />
                 <element signature="e#9865#10090#0" />
                 <element signature="e#10180#10445#0" />
                 <element signature="e#10715#15370#0" />
@@ -58,6 +57,10 @@
       <find>_accuracy</find>
       <find>is_build</find>
       <find>tf.Se</find>
+      <find>self.ta</find>
+      <find>self.lo</find>
+      <find>self.logit</find>
+      <find>self.tag</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -462,7 +465,21 @@
       <option name="project" value="LOCAL" />
       <updated>1555290346626</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="Sunday">
+      <created>1555298940269</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1555298940269</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Sunday">
+      <created>1555300676581</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1555300676581</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TodoView">
@@ -482,8 +499,8 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3289689" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924356" visible="true" weight="0.3207856" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.40589198" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49924356" weight="0.19148937" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.40589198" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3289689" />
@@ -511,29 +528,35 @@
       <breakpoints>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/starter.py</url>
-          <line>455</line>
+          <line>470</line>
           <option name="timeStamp" value="31" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/starter.py</url>
-          <line>226</line>
-          <option name="timeStamp" value="45" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/starter.py</url>
-          <line>431</line>
+          <line>446</line>
           <option name="timeStamp" value="46" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/starter.py</url>
-          <line>243</line>
+          <line>257</line>
           <option name="timeStamp" value="51" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/starter.py</url>
+          <line>241</line>
+          <option name="timeStamp" value="57" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateCodeFragment">
+      <expression>
+        <expression-string>len_to_bin_f = lambda x: tf.concat([tf.broadcast_to(1, [1, x]),tf.broadcast_to(0, [1, self.max_length - x])], 1)
+tf.map_fn(len_to_bin_f, length_vector)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>saver = tf.train.Saver()
 model_path = saver.save(self.sess, &quot;model.ckpt&quot;)</expression-string>
@@ -590,58 +613,50 @@ _, loss, accuracy = self.sess.run(fetches, feed_dict=feed_dict)</expression-stri
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
-      <expression>
-        <expression-string>def get_all_variables_with_name(var_name):
-    name = var_name + ':0'
-    return [var for var in tf.all_variables() if var.name.endswith(name)]
-get_all_variables_with_name('b')</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
     </expressions>
     <expressions id="evaluateExpression">
       <expression>
-        <expression-string>for i in tf.map_fn(lambda x:x, tf.range(tmp_max_length)):</expression-string>
+        <expression-string>tf.map_fn(len_to_bin_f, length_vector)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>[i for i in tf.map_fn(lambda x:x, tf.range(tmp_max_length))]</expression-string>
+        <expression-string>tf.map_fn(len_to_bin_f, tf.transpose(length_vector))</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.range(tmp_max_length)</expression-string>
+        <expression-string>tf.reshape(tf.map_fn(len_to_bin_f, length_vector), [length_vector.shape[0],self.max_length])</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.map_fn(lambda x:x, tf.range(tmp_max_length))</expression-string>
+        <expression-string>tf.reshape(tf.map_fn(len_to_bin_f, length_vector), [length_vector.shape,self.max_length])</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.map_fn(a[i], tf.range(tmp_max_length))</expression-string>
+        <expression-string>tf.reshape(tf.map_fn(len_to_bin_f, length_vector), [2,self.max_length] )</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.map_fn(i, tf.range(tmp_max_length))</expression-string>
+        <expression-string>tf.reshape(tf.map_fn(len_to_bin_f, length_vector), [length_vector.shape[0], self.max_length])</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>[i for i in tf.range(tmp_max_length)]</expression-string>
+        <expression-string>tf.reshape(tf.map_fn(len_to_bin_f, length_vector), length_vector.shape[0])</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tmp_max_length</expression-string>
+        <expression-string>len_to_bin_f(2)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>saver = tf.train.Saver()         model_path = saver.save(sess, &quot;lib/tf_models/problem2/csci-599_sample.ckpt&quot;)</expression-string>
+        <expression-string>len_to_bin_f(length_vector[0])</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -743,16 +758,14 @@ get_all_variables_with_name('b')</expression-string>
     </entry>
     <entry file="file://$PROJECT_DIR$/starter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="461" column="11" selection-start-line="461" selection-start-column="11" selection-end-line="461" selection-end-column="11" />
+        <state relative-caret-position="91">
+          <caret line="241" column="12" selection-start-line="241" selection-start-column="12" selection-end-line="241" selection-end-column="50" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
             <element signature="e#309#7246#0" />
             <element signature="e#496#2604#0" />
-            <element signature="e#2699#4459#0" />
             <element signature="e#4532#7246#0" />
-            <element signature="e#7283#22207#0" />
-            <element signature="e#8782#9773#0" />
+            <element signature="e#7356#8769#0" />
             <element signature="e#9865#10090#0" />
             <element signature="e#10180#10445#0" />
             <element signature="e#10715#15370#0" />
