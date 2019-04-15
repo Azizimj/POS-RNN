@@ -193,9 +193,10 @@ class SequenceModel(object):
         self.max_length = max_length
         self.num_terms = num_terms
         self.num_tags = num_tags
-        self.x = tf.placeholder(tf.int64, [None, self.max_length], 'X')
-        self.lengths = tf.placeholder(tf.int32, [None], 'lengths')
+        self.x = tf.placeholder(tf.int32, [None, self.max_length], 'X')
+        self.lengths = tf.placeholder(tf.int64, [None], 'lengths')
         self.tags = tf.placeholder(tf.int64, [None, self.max_length], 'tags')
+        # I usually prefer int32 for space and speed, but the embedding_lookup function expects int64
         self.cell_type = 'rnn'
         # self.cell_type = 'lstm'
         self.log_step = 10
@@ -368,6 +369,7 @@ class SequenceModel(object):
         self.loss = tf.contrib.seq2seq.sequence_loss(logits=self.logits, targets=self.tags,
                                                      weights=self.lens_to_bin, average_across_timesteps=True,
                                                      average_across_batch=True, softmax_loss_function=None, name=None)
+        tf.losses.add_loss(self.loss, loss_collection=tf.GraphKeys.LOSSES)
         # g_s = tf.Variable(0, trainable=False)
         # l_r = tf.train.exponential_decay(self.learn_rate, g_s, 500, .96, staircase=True)
         # l_r = self.learn_rate
@@ -375,9 +377,9 @@ class SequenceModel(object):
         opt = tf.train.AdamOptimizer()  # HYP
         # opt = tf.train.AdamOptimizer(learning_rate=0.001,beta1=0.9,beta2=0.999,epsilon=1e-08,use_locking=False,name='Adam')
         self.train_op = opt.minimize(self.loss)
-        # print(tf.losses.get_total_loss(add_regularization_losses=True,
-        #                                name='total_loss'))  # should return a valid tensor
-        # print(tf.losses.get_losses())  # should return a non-empty list
+        print('tf.losses.get_total_loss', tf.losses.get_total_loss(add_regularization_losses=True,
+                                       name='total_loss'))  # should return a valid tensor
+        print('tf.losses.get_losses', tf.losses.get_losses())  # should return a non-empty list
         return
 
     def _accuracy(self):
