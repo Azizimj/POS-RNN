@@ -198,10 +198,10 @@ class SequenceModel(object):
         self.tags = tf.placeholder(tf.int64, [None, self.max_length], 'tags')
         self.cell_type = 'rnn'
         # self.cell_type = 'lstm'
-        self.log_step = 50
+        self.log_step = 10
         self.sess = tf.Session()
-        self.size_embed = 40  # HYP
-        self.state_size = 50  # HYP
+        self.size_embed = 10  # HYP
+        self.state_size = 10  # HYP
         self.embed = tf.get_variable('embed', shape=[self.num_terms, self.size_embed],
                                      dtype=tf.float32, initializer=None, trainable=True)
         self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
@@ -312,7 +312,7 @@ class SequenceModel(object):
         xemb = xemb_
         # word_lengths = tf.reshape(self.word_lengths, shape=[-1])
 
-
+        # tmp_max_length = tf.reduce_max(self.lengths)
         for i in range(self.max_length):
             cur_state = rnn_cell(xemb[:, i, :], [cur_state])[0]  # shape (batch, state_size)
             states.append(cur_state)
@@ -395,7 +395,7 @@ class SequenceModel(object):
             b_[i, :length_vector[i]] = 1
         return b_.astype(float)
 
-    def train_epoch(self, terms, tags, lengths, batch_size=100, learn_rate=1e-7):
+    def train_epoch(self, terms, tags, lengths, batch_size=10, learn_rate=1e-7):
         #HYP
         """Performs updates on the model given training training data.
 
