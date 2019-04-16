@@ -197,9 +197,9 @@ class SequenceModel(object):
         self.lengths = tf.placeholder(tf.int64, [None], 'lengths')
         self.tags = tf.placeholder(tf.int64, [None, self.max_length], 'tags')
         # I usually prefer int32 for space and speed, but the embedding_lookup function expects int64
-        # self.cell_type = 'rnn'
+        self.cell_type = 'rnn'
         # self.cell_type = 'lstm'
-        self.cell_type = 'bidic_rnn'
+        # self.cell_type = 'bidic_rnn'
         # self.cell_type = 'bidic_lstm'
         self.log_step = 10
         self.sess = tf.Session()
@@ -291,7 +291,7 @@ class SequenceModel(object):
         xemb_ = tf.nn.embedding_lookup(params=self.embed, ids=self.x, partition_strategy='mod', name=None,
                                       validate_indices=True, max_norm=None)
         states = []
-        cur_state = tf.zeros(shape=[1, self.state_size])
+        cur_state = tf.zeros(shape=[1, self.num_tags])
 
         # 2. put the time dimension on axis=1 for dynamic_rnn
         s = tf.shape(xemb_)  # store old shape
@@ -301,7 +301,7 @@ class SequenceModel(object):
         # word_lengths = tf.reshape(self.word_lengths, shape=[-1])
 
         if self.cell_type == 'rnn':
-            rnn_cell = tf.keras.layers.SimpleRNNCell(self.state_size, activation='tanh', use_bias=True,
+            rnn_cell = tf.keras.layers.SimpleRNNCell(self.num_tags, activation='tanh', use_bias=True,
                                                      kernel_initializer='glorot_uniform',
                                                      recurrent_initializer='orthogonal',recurrent_dropout=0.0,
                                                      bias_initializer='zeros',kernel_regularizer=None,
@@ -366,12 +366,13 @@ class SequenceModel(object):
             print("Wrong cell type")
 
         # logits: A Tensor of shape[batch_size, sequence_length, num_decoder_symbols] and dtype float.
-        self.logits = tf.contrib.layers.fully_connected(stacked_states, self.num_tags, activation_fn=tf.nn.softmax,
-                                                   normalizer_fn=None, normalizer_params=None,
-                                                   weights_initializer=tf.contrib.layers.xavier_initializer(),
-                                                   weights_regularizer=None, biases_initializer=tf.zeros_initializer(),
-                                                   biases_regularizer=None, reuse=None, variables_collections=None,
-                                                   outputs_collections=None, trainable=True, scope=None)
+        # self.logits = tf.contrib.layers.fully_connected(stacked_states, self.num_tags, activation_fn=tf.nn.softmax,
+        #                                            normalizer_fn=None, normalizer_params=None,
+        #                                            weights_initializer=tf.contrib.layers.xavier_initializer(),
+        #                                            weights_regularizer=None, biases_initializer=tf.zeros_initializer(),
+        #                                            biases_regularizer=None, reuse=None, variables_collections=None,
+        #                                            outputs_collections=None, trainable=True, scope=None)
+        self.logits = stacked_states
         return self.logits
 
     # TODO(student): You must implement this.
@@ -444,7 +445,7 @@ class SequenceModel(object):
             b_[i, :length_vector[i]] = 1
         return b_.astype(float)
 
-    def train_epoch(self, terms, tags, lengths, batch_size=15, learn_rate=1e-7):
+    def train_epoch(self, terms, tags, lengths, batch_size=5, learn_rate=1e-7):
         #HYP
         """Performs updates on the model given training training data.
 
@@ -476,8 +477,8 @@ class SequenceModel(object):
             feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
                          self.tags: tags_batch.astype(numpy.int64),
                          self.b: b_}
-            fetches = [self.train_op, self.loss, self.accuracy_op, self.correct, self.lengths]
-            _, loss, accuracy, correct, lens = self.sess.run(fetches, feed_dict=feed_dict)
+            fetches = [self.train_op, self.loss, self.accuracy_op, self.correct, self.lengths, self.logits]
+            _, loss, accuracy, correct, lens, logits_ = self.sess.run(fetches, feed_dict=feed_dict)
             losses.append(loss)
             accuracies.append(accuracy)
 
@@ -520,6 +521,7 @@ def main():
     test_filename = train_filename.replace('_train_', '_dev_')
     term_index, tag_index, train_data, test_data = reader.ReadData(train_filename=train_filename, test_filename=test_filename)
     (train_terms, train_tags, train_lengths) = train_data
+    (train_terms, train_tags, train_lengths) = (train_terms[:5], train_tags[:5], train_lengths[:5])
     (test_terms, test_tags, test_lengths) = test_data
 
     model = SequenceModel(train_tags.shape[1], len(term_index), len(tag_index))
