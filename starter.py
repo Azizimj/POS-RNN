@@ -428,6 +428,7 @@ class SequenceModel(object):
         print('tf.losses.get_total_loss', tf.losses.get_total_loss(add_regularization_losses=True,
                                        name='total_loss'))  # should return a valid tensor
         print('tf.losses.get_losses', tf.losses.get_losses())  # should return a non-empty list
+        self.sess.run(tf.global_variables_initializer())
         return
 
     def _accuracy(self):
@@ -467,9 +468,8 @@ class SequenceModel(object):
         losses = []
         accuracies = []
         num_training = len(terms)
-        self.sess.run(tf.global_variables_initializer())
-        for i in range(num_training // batch_size):
-        # for i in range(1):
+        # for i in range(num_training // batch_size):
+        for i in range(1):
             x_batch = terms[i * batch_size:(i + 1) * batch_size][:]
             tags_batch = tags[i * batch_size:(i + 1) * batch_size]
             lengths_batch = lengths[i * batch_size:(i + 1) * batch_size]
@@ -521,7 +521,7 @@ def main():
     test_filename = train_filename.replace('_train_', '_dev_')
     term_index, tag_index, train_data, test_data = reader.ReadData(train_filename=train_filename, test_filename=test_filename)
     (train_terms, train_tags, train_lengths) = train_data
-    (train_terms, train_tags, train_lengths) = (train_terms[:5], train_tags[:5], train_lengths[:5])
+    (train_terms, train_tags, train_lengths) = (train_terms[:5], train_tags[:5], train_lengths[:5]) #REMOVE
     (test_terms, test_tags, test_lengths) = test_data
 
     model = SequenceModel(train_tags.shape[1], len(term_index), len(tag_index))
@@ -531,6 +531,8 @@ def main():
     K = 500
     epoch = 0
     print('-' * 5 + '  Start training  ' + '-' * 5)
+    # sess = model.sess
+    # sess.run(tf.global_variables_initializer())
     while time.time()-time0 <= K:
         print("train epoch {}".format(epoch+1))
         model.train_epoch(train_terms, train_tags, train_lengths)
