@@ -16,13 +16,24 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/starter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="302">
-              <caret line="272" column="35" lean-forward="true" selection-start-line="272" selection-start-column="35" selection-end-line="272" selection-end-column="35" />
+            <state relative-caret-position="29">
+              <caret line="120" column="51" selection-start-line="120" selection-start-column="51" selection-end-line="120" selection-end-column="51" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
-                <element signature="e#309#7246#0" />
                 <element signature="e#496#2604#0" />
+                <element signature="e#2699#4459#0" />
                 <element signature="e#4532#7246#0" />
+                <element signature="e#8998#10668#0" />
+                <element signature="e#10760#11079#0" />
+                <element signature="e#11169#11523#0" />
+                <element signature="e#13867#15435#0" />
+                <element signature="e#15492#16566#0" />
+                <element signature="e#16624#17690#0" />
+                <element signature="e#17719#18365#0" />
+                <element signature="e#19260#20222#0" />
+                <element signature="e#20308#22153#0" />
+                <element signature="e#22710#22906#0" />
+                <element signature="e#25240#26152#0" />
               </folding>
             </state>
           </provider>
@@ -54,11 +65,11 @@
       <find>self.targ</find>
       <find>_accuracy</find>
       <find>is_build</find>
-      <find>tf.Se</find>
       <find>self.ta</find>
       <find>self.lo</find>
       <find>self.logit</find>
       <find>self.tag</find>
+      <find>tf.Se</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -505,7 +516,21 @@
       <option name="project" value="LOCAL" />
       <updated>1555377761265</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="Monday">
+      <created>1555382955438</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1555382955438</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Monday">
+      <created>1555454243168</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1555454243168</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TodoView">
@@ -526,8 +551,8 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3289689" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924356" visible="true" weight="0.20458265" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.65466446" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49924356" weight="0.40589198" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.3797054" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3289689" />
@@ -556,7 +581,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/starter.py</url>
-          <line>481</line>
+          <line>477</line>
           <option name="timeStamp" value="70" />
         </line-breakpoint>
       </breakpoints>
@@ -632,6 +657,36 @@ tf.map_fn(len_to_bin_f, length_vector)</expression-string>
     </expressions>
     <expressions id="evaluateExpression">
       <expression>
+        <expression-string>sum(logits_[0][0])</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>logits_[0][0]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>logits_[0]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>logits_</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>sess.run(tf.global_variables_initializer())</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>tf.global_variables()</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
         <expression-string>(train_terms, train_tags, train_lengths) = (train_terms[:5], train_tags[:5], train_lengths[:5])</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
@@ -642,37 +697,7 @@ tf.map_fn(len_to_bin_f, length_vector)</expression-string>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>logits_</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
         <expression-string>b_</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>self.lens_to_bin</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>loss</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>tf.trainable_variables()</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>tf.trainable_variables</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>tf.global_variables</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -781,13 +806,24 @@ tf.map_fn(len_to_bin_f, length_vector)</expression-string>
     </entry>
     <entry file="file://$PROJECT_DIR$/starter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="302">
-          <caret line="272" column="35" lean-forward="true" selection-start-line="272" selection-start-column="35" selection-end-line="272" selection-end-column="35" />
+        <state relative-caret-position="29">
+          <caret line="120" column="51" selection-start-line="120" selection-start-column="51" selection-end-line="120" selection-end-column="51" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#309#7246#0" />
             <element signature="e#496#2604#0" />
+            <element signature="e#2699#4459#0" />
             <element signature="e#4532#7246#0" />
+            <element signature="e#8998#10668#0" />
+            <element signature="e#10760#11079#0" />
+            <element signature="e#11169#11523#0" />
+            <element signature="e#13867#15435#0" />
+            <element signature="e#15492#16566#0" />
+            <element signature="e#16624#17690#0" />
+            <element signature="e#17719#18365#0" />
+            <element signature="e#19260#20222#0" />
+            <element signature="e#20308#22153#0" />
+            <element signature="e#22710#22906#0" />
+            <element signature="e#25240#26152#0" />
           </folding>
         </state>
       </provider>

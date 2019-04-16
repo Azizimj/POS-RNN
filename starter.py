@@ -147,8 +147,6 @@ class DatasetReader():
 
     term_index = {'__oov__': 0}  # Out-of-vocab is term 0.
     tag_index = {}
-    # self.term_index = {'__oov__': 0}  # Out-of-vocab is term 0.
-    # self.tag_index = {}
     
     train_data = DatasetReader.ReadFile(filename=train_filename, term_index=term_index, tag_index=tag_index)
     train_terms, train_tags, train_lengths = DatasetReader.BuildMatrices(dataset=train_data)
@@ -208,7 +206,7 @@ class SequenceModel(object):
         self.embed = tf.get_variable('embed', shape=[self.num_terms, self.size_embed],
                                      dtype=tf.float32, initializer=None, trainable=True)
         self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
-        self.learn_rate = 1e-7 #HYP
+        self.learn_rate = 1e-2 #HYP
         self.dropout_keep_prob = .5
         self._accuracy()
 
@@ -301,12 +299,12 @@ class SequenceModel(object):
         # word_lengths = tf.reshape(self.word_lengths, shape=[-1])
 
         if self.cell_type == 'rnn':
-            rnn_cell = tf.keras.layers.SimpleRNNCell(self.num_tags, activation='tanh', use_bias=True,
+            rnn_cell = tf.keras.layers.SimpleRNNCell(self.num_tags, activation='softmax', use_bias=True,
                                                      kernel_initializer='glorot_uniform',
-                                                     recurrent_initializer='orthogonal',recurrent_dropout=0.0,
-                                                     bias_initializer='zeros',kernel_regularizer=None,
-                                                     recurrent_regularizer=None,bias_regularizer=None,
-                                                     kernel_constraint=None,recurrent_constraint=None,
+                                                     recurrent_initializer='orthogonal', recurrent_dropout=0.0,
+                                                     bias_initializer='zeros', kernel_regularizer=None,
+                                                     recurrent_regularizer=None, bias_regularizer=None,
+                                                     kernel_constraint=None, recurrent_constraint=None,
                                                      bias_constraint=None, dropout=0.0)
             # tmp_max_length = tf.reduce_max(self.lengths)
             for i in range(self.max_length):
@@ -353,8 +351,6 @@ class SequenceModel(object):
             #                                    where:outputs: A tuple (output_fw, output_bw) containing the forward and the backward rnn output `Tensor`.
             stacked_states = tf.concat(tf.nn.bidirectional_dynamic_rnn(lstm_fw_cell, lstm_bw_cell, xemb,
                                                          dtype=tf.float32)[0], axis=2) #[batch_size,sequence_length,hidden_size*2]
-
-
         else:
             # cell_fw = tf.contrib.rnn.LSTMCell(self.state_size, state_is_tuple=True)
             # cell_bw = tf.contrib.rnn.LSTMCell(self.state_size, state_is_tuple=True)
@@ -477,8 +473,8 @@ class SequenceModel(object):
             feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
                          self.tags: tags_batch.astype(numpy.int64),
                          self.b: b_}
-            fetches = [self.train_op, self.loss, self.accuracy_op, self.correct, self.lengths, self.logits]
-            _, loss, accuracy, correct, lens, logits_ = self.sess.run(fetches, feed_dict=feed_dict)
+            fetches = [self.train_op, self.loss, self.accuracy_op, self.correct, self.lengths, self.logits, self.predict]
+            _, loss, accuracy, correct, lens, logits_, predicts = self.sess.run(fetches, feed_dict=feed_dict)
             losses.append(loss)
             accuracies.append(accuracy)
 
