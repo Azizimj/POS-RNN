@@ -147,6 +147,8 @@ class DatasetReader():
 
     term_index = {'__oov__': 0}  # Out-of-vocab is term 0.
     tag_index = {}
+    # self.term_index = {'__oov__': 0}  # Out-of-vocab is term 0.
+    # self.tag_index = {}
     
     train_data = DatasetReader.ReadFile(filename=train_filename, term_index=term_index, tag_index=tag_index)
     train_terms, train_tags, train_lengths = DatasetReader.BuildMatrices(dataset=train_data)
@@ -200,15 +202,14 @@ class SequenceModel(object):
         # self.cell_type = 'bidic_rnn'
         # self.cell_type = 'bidic_lstm'
         self.log_step = 10
+        # tf.reset_default_graph()
         self.sess = tf.Session()
-        self.size_embed = 10  # HYP
+        self.size_embed = 40  # HYP
         self.state_size = 6  # HYP
-        self.embed = tf.get_variable('embed', shape=[self.num_terms, self.size_embed],
-                                     dtype=tf.float32, initializer=None, trainable=True)
         self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
         self.learn_rate = 1e-2 #HYP
         self.dropout_keep_prob = .5
-        self._accuracy()
+        # self._accuracy()
 
 
     # TODO(student): You must implement this.
@@ -253,7 +254,7 @@ class SequenceModel(object):
     # TODO(student): You must implement this.
     def save_model(self, filename):
         """Saves model to a file."""
-        # import pickle
+        import pickle
         # sess = tf.Session()
         # var_dict = {v.name: v for v in tf.global_variables()}
         # pickle.dump(self.sess.run(var_dict), open(filename, 'w'))
@@ -265,10 +266,18 @@ class SequenceModel(object):
     def load_model(self, filename):
         """Loads model from a file."""
         # import pickle
+        # tf.reset_default_graph()
         self.sess = tf.Session()
         # var_values = pickle.load(open(filename))
         # assign_ops = [v.assign(var_values[v.name]) for v in tf.global_variables()]
         # self.sess.run(assign_ops)
+        tf.global_variables_initializer()
+        variables = tf.global_variables()
+        param_dict = {}
+        for var in variables:
+            var_name = var.name[:-2]
+            print('Loading {} from checkpoint. Name: {}'.format(var.name, var_name))
+            param_dict[var_name] = var
         saver = tf.train.Saver()
         saver.restore(self.sess, "model.ckpt")
         return
@@ -284,91 +293,98 @@ class SequenceModel(object):
           - You might use tf.reshape, tf.cast, and/or tensor broadcasting.
         """
         # TODO(student): make logits an RNN on x.
-        self.lens_to_bin = self.lengths_vector_to_binary_matrix(self.lengths)
-        # terms_batch = tf.placeholder(tf.int32, shape=[None, None]) #####
-        xemb_ = tf.nn.embedding_lookup(params=self.embed, ids=self.x, partition_strategy='mod', name=None,
-                                      validate_indices=True, max_norm=None)
-        states = []
-        cur_state = tf.zeros(shape=[1, self.num_tags])
+        # tf.reset_default_graph()
+        # if 'embed:0' not in [v.name for v in tf.global_variables()]:
+        with tf.variable_scope("model", reuse=tf.AUTO_REUSE):
+            self.embed = tf.get_variable('embed', shape=[self.num_terms, self.size_embed],
+                                         dtype=tf.float32, initializer=None, trainable=True)
 
-        # 2. put the time dimension on axis=1 for dynamic_rnn
-        s = tf.shape(xemb_)  # store old shape
-        # shape = (batch x sentence, word, dim of char embeddings)
-        # xemb = tf.reshape(xemb_, shape=[-1, s[-2], s[-1]])  # (batch_size, timesteps, features)
-        xemb = xemb_
-        # word_lengths = tf.reshape(self.word_lengths, shape=[-1])
+            self.lens_to_bin = self.lengths_vector_to_binary_matrix(self.lengths)
+            # terms_batch = tf.placeholder(tf.int32, shape=[None, None]) #####
+            xemb_ = tf.nn.embedding_lookup(params=self.embed, ids=self.x, partition_strategy='mod', name=None,
+                                          validate_indices=True, max_norm=None)
+            states = []
+            cur_state = tf.zeros(shape=[1, self.num_tags])
 
-        if self.cell_type == 'rnn':
-            rnn_cell = tf.keras.layers.SimpleRNNCell(self.num_tags, activation='softmax', use_bias=True,
-                                                     kernel_initializer='glorot_uniform',
-                                                     recurrent_initializer='orthogonal', recurrent_dropout=0.0,
-                                                     bias_initializer='zeros', kernel_regularizer=None,
-                                                     recurrent_regularizer=None, bias_regularizer=None,
-                                                     kernel_constraint=None, recurrent_constraint=None,
-                                                     bias_constraint=None, dropout=0.0)
-            # tmp_max_length = tf.reduce_max(self.lengths)
-            for i in range(self.max_length):
-                cur_state = rnn_cell(xemb[:, i, :], [cur_state])[0]  # shape (batch, state_size)
-                states.append(cur_state)
-            stacked_states = tf.stack(states, axis=1)  # Shape (batch, max_length, state_size)
-        elif self.cell_type == 'lstm':
-            # rnn_cell = tf.keras.layers.LSTMCell(units=self.state_size, activation='tanh')
-            # rnn_cell = tf.nn.rnn_cell.LSTMCell(self.state_size,)
-            # rnn_cell = tf.nn.rnn_cell.BasicLSTMCell(num_units=self.state_size,
-            #                                         forget_bias=1.0, state_is_tuple=True,
-            #                                         activation=None, reuse=None, name=None, dtype=None)
-            rnn_cell = tf.nn.rnn_cell.BasicLSTMCell(num_units=self.state_size, reuse=tf.AUTO_REUSE)
-            # rnn_cell = tf.keras.layers.LSTMCell(units=self.state_size, activation='tanh',
-            #                                     recurrent_activation='hard_sigmoid', use_bias=True,
-            #                                     kernel_initializer='glorot_uniform',
-            #                                     recurrent_initializer='orthogonal', bias_initializer='zeros',
-            #                                     unit_forget_bias=True, kernel_regularizer=None,
-            #                                     recurrent_regularizer=None, bias_regularizer=None,
-            #                                     kernel_constraint=None, recurrent_constraint=None,
-            #                                     bias_constraint=None, dropout=0.0,
-            #                                     recurrent_dropout=0.0, implementation=1)
-            rnn_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_cell, output_keep_prob=1)
-            stacked_states = tf.nn.dynamic_rnn(rnn_cell, inputs=xemb, dtype=tf.float32)[0]
-        elif self.cell_type == "bidic_rnn":
-            rnn_fw_cell = tf.nn.rnn_cell.BasicRNNCell(self.state_size, reuse=tf.AUTO_REUSE)  # forward direction cell
-            rnn_bw_cell = tf.nn.rnn_cell.BasicRNNCell(self.state_size, reuse=tf.AUTO_REUSE)  # backward direction cell
-            if self.dropout_keep_prob is not None:
-                rnn_fw_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_fw_cell, output_keep_prob=self.dropout_keep_prob)
-                rnn_bw_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_bw_cell, output_keep_prob=self.dropout_keep_prob)
-            # bidirectional_dynamic_rnn: input: [batch_size, max_time, input_size]
-            #                            output: A tuple (outputs, output_states)
-            #                                    where:outputs: A tuple (output_fw, output_bw) containing the forward and the backward rnn output `Tensor`.
-            stacked_states = tf.concat(tf.nn.bidirectional_dynamic_rnn(rnn_fw_cell, rnn_bw_cell, xemb,
-                                                                       dtype=tf.float32)[0], axis=2)  # [batch_size,sequence_length,hidden_size*2]
-        elif self.cell_type == 'bidic_lstm':
-            lstm_fw_cell = tf.nn.rnn_cell.BasicLSTMCell(self.state_size,reuse=tf.AUTO_REUSE)  # forward direction cell
-            lstm_bw_cell = tf.nn.rnn_cell.BasicLSTMCell(self.state_size,reuse=tf.AUTO_REUSE)  # backward direction cell
-            if self.dropout_keep_prob is not None:
-                lstm_fw_cell = tf.nn.rnn_cell.DropoutWrapper(lstm_fw_cell, output_keep_prob=self.dropout_keep_prob)
-                lstm_bw_cell = tf.nn.rnn_cell.DropoutWrapper(lstm_bw_cell, output_keep_prob=self.dropout_keep_prob)
-            # bidirectional_dynamic_rnn: input: [batch_size, max_time, input_size]
-            #                            output: A tuple (outputs, output_states)
-            #                                    where:outputs: A tuple (output_fw, output_bw) containing the forward and the backward rnn output `Tensor`.
-            stacked_states = tf.concat(tf.nn.bidirectional_dynamic_rnn(lstm_fw_cell, lstm_bw_cell, xemb,
-                                                         dtype=tf.float32)[0], axis=2) #[batch_size,sequence_length,hidden_size*2]
-        else:
-            # cell_fw = tf.contrib.rnn.LSTMCell(self.state_size, state_is_tuple=True)
-            # cell_bw = tf.contrib.rnn.LSTMCell(self.state_size, state_is_tuple=True)
-            # _, ((_, output_fw), (_, output_bw)) = tf.nn.bidirectional_dynamic_rnn(cell_fw,
-            #                                                                       cell_bw, char_embeddings,
-            #                                                                       sequence_length=word_lengths,
-            #                                                                       dtype=tf.float32)
-            stacked_states = 0
-            print("Wrong cell type")
+            # 2. put the time dimension on axis=1 for dynamic_rnn
+            s = tf.shape(xemb_)  # store old shape
+            # shape = (batch x sentence, word, dim of char embeddings)
+            # xemb = tf.reshape(xemb_, shape=[-1, s[-2], s[-1]])  # (batch_size, timesteps, features)
+            xemb = xemb_
+            # word_lengths = tf.reshape(self.word_lengths, shape=[-1])
 
-        # logits: A Tensor of shape[batch_size, sequence_length, num_decoder_symbols] and dtype float.
-        # self.logits = tf.contrib.layers.fully_connected(stacked_states, self.num_tags, activation_fn=tf.nn.softmax,
-        #                                            normalizer_fn=None, normalizer_params=None,
-        #                                            weights_initializer=tf.contrib.layers.xavier_initializer(),
-        #                                            weights_regularizer=None, biases_initializer=tf.zeros_initializer(),
-        #                                            biases_regularizer=None, reuse=None, variables_collections=None,
-        #                                            outputs_collections=None, trainable=True, scope=None)
-        self.logits = stacked_states
+            if self.cell_type == 'rnn':
+                rnn_cell = tf.keras.layers.SimpleRNNCell(self.num_tags, activation='tanh', use_bias=True,
+                                                         kernel_initializer='glorot_uniform',
+                                                         recurrent_initializer='orthogonal',recurrent_dropout=0.0,
+                                                         bias_initializer='zeros',kernel_regularizer=None,
+                                                         recurrent_regularizer=None,bias_regularizer=None,
+                                                         kernel_constraint=None,recurrent_constraint=None,
+                                                         bias_constraint=None, dropout=0.0)
+                # tmp_max_length = tf.reduce_max(self.lengths)
+                for i in range(self.max_length):
+                    cur_state = rnn_cell(xemb[:, i, :], [cur_state])[0]  # shape (batch, state_size)
+                    states.append(cur_state)
+                stacked_states = tf.stack(states, axis=1)  # Shape (batch, max_length, state_size)
+            elif self.cell_type == 'lstm':
+                # rnn_cell = tf.keras.layers.LSTMCell(units=self.state_size, activation='tanh')
+                # rnn_cell = tf.nn.rnn_cell.LSTMCell(self.state_size,)
+                # rnn_cell = tf.nn.rnn_cell.BasicLSTMCell(num_units=self.state_size,
+                #                                         forget_bias=1.0, state_is_tuple=True,
+                #                                         activation=None, reuse=None, name=None, dtype=None)
+                rnn_cell = tf.nn.rnn_cell.BasicLSTMCell(num_units=self.state_size, reuse=tf.AUTO_REUSE)
+                # rnn_cell = tf.keras.layers.LSTMCell(units=self.state_size, activation='tanh',
+                #                                     recurrent_activation='hard_sigmoid', use_bias=True,
+                #                                     kernel_initializer='glorot_uniform',
+                #                                     recurrent_initializer='orthogonal', bias_initializer='zeros',
+                #                                     unit_forget_bias=True, kernel_regularizer=None,
+                #                                     recurrent_regularizer=None, bias_regularizer=None,
+                #                                     kernel_constraint=None, recurrent_constraint=None,
+                #                                     bias_constraint=None, dropout=0.0,
+                #                                     recurrent_dropout=0.0, implementation=1)
+                rnn_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_cell, output_keep_prob=1)
+                stacked_states = tf.nn.dynamic_rnn(rnn_cell, inputs=xemb, dtype=tf.float32)[0]
+            elif self.cell_type == "bidic_rnn":
+                rnn_fw_cell = tf.nn.rnn_cell.BasicRNNCell(self.state_size, reuse=tf.AUTO_REUSE)  # forward direction cell
+                rnn_bw_cell = tf.nn.rnn_cell.BasicRNNCell(self.state_size, reuse=tf.AUTO_REUSE)  # backward direction cell
+                if self.dropout_keep_prob is not None:
+                    rnn_fw_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_fw_cell, output_keep_prob=self.dropout_keep_prob)
+                    rnn_bw_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_bw_cell, output_keep_prob=self.dropout_keep_prob)
+                # bidirectional_dynamic_rnn: input: [batch_size, max_time, input_size]
+                #                            output: A tuple (outputs, output_states)
+                #                                    where:outputs: A tuple (output_fw, output_bw) containing the forward and the backward rnn output `Tensor`.
+                stacked_states = tf.concat(tf.nn.bidirectional_dynamic_rnn(rnn_fw_cell, rnn_bw_cell, xemb,
+                                                                           dtype=tf.float32)[0], axis=2)  # [batch_size,sequence_length,hidden_size*2]
+            elif self.cell_type == 'bidic_lstm':
+                lstm_fw_cell = tf.nn.rnn_cell.BasicLSTMCell(self.state_size,reuse=tf.AUTO_REUSE)  # forward direction cell
+                lstm_bw_cell = tf.nn.rnn_cell.BasicLSTMCell(self.state_size,reuse=tf.AUTO_REUSE)  # backward direction cell
+                if self.dropout_keep_prob is not None:
+                    lstm_fw_cell = tf.nn.rnn_cell.DropoutWrapper(lstm_fw_cell, output_keep_prob=self.dropout_keep_prob)
+                    lstm_bw_cell = tf.nn.rnn_cell.DropoutWrapper(lstm_bw_cell, output_keep_prob=self.dropout_keep_prob)
+                # bidirectional_dynamic_rnn: input: [batch_size, max_time, input_size]
+                #                            output: A tuple (outputs, output_states)
+                #                                    where:outputs: A tuple (output_fw, output_bw) containing the forward and the backward rnn output `Tensor`.
+                stacked_states = tf.concat(tf.nn.bidirectional_dynamic_rnn(lstm_fw_cell, lstm_bw_cell, xemb,
+                                                             dtype=tf.float32)[0], axis=2) #[batch_size,sequence_length,hidden_size*2]
+            else:
+                # cell_fw = tf.contrib.rnn.LSTMCell(self.state_size, state_is_tuple=True)
+                # cell_bw = tf.contrib.rnn.LSTMCell(self.state_size, state_is_tuple=True)
+                # _, ((_, output_fw), (_, output_bw)) = tf.nn.bidirectional_dynamic_rnn(cell_fw,
+                #                                                                       cell_bw, char_embeddings,
+                #                                                                       sequence_length=word_lengths,
+                #                                                                       dtype=tf.float32)
+                stacked_states = 0
+                print("Wrong cell type")
+
+            # logits: A Tensor of shape[batch_size, sequence_length, num_decoder_symbols] and dtype float.
+            # self.logits = tf.contrib.layers.fully_connected(stacked_states, self.num_tags, activation_fn=tf.nn.softmax,
+            #                                            normalizer_fn=None, normalizer_params=None,
+            #                                            weights_initializer=tf.contrib.layers.xavier_initializer(),
+            #                                            weights_regularizer=None, biases_initializer=tf.zeros_initializer(),
+            #                                            biases_regularizer=None, reuse=None, variables_collections=None,
+            #                                            outputs_collections=None, trainable=True, scope=None)
+            self.logits = stacked_states
+            self._accuracy()
         return self.logits
 
     # TODO(student): You must implement this.
@@ -390,7 +406,8 @@ class SequenceModel(object):
           arbitrary values beyond length.
         """
         # logits = self.sess.run(self.logits, {self.x: terms, self.lengths: lengths})
-        logits = self.build_inference()
+        # logits = self.build_inference()
+        logits = self.logits
         return tf.argmax(logits, axis=2)
         # return numpy.zeros_like(tags)
 
@@ -464,31 +481,37 @@ class SequenceModel(object):
         losses = []
         accuracies = []
         num_training = len(terms)
-        # for i in range(num_training // batch_size):
-        for i in range(1):
+        for i in range(num_training // batch_size):
+        # for i in range(50):
             x_batch = terms[i * batch_size:(i + 1) * batch_size][:]
             tags_batch = tags[i * batch_size:(i + 1) * batch_size]
             lengths_batch = lengths[i * batch_size:(i + 1) * batch_size]
+            # x_batch = terms
+            # tags_batch = tags
+            # lengths_batch = lengths
             b_ = self.lengths_to_binary(lengths_batch)
             feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
                          self.tags: tags_batch.astype(numpy.int64),
                          self.b: b_}
             fetches = [self.train_op, self.loss, self.accuracy_op, self.correct, self.lengths, self.logits, self.predict]
+            # fetches = [self.loss, self.accuracy_op, self.correct, self.lengths, self.logits,
+            #            self.predict]
             _, loss, accuracy, correct, lens, logits_, predicts = self.sess.run(fetches, feed_dict=feed_dict)
             losses.append(loss)
             accuracies.append(accuracy)
 
             if step % self.log_step == 0:
-                train_acc = self.evaluate(terms, tags, lengths)
+                train_acc = self.evaluate(terms, tags, lengths, self.batch_size)
                 print('iteration (%d)/(%d): train batch loss = %.3f, train batch accuracy = %.3f, train acc= %.3f' %
                       (step, num_training // batch_size, loss, accuracy, train_acc))
             step += 1
         return
 
     # TODO(student): You can implement this to help you, but we will not call it.
-    def evaluate(self, terms, tags, lengths):
+    def evaluate(self, terms, tags, lengths, batch_size):
         eval_accuracy = 0.0
         eval_iter = 0
+        self.batch_size = batch_size
         for i in range(terms.shape[0] // self.batch_size):
             x_batch = terms[i * self.batch_size:(i + 1) * self.batch_size][:]
             tags_batch = tags[i * self.batch_size:(i + 1) * self.batch_size]
@@ -497,8 +520,8 @@ class SequenceModel(object):
             feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
                          self.tags: tags_batch.astype(numpy.int64),
                          self.b: b_}
-            fetches = [self.train_op, self.loss, self.accuracy_op, self.predict]
-            _, loss, accuracy, predict = self.sess.run(fetches, feed_dict=feed_dict)
+            fetches = [self.accuracy_op, self.predict]
+            accuracy, predict = self.sess.run(fetches, feed_dict=feed_dict)
             eval_accuracy += accuracy
             eval_iter += 1
         print('accuracy on val: {}'.format(eval_accuracy / eval_iter))
@@ -513,19 +536,21 @@ def main():
     reader = DatasetReader()
     # train_filename = sys.argv[1]
     # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged.txt"  # japonease
-    train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\it_isdt_train_tagged.txt"
+    # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\it_isdt_train_tagged.txt"
+    train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\it_isdt_train_tagged_small.txt"
     test_filename = train_filename.replace('_train_', '_dev_')
     term_index, tag_index, train_data, test_data = reader.ReadData(train_filename=train_filename, test_filename=test_filename)
     (train_terms, train_tags, train_lengths) = train_data
-    (train_terms, train_tags, train_lengths) = (train_terms[:5], train_tags[:5], train_lengths[:5]) #REMOVE
+    (train_terms, train_tags, train_lengths) = (train_terms[:5], train_tags[:5], train_lengths[:5])
     (test_terms, test_tags, test_lengths) = test_data
 
     model = SequenceModel(train_tags.shape[1], len(term_index), len(tag_index))
     model.build_inference()
     model.build_training()
     time0 = time.time()
-    K = 500
+    K = 2
     epoch = 0
+    batch_size = 5
     print('-' * 5 + '  Start training  ' + '-' * 5)
     # sess = model.sess
     # sess.run(tf.global_variables_initializer())
@@ -533,13 +558,15 @@ def main():
         print("train epoch {}".format(epoch+1))
         model.train_epoch(train_terms, train_tags, train_lengths)
         print('Finished epoch %i. Evaluating ...' % (epoch + 1))
-        model.evaluate(test_terms, test_tags, test_lengths)
+        model.evaluate(test_terms, test_tags, test_lengths, batch_size)
         epoch += 1
     model.save_model('model.pkl')
+
+    model = SequenceModel(train_tags.shape[1], len(term_index), len(tag_index))
     model.load_model('model.pkl')
     model.build_inference()
     model.run_inference(test_terms, test_lengths)
-    model.evaluate(test_terms, test_tags, test_lengths)
+    model.evaluate(test_terms, test_tags, test_lengths, batch_size)
 
     print('time {}'.format(time.time()-time0))
 
