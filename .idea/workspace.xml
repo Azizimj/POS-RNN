@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="490b93da-5ee1-4499-8ec0-b74e7ce1a9b6" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assignment.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/assignment.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/starter.py" beforeDir="false" afterPath="$PROJECT_DIR$/starter.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -15,18 +17,15 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/starter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="281">
-              <caret line="561" column="18" lean-forward="true" selection-start-line="561" selection-start-column="18" selection-end-line="561" selection-end-column="18" />
+            <state relative-caret-position="101">
+              <caret line="571" column="79" selection-start-line="571" selection-start-column="79" selection-end-line="571" selection-end-column="79" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
                 <element signature="e#309#7246#0" />
-                <element signature="e#496#2604#0" />
-                <element signature="e#2699#4459#0" />
                 <element signature="e#13863#15431#0" />
                 <element signature="e#15488#16562#0" />
                 <element signature="e#16620#17686#0" />
                 <element signature="e#17715#18361#0" />
-                <element signature="e#20353#22255#0" />
                 <element signature="e#22812#23008#0" />
               </folding>
             </state>
@@ -533,10 +532,24 @@
       <option name="project" value="LOCAL" />
       <updated>1555458784170</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="Wednesday">
+      <created>1555518958894</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1555518958894</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Wednesday">
+      <created>1555519044597</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1555519044597</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
-  <component name="TodoView">
+  <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
       <is-autoscroll-to-source value="true" />
     </todo-panel>
@@ -547,14 +560,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1301059" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3289689" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924356" visible="true" weight="0.09165303" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924356" visible="true" weight="0.41898528" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.36006546" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -571,14 +583,14 @@
     </layout>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Wednesday" />
     <MESSAGE value="Thursday" />
     <MESSAGE value="Friday" />
     <MESSAGE value="Saturday" />
     <MESSAGE value="Sunday" />
     <MESSAGE value="Monday" />
     <MESSAGE value="Tuesday" />
-    <option name="LAST_COMMIT_MESSAGE" value="Tuesday" />
+    <MESSAGE value="Wednesday" />
+    <option name="LAST_COMMIT_MESSAGE" value="Wednesday" />
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateCodeFragment">
@@ -818,18 +830,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/starter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
-          <caret line="561" column="18" lean-forward="true" selection-start-line="561" selection-start-column="18" selection-end-line="561" selection-end-column="18" />
+        <state relative-caret-position="101">
+          <caret line="571" column="79" selection-start-line="571" selection-start-column="79" selection-end-line="571" selection-end-column="79" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
             <element signature="e#309#7246#0" />
-            <element signature="e#496#2604#0" />
-            <element signature="e#2699#4459#0" />
             <element signature="e#13863#15431#0" />
             <element signature="e#15488#16562#0" />
             <element signature="e#16620#17686#0" />
             <element signature="e#17715#18361#0" />
-            <element signature="e#20353#22255#0" />
             <element signature="e#22812#23008#0" />
           </folding>
         </state>

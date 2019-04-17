@@ -9,6 +9,7 @@ import time
 USC_EMAIL = 'azizim@usc.edu'  # TODO(student): Fill to compete on rankings.
 PASSWORD = '3e173a6bb4a2a4ce'  # TODO(student): You will be given a password via email.
 
+# batch_size = 10
 
 # class DatasetReader(object):
 class DatasetReader():
@@ -254,7 +255,7 @@ class SequenceModel(object):
     # TODO(student): You must implement this.
     def save_model(self, filename):
         """Saves model to a file."""
-        import pickle
+        # import pickle
         # sess = tf.Session()
         # var_dict = {v.name: v for v in tf.global_variables()}
         # pickle.dump(self.sess.run(var_dict), open(filename, 'w'))
@@ -460,7 +461,7 @@ class SequenceModel(object):
             b_[i, :length_vector[i]] = 1
         return b_.astype(float)
 
-    def train_epoch(self, terms, tags, lengths, batch_size=5, learn_rate=1e-7):
+    def train_epoch(self, terms, tags, lengths, batch_size=10, learn_rate=1e-7):
         #HYP
         """Performs updates on the model given training training data.
 
@@ -506,7 +507,8 @@ class SequenceModel(object):
                 print('iteration (%d)/(%d): train batch loss = %.3f, train batch accuracy = %.3f, train acc= %.3f' %
                       (step, num_training // batch_size, loss, accuracy, train_acc))
             step += 1
-        return
+        # Finally, make sure you uncomment the `return True` below.
+        return True
 
     # TODO(student): You can implement this to help you, but we will not call it.
     def evaluate(self, terms, tags, lengths, batch_size):
@@ -536,22 +538,25 @@ def main():
     # Read dataset.
     reader = DatasetReader()
     # train_filename = sys.argv[1]
-    # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged.txt"  # japonease
+    train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged.txt"  # japonease
+    # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged_small.txt"  # japonease
     # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\it_isdt_train_tagged.txt"
-    train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\it_isdt_train_tagged_small.txt"
+    # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\it_isdt_train_tagged_small.txt"
     test_filename = train_filename.replace('_train_', '_dev_')
     term_index, tag_index, train_data, test_data = reader.ReadData(train_filename=train_filename, test_filename=test_filename)
     (train_terms, train_tags, train_lengths) = train_data
-    (train_terms, train_tags, train_lengths) = (train_terms[:5], train_tags[:5], train_lengths[:5])
+    # (train_terms, train_tags, train_lengths) = (train_terms[:5], train_tags[:5], train_lengths[:5])
     (test_terms, test_tags, test_lengths) = test_data
 
     model = SequenceModel(train_tags.shape[1], len(term_index), len(tag_index))
     model.build_inference()
     model.build_training()
     time0 = time.time()
-    K = 2
+    K = 40
     epoch = 0
-    batch_size = 5
+    eval_batch_size = 10
+    best_val_acc = 0
+    best_val_acc_epoch = 0
     print('-' * 5 + '  Start training  ' + '-' * 5)
     # sess = model.sess
     # sess.run(tf.global_variables_initializer())
@@ -559,15 +564,19 @@ def main():
         print("train epoch {}".format(epoch+1))
         model.train_epoch(train_terms, train_tags, train_lengths)
         print('Finished epoch %i. Evaluating ...' % (epoch + 1))
-        model.evaluate(test_terms, test_tags, test_lengths, batch_size)
+        tmp_val_acc = model.evaluate(test_terms, test_tags, test_lengths, eval_batch_size)
+        if tmp_val_acc > best_val_acc:
+            best_val_acc = tmp_val_acc
+            best_val_acc_epoch = epoch
         epoch += 1
+    print('bets val acc {} in epoch {}'.format(best_val_acc, best_val_acc_epoch))
     model.save_model('model.pkl')
 
     model = SequenceModel(train_tags.shape[1], len(term_index), len(tag_index))
     model.load_model('model.pkl')
     model.build_inference()
     model.run_inference(test_terms, test_lengths)
-    model.evaluate(test_terms, test_tags, test_lengths, batch_size)
+    model.evaluate(test_terms, test_tags, test_lengths, eval_batch_size)
 
     print('time {}'.format(time.time()-time0))
 
