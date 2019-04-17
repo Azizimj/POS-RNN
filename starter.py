@@ -206,7 +206,7 @@ class SequenceModel(object):
         # tf.reset_default_graph()
         self.sess = tf.Session()
         self.size_embed = 40  # HYP
-        self.state_size = 6  # HYP
+        self.state_size = 15  # HYP
         self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
         self.learn_rate = 1e-2 #HYP
         self.dropout_keep_prob = .5
@@ -255,32 +255,32 @@ class SequenceModel(object):
     # TODO(student): You must implement this.
     def save_model(self, filename):
         """Saves model to a file."""
-        # import pickle
+        import pickle
         # sess = tf.Session()
-        # var_dict = {v.name: v for v in tf.global_variables()}
-        # pickle.dump(self.sess.run(var_dict), open(filename, 'w'))
-        saver = tf.train.Saver()
-        model_path = saver.save(self.sess, "model.ckpt")
+        var_dict = {v.name: v for v in tf.global_variables()}
+        pickle.dump(self.sess.run(var_dict), open(filename, 'bw'))
+        # saver = tf.train.Saver()
+        # model_path = saver.save(self.sess, "model.ckpt")
         return
 
   # TODO(student): You must implement this.
     def load_model(self, filename):
         """Loads model from a file."""
-        # import pickle
+        import pickle
         # tf.reset_default_graph()
+        # tf.global_variables_initializer()
+        # variables = tf.global_variables()
         self.sess = tf.Session()
-        # var_values = pickle.load(open(filename))
-        # assign_ops = [v.assign(var_values[v.name]) for v in tf.global_variables()]
-        # self.sess.run(assign_ops)
-        tf.global_variables_initializer()
-        variables = tf.global_variables()
-        param_dict = {}
-        for var in variables:
-            var_name = var.name[:-2]
-            print('Loading {} from checkpoint. Name: {}'.format(var.name, var_name))
-            param_dict[var_name] = var
-        saver = tf.train.Saver()
-        saver.restore(self.sess, "model.ckpt")
+        var_values = pickle.load(open(filename, 'rb'))
+        assign_ops = [v.assign(var_values[v.name]) for v in tf.global_variables()]
+        self.sess.run(assign_ops)
+        # param_dict = {}
+        # for var in variables:
+        #     var_name = var.name[:-2]
+        #     # print('Loading {} from checkpoint. Name: {}'.format(var.name, var_name))
+        #     param_dict[var_name] = var
+        # saver = tf.train.Saver()
+        # saver.restore(self.sess, "model.ckpt")
         return
 
     # TODO(student): You must implement this.
@@ -305,7 +305,7 @@ class SequenceModel(object):
             xemb_ = tf.nn.embedding_lookup(params=self.embed, ids=self.x, partition_strategy='mod', name=None,
                                           validate_indices=True, max_norm=None)
             states = []
-            cur_state = tf.zeros(shape=[1, self.num_tags])
+            cur_state = tf.zeros(shape=[1, self.state_size])
 
             # 2. put the time dimension on axis=1 for dynamic_rnn
             s = tf.shape(xemb_)  # store old shape
@@ -315,7 +315,7 @@ class SequenceModel(object):
             # word_lengths = tf.reshape(self.word_lengths, shape=[-1])
 
             if self.cell_type == 'rnn':
-                rnn_cell = tf.keras.layers.SimpleRNNCell(self.num_tags, activation='tanh', use_bias=True,
+                rnn_cell = tf.keras.layers.SimpleRNNCell(self.state_size, activation='tanh', use_bias=True,
                                                          kernel_initializer='glorot_uniform',
                                                          recurrent_initializer='orthogonal',recurrent_dropout=0.0,
                                                          bias_initializer='zeros',kernel_regularizer=None,
@@ -378,13 +378,14 @@ class SequenceModel(object):
                 print("Wrong cell type")
 
             # logits: A Tensor of shape[batch_size, sequence_length, num_decoder_symbols] and dtype float.
-            # self.logits = tf.contrib.layers.fully_connected(stacked_states, self.num_tags, activation_fn=tf.nn.softmax,
-            #                                            normalizer_fn=None, normalizer_params=None,
-            #                                            weights_initializer=tf.contrib.layers.xavier_initializer(),
-            #                                            weights_regularizer=None, biases_initializer=tf.zeros_initializer(),
-            #                                            biases_regularizer=None, reuse=None, variables_collections=None,
-            #                                            outputs_collections=None, trainable=True, scope=None)
-            self.logits = stacked_states
+            self.logits = tf.contrib.layers.fully_connected(stacked_states, self.num_tags, activation_fn=tf.nn.softmax,
+                                                       normalizer_fn=None, normalizer_params=None,
+                                                       weights_initializer=tf.contrib.layers.xavier_initializer(),
+                                                       weights_regularizer=None, biases_initializer=tf.zeros_initializer(),
+                                                       biases_regularizer=None, reuse=None, variables_collections=None,
+                                                       outputs_collections=None, trainable=True, scope=None)
+            # self.logits = stacked_states
+            # self.logits = tf.cast(self.logits, dtype=tf.int32)
             self._accuracy()
             self.build_training()
         return self.logits
@@ -410,7 +411,7 @@ class SequenceModel(object):
         # logits = self.sess.run(self.logits, {self.x: terms, self.lengths: lengths})
         # logits = self.build_inference()
         logits = self.logits
-        return tf.argmax(logits, axis=2)
+        return tf.cast(tf.argmax(logits, axis=2), tf.int64)
         # return numpy.zeros_like(tags)
 
     # TODO(student): You must implement this.
@@ -538,10 +539,10 @@ def main():
     # Read dataset.
     reader = DatasetReader()
     # train_filename = sys.argv[1]
-    train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged.txt"  # japonease
+    # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged.txt"  # japonease
     # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged_small.txt"  # japonease
     # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\it_isdt_train_tagged.txt"
-    # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\it_isdt_train_tagged_small.txt"
+    train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\it_isdt_train_tagged_small.txt"
     test_filename = train_filename.replace('_train_', '_dev_')
     term_index, tag_index, train_data, test_data = reader.ReadData(train_filename=train_filename, test_filename=test_filename)
     (train_terms, train_tags, train_lengths) = train_data
@@ -552,7 +553,7 @@ def main():
     model.build_inference()
     model.build_training()
     time0 = time.time()
-    K = 40
+    K = 5
     epoch = 0
     eval_batch_size = 10
     best_val_acc = 0
@@ -571,10 +572,11 @@ def main():
         epoch += 1
     print('bets val acc {} in epoch {}'.format(best_val_acc, best_val_acc_epoch))
     model.save_model('model.pkl')
-
+    # import IPython; IPython.embed()
+    tf.reset_default_graph()
     model = SequenceModel(train_tags.shape[1], len(term_index), len(tag_index))
-    model.load_model('model.pkl')
     model.build_inference()
+    model.load_model('model.pkl')
     model.run_inference(test_terms, test_lengths)
     model.evaluate(test_terms, test_tags, test_lengths, eval_batch_size)
 
