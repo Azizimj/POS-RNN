@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="490b93da-5ee1-4499-8ec0-b74e7ce1a9b6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/assignment.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/starter.py" beforeDir="false" afterPath="$PROJECT_DIR$/starter.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -17,28 +16,24 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/starter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="101">
-              <caret line="571" column="79" selection-start-line="571" selection-start-column="79" selection-end-line="571" selection-end-column="79" />
+            <state relative-caret-position="71">
+              <caret line="213" column="30" selection-start-line="213" selection-start-column="30" selection-end-line="213" selection-end-column="68" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
-                <element signature="e#309#7246#0" />
+                <element signature="e#327#7433#0" />
+                <element signature="e#2717#4581#0" />
+                <element signature="e#4532#7246#0" />
+                <element signature="e#8998#10668#0" />
+                <element signature="e#10760#11079#0" />
+                <element signature="e#11803#20105#0" />
                 <element signature="e#13863#15431#0" />
                 <element signature="e#15488#16562#0" />
                 <element signature="e#16620#17686#0" />
                 <element signature="e#17715#18361#0" />
+                <element signature="e#22290#22754#0" />
                 <element signature="e#22812#23008#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../hw4/starter_old.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
+                <element signature="e#24064#26415#0" />
+                <element signature="e#25306#26218#0" />
               </folding>
             </state>
           </provider>
@@ -65,6 +60,7 @@
       <find>tf.Se</find>
       <find>self.embed</find>
       <find>evalu</find>
+      <find>feed</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -546,7 +542,21 @@
       <option name="project" value="LOCAL" />
       <updated>1555519044597</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="Wednesday">
+      <created>1555538324527</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1555538324527</updated>
+    </task>
+    <task id="LOCAL-00049" summary="Wednesday">
+      <created>1555542963350</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1555542963350</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -560,13 +570,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1301059" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3289689" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924356" visible="true" weight="0.41898528" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924356" visible="true" weight="0.43862522" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.36006546" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -591,6 +602,22 @@
     <MESSAGE value="Tuesday" />
     <MESSAGE value="Wednesday" />
     <option name="LAST_COMMIT_MESSAGE" value="Wednesday" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/starter.py</url>
+          <line>276</line>
+          <option name="timeStamp" value="84" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/starter.py</url>
+          <line>120</line>
+          <option name="timeStamp" value="85" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateCodeFragment">
@@ -662,47 +689,47 @@
     </expressions>
     <expressions id="evaluateExpression">
       <expression>
-        <expression-string>'embed:0' not in [v.name for v in tf.global_variables()]</expression-string>
+        <expression-string>pickle.load(open(filename, 'rb'))</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>'embed:0' in [v.name for v in tf.global_variables()]</expression-string>
+        <expression-string>pickle.load(open(filename))</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>if 'embed:0' in [v.name for v in tf.global_variables()]</expression-string>
+        <expression-string>pickle.load(open(filename, encoding=&quot;utf8&quot;))</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>[v.name for v in tf.global_variables()][0]</expression-string>
+        <expression-string>var_values = pickle.load(open(filename, encoding=&quot;utf8&quot;))</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>[v for v in tf.global_variables()][0]</expression-string>
+        <expression-string>pickle.dump(self.sess.run(var_dict), open(filename, 'bw'))</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>[v for v in tf.global_variables()]</expression-string>
+        <expression-string>pickle.dump(self.sess.run(var_dict), open(filename, 'w'))</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>[v for v in tf.global_variables() if v.name == &quot;Variable_23:0&quot;]</expression-string>
+        <expression-string>pickle.dump(self.sess.run(var_dict), open(filename, 'b'))</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.global_variables().name</expression-string>
+        <expression-string>{v.name: v for v in tf.global_variables()}</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.global_variables()[0]</expression-string>
+        <expression-string>{v.name: v for v in tf.global_variables()}[0]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -830,16 +857,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/starter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="101">
-          <caret line="571" column="79" selection-start-line="571" selection-start-column="79" selection-end-line="571" selection-end-column="79" />
+        <state relative-caret-position="71">
+          <caret line="213" column="30" selection-start-line="213" selection-start-column="30" selection-end-line="213" selection-end-column="68" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#309#7246#0" />
+            <element signature="e#327#7433#0" />
+            <element signature="e#2717#4581#0" />
+            <element signature="e#4532#7246#0" />
+            <element signature="e#8998#10668#0" />
+            <element signature="e#10760#11079#0" />
+            <element signature="e#11803#20105#0" />
             <element signature="e#13863#15431#0" />
             <element signature="e#15488#16562#0" />
             <element signature="e#16620#17686#0" />
             <element signature="e#17715#18361#0" />
+            <element signature="e#22290#22754#0" />
             <element signature="e#22812#23008#0" />
+            <element signature="e#24064#26415#0" />
+            <element signature="e#25306#26218#0" />
           </folding>
         </state>
       </provider>

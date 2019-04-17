@@ -39,15 +39,15 @@ class DatasetReader():
       each parsedLine is a list: [(term1, tag1), (term2, tag2), ...] 
     """
 
-    infile = io.open(filename, 'r', encoding="utf8")
+    infile = open(filename, 'r', encoding="utf8")
     sentences = infile.readlines()
     infile.close()
     # tags = [[wordtag.rsplit('/', 1)[-1] for wordtag in sentence.strip().split()] for sentence in sentences]
     # words = [[wordtag.rsplit('/', 1)[0] for wordtag in sentence.strip().split()] for sentence in sentences]
     # parsed_file = [[(wordtag.rsplit('/', 1)[0],wordtag.rsplit('/', 1)[-1]) for wordtag in sentence.strip().split()] for sentence in sentences]
     parsed_file = []
-    term_index_count = 1
-    tag_index_count = 0
+    term_index_count = int(len(term_index))
+    tag_index_count = int(len(tag_index))
     for sentence in sentences:
       parsed_sentence = []
       for wordtag in sentence.strip().split():
@@ -115,6 +115,9 @@ class DatasetReader():
         terms_matrix[sen_counter, word_counter] = word_idx
         tags_matrix[sen_counter, word_counter] = tag_idx
 
+    terms_matrix = numpy.array(terms_matrix).astype(int)
+    tags_matrix = numpy.array(tags_matrix).astype(int)
+    lengths_arr = numpy.array(lengths_arr).astype(int)
     return terms_matrix, tags_matrix, lengths_arr
 
 
@@ -208,7 +211,7 @@ class SequenceModel(object):
         self.size_embed = 40  # HYP
         self.state_size = 15  # HYP
         self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
-        self.learn_rate = 1e-2 #HYP
+        self.learn_rate = 1e-8
         self.dropout_keep_prob = .5
         # self._accuracy()
 
@@ -436,9 +439,9 @@ class SequenceModel(object):
         tf.losses.add_loss(self.loss, loss_collection=tf.GraphKeys.LOSSES)
         # g_s = tf.Variable(0, trainable=False)
         # l_r = tf.train.exponential_decay(self.learn_rate, g_s, 500, .96, staircase=True)
-        # l_r = self.learn_rate
-        # opt = tf.train.AdamOptimizer(l_r) #HYP
-        opt = tf.train.AdamOptimizer()  # HYP
+        l_r = self.learn_rate
+        opt = tf.train.AdamOptimizer(l_r) #HYP
+        # opt = tf.train.AdamOptimizer()  # HYP
         # opt = tf.train.AdamOptimizer(learning_rate=0.001,beta1=0.9,beta2=0.999,epsilon=1e-08,use_locking=False,name='Adam')
         self.train_op = opt.minimize(self.loss, var_list=tf.trainable_variables())
         print('tf.losses.get_total_loss', tf.losses.get_total_loss(add_regularization_losses=True,
@@ -539,10 +542,10 @@ def main():
     # Read dataset.
     reader = DatasetReader()
     # train_filename = sys.argv[1]
-    # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged.txt"  # japonease
+    train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged.txt"  # japonease
     # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged_small.txt"  # japonease
     # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\it_isdt_train_tagged.txt"
-    train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\it_isdt_train_tagged_small.txt"
+    # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\it_isdt_train_tagged_small.txt"
     test_filename = train_filename.replace('_train_', '_dev_')
     term_index, tag_index, train_data, test_data = reader.ReadData(train_filename=train_filename, test_filename=test_filename)
     (train_terms, train_tags, train_lengths) = train_data
@@ -553,7 +556,7 @@ def main():
     model.build_inference()
     model.build_training()
     time0 = time.time()
-    K = 5
+    K = 30
     epoch = 0
     eval_batch_size = 10
     best_val_acc = 0
@@ -563,7 +566,7 @@ def main():
     # sess.run(tf.global_variables_initializer())
     while time.time()-time0 <= K:
         print("train epoch {}".format(epoch+1))
-        model.train_epoch(train_terms, train_tags, train_lengths)
+        model.train_epoch(train_terms, train_tags, train_lengths, learn_rate=1e-8)
         print('Finished epoch %i. Evaluating ...' % (epoch + 1))
         tmp_val_acc = model.evaluate(test_terms, test_tags, test_lengths, eval_batch_size)
         if tmp_val_acc > best_val_acc:
