@@ -385,6 +385,7 @@ class SequenceModel(object):
             #                                            outputs_collections=None, trainable=True, scope=None)
             self.logits = stacked_states
             self._accuracy()
+            self.build_training()
         return self.logits
 
     # TODO(student): You must implement this.
