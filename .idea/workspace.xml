@@ -16,8 +16,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/starter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="71">
-              <caret line="213" column="30" selection-start-line="213" selection-start-column="30" selection-end-line="213" selection-end-column="68" />
+            <state relative-caret-position="128">
+              <caret line="570" column="79" selection-start-line="570" selection-start-column="79" selection-end-line="570" selection-end-column="79" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
                 <element signature="e#327#7433#0" />
@@ -27,12 +27,10 @@
                 <element signature="e#10760#11079#0" />
                 <element signature="e#11803#20105#0" />
                 <element signature="e#13863#15431#0" />
-                <element signature="e#15488#16562#0" />
                 <element signature="e#16620#17686#0" />
                 <element signature="e#17715#18361#0" />
                 <element signature="e#22290#22754#0" />
                 <element signature="e#22812#23008#0" />
-                <element signature="e#24064#26415#0" />
                 <element signature="e#25306#26218#0" />
               </folding>
             </state>
@@ -61,6 +59,8 @@
       <find>self.embed</find>
       <find>evalu</find>
       <find>feed</find>
+      <find>self.le</find>
+      <find>self.lear</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -212,20 +212,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1554859643014</updated>
-    </task>
-    <task id="LOCAL-00001" summary="Wednesday">
-      <created>1554933309661</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1554933309661</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Wednesday">
-      <created>1554934872688</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1554934872688</updated>
     </task>
     <task id="LOCAL-00003" summary="Thursday">
       <created>1555010505693</created>
@@ -556,7 +542,21 @@
       <option name="project" value="LOCAL" />
       <updated>1555542963350</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="Wednesday">
+      <created>1555545431938</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1555545431939</updated>
+    </task>
+    <task id="LOCAL-00051" summary="Wednesday">
+      <created>1555546314070</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1555546314071</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -577,7 +577,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3289689" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924356" visible="true" weight="0.43862522" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924356" visible="true" weight="0.38297874" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.36006546" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -857,8 +857,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/starter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="71">
-          <caret line="213" column="30" selection-start-line="213" selection-start-column="30" selection-end-line="213" selection-end-column="68" />
+        <state relative-caret-position="128">
+          <caret line="570" column="79" selection-start-line="570" selection-start-column="79" selection-end-line="570" selection-end-column="79" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
             <element signature="e#327#7433#0" />
@@ -868,12 +868,10 @@
             <element signature="e#10760#11079#0" />
             <element signature="e#11803#20105#0" />
             <element signature="e#13863#15431#0" />
-            <element signature="e#15488#16562#0" />
             <element signature="e#16620#17686#0" />
             <element signature="e#17715#18361#0" />
             <element signature="e#22290#22754#0" />
             <element signature="e#22812#23008#0" />
-            <element signature="e#24064#26415#0" />
             <element signature="e#25306#26218#0" />
           </folding>
         </state>
