@@ -201,9 +201,9 @@ class SequenceModel(object):
         self.lengths = tf.placeholder(tf.int64, [None], 'lengths')
         self.tags = tf.placeholder(tf.int64, [None, self.max_length], 'tags')
         # I usually prefer int32 for space and speed, but the embedding_lookup function expects int64
-        # self.cell_type = 'rnn'
+        self.cell_type = 'rnn'
         # self.cell_type = 'lstm'
-        self.cell_type = 'bidic_rnn'
+        # self.cell_type = 'bidic_rnn'
         # self.cell_type = 'bidic_lstm'
         self.log_step = 10
         # tf.reset_default_graph()
@@ -212,7 +212,9 @@ class SequenceModel(object):
         self.state_size = 15  # HYP
         self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
         self.learn_rate = tf.placeholder(tf.float32, [], 'lr')
-        self.dropout_keep_prob = .5
+        self.dropout_keep_prob = .5  #HYP
+        self.use_fc = False
+        self.epoch_return = True
         # self._accuracy()
 
 
@@ -244,10 +246,10 @@ class SequenceModel(object):
         # TensorFlow broadcasting[automatic, google for it].tf.expand_dims, tf.range, casting, and comparator
         # operators. Or, you can do while -loops in TensorFlow, though if I was programming, I would look for
         # a mathematical expression i.e.the functions above.
-        # len_to_bin_f = lambda x: tf.concat([tf.broadcast_to(1, [1, x]),tf.broadcast_to(0, [1, self.max_length - x])], 1)
-        # a = tf.map_fn(len_to_bin_f, length_vector)
+        len_to_bin_f = lambda x: tf.concat([tf.broadcast_to(1, [1, x]),tf.broadcast_to(0, [1, self.max_length - x])], 1)
+        a = tf.map_fn(len_to_bin_f, length_vector)
         # for i in tf.range(length_vector.shape[0]):
-        #     b[i] =
+            # b[i] =
 
 
 
@@ -308,7 +310,11 @@ class SequenceModel(object):
             xemb_ = tf.nn.embedding_lookup(params=self.embed, ids=self.x, partition_strategy='mod', name=None,
                                           validate_indices=True, max_norm=None)
             states = []
-            cur_state = tf.zeros(shape=[1, self.state_size])
+            if self.use_fc == True:
+                cur_state = tf.zeros(shape=[1, self.state_size])
+            else:
+                cur_state = tf.zeros(shape=[1, self.num_tags])
+                self.state_size = self.num_tags
 
             # 2. put the time dimension on axis=1 for dynamic_rnn
             s = tf.shape(xemb_)  # store old shape
@@ -381,14 +387,17 @@ class SequenceModel(object):
                 print("Wrong cell type")
 
             # logits: A Tensor of shape[batch_size, sequence_length, num_decoder_symbols] and dtype float.
-            self.logits = tf.contrib.layers.fully_connected(stacked_states, self.num_tags, activation_fn=tf.nn.softmax,
-                                                       normalizer_fn=None, normalizer_params=None,
-                                                       weights_initializer=tf.contrib.layers.xavier_initializer(),
-                                                       weights_regularizer=None, biases_initializer=tf.zeros_initializer(),
-                                                       biases_regularizer=None, reuse=None, variables_collections=None,
-                                                       outputs_collections=None, trainable=True, scope=None)
-            # self.logits = stacked_states
-            # self.logits = tf.cast(self.logits, dtype=tf.int32)
+            if self.use_fc == True:
+                self.logits = tf.contrib.layers.fully_connected(stacked_states, self.num_tags, activation_fn=tf.nn.softmax,
+                                                           normalizer_fn=None, normalizer_params=None,
+                                                           weights_initializer=tf.contrib.layers.xavier_initializer(),
+                                                           weights_regularizer=None, biases_initializer=tf.zeros_initializer(),
+                                                           biases_regularizer=None, reuse=None, variables_collections=None,
+                                                           outputs_collections=None, trainable=True, scope=None)
+            else:
+                self.logits = stacked_states
+                # self.logits = tf.cast(self.logits, dtype=tf.int32)
+
             self._accuracy()
             self.build_training()
         return self.logits
@@ -514,7 +523,7 @@ class SequenceModel(object):
                       (step, num_training // batch_size, loss, accuracy, train_acc))
             step += 1
         # Finally, make sure you uncomment the `return True` below.
-        return True
+        return self.epoch_return
 
     # TODO(student): You can implement this to help you, but we will not call it.
     def evaluate(self, terms, tags, lengths, batch_size):
@@ -544,8 +553,8 @@ def main():
     # Read dataset.
     reader = DatasetReader()
     # train_filename = sys.argv[1]
-    train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged.txt"  # japonease
-    # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged_small.txt"  # japonease
+    # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged.txt"  # japonease
+    train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged_small.txt"  # japonease
     # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\it_isdt_train_tagged.txt"
     # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\it_isdt_train_tagged_small.txt"
     test_filename = train_filename.replace('_train_', '_dev_')
@@ -558,7 +567,7 @@ def main():
     model.build_inference()
     model.build_training()
     time0 = time.time()
-    K = 180
+    K = 1
     epoch = 0
     eval_batch_size = 10
     best_val_acc = 0
