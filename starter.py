@@ -201,9 +201,9 @@ class SequenceModel(object):
         self.lengths = tf.placeholder(tf.int64, [None], 'lengths')
         self.tags = tf.placeholder(tf.int64, [None, self.max_length], 'tags')
         # I usually prefer int32 for space and speed, but the embedding_lookup function expects int64
-        self.cell_type = 'rnn'
+        # self.cell_type = 'rnn'
         # self.cell_type = 'lstm'
-        # self.cell_type = 'bidic_rnn'
+        self.cell_type = 'bidic_rnn'
         # self.cell_type = 'bidic_lstm'
         self.log_step = 10
         # tf.reset_default_graph()
@@ -211,7 +211,7 @@ class SequenceModel(object):
         self.size_embed = 40  # HYP
         self.state_size = 15  # HYP
         self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
-        self.learn_rate = 1e-8
+        self.learn_rate = tf.placeholder(tf.float32, [], 'lr')
         self.dropout_keep_prob = .5
         # self._accuracy()
 
@@ -439,9 +439,10 @@ class SequenceModel(object):
         tf.losses.add_loss(self.loss, loss_collection=tf.GraphKeys.LOSSES)
         # g_s = tf.Variable(0, trainable=False)
         # l_r = tf.train.exponential_decay(self.learn_rate, g_s, 500, .96, staircase=True)
-        l_r = self.learn_rate
-        opt = tf.train.AdamOptimizer(l_r) #HYP
-        # opt = tf.train.AdamOptimizer()  # HYP
+        # l_r = self.learn_rate
+        l_r = 1e-5
+        # opt = tf.train.AdamOptimizer(learning_rate=l_r) #HYP
+        opt = tf.train.AdamOptimizer()  # HYP
         # opt = tf.train.AdamOptimizer(learning_rate=0.001,beta1=0.9,beta2=0.999,epsilon=1e-08,use_locking=False,name='Adam')
         self.train_op = opt.minimize(self.loss, var_list=tf.trainable_variables())
         print('tf.losses.get_total_loss', tf.losses.get_total_loss(add_regularization_losses=True,
@@ -498,7 +499,7 @@ class SequenceModel(object):
             b_ = self.lengths_to_binary(lengths_batch)
             feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
                          self.tags: tags_batch.astype(numpy.int64),
-                         self.b: b_}
+                         self.b: b_, self.learn_rate: learn_rate}
             fetches = [self.train_op, self.loss, self.accuracy_op, self.correct, self.lengths, self.logits, self.predict]
             # fetches = [self.loss, self.accuracy_op, self.correct, self.lengths, self.logits,
             #            self.predict]
@@ -526,7 +527,7 @@ class SequenceModel(object):
             b_ = self.lengths_to_binary(lengths_batch)
             feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
                          self.tags: tags_batch.astype(numpy.int64),
-                         self.b: b_}
+                         self.b: b_, self.learn_rate: 1}
             fetches = [self.accuracy_op, self.predict]
             accuracy, predict = self.sess.run(fetches, feed_dict=feed_dict)
             eval_accuracy += accuracy
@@ -566,7 +567,7 @@ def main():
     # sess.run(tf.global_variables_initializer())
     while time.time()-time0 <= K:
         print("train epoch {}".format(epoch+1))
-        model.train_epoch(train_terms, train_tags, train_lengths, learn_rate=1e-8)
+        model.train_epoch(train_terms, train_tags, train_lengths, learn_rate=1e-5)
         print('Finished epoch %i. Evaluating ...' % (epoch + 1))
         tmp_val_acc = model.evaluate(test_terms, test_tags, test_lengths, eval_batch_size)
         if tmp_val_acc > best_val_acc:
