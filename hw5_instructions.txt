@@ -1,0 +1,82 @@
+HW5: Office Hours 3-6PM, Vocareum, Changes to documentation of starter code
+My office hours today will be 3 to 6 PM in SAL Computer Lab.
+
+ 
+
+I am just finalizing the assignment on Vocareum -- it took me longer than expected. The deadline for the assignment is now midnight of May 1st.
+
+ 
+
+You will be able to submit the assignment now, however note the following:
+
+Even though you will get graded for DatasetReader and you get your "test accuracy" printed, you still do not get a grade for the test accuracy! Nonetheless, you should be able to hand-calculate your score based on the accuracy given the scoring table in the assignment PDF.
+Note that the current accuracy calculation, does not use save_model or load_model. You dont have to implement those to get accuracy on the screen (for now).
+Once I make another announcement (hopefully by the end of the weekend), you must submit once more before the deadline (May 1st), as this will actually grade you on your test performance (not just print-on-screen). Once that happens, your code will no longer work unless you indeed implement save_model and load_model.
+ 
+
+I have made some changes to the documentation of the starter code but I have not changed any function names or parameter order -- therefore, if you already started filling the code, you do not have to re-copy it, just be aware of the new documentation. I am stating the differences here for convenience:
+
+ReadFile must be returning the dataset as integer IDs (not the string terms and tags!): 
+
+each parsedLine is a list: [(term<strong>Id</strong>1, tag<strong>Id</strong>1), (termId2, tagId2), ...]. In addition, I made a comment that the _index variables can be partially pre-populated, and you are only expected to store new tags/terms onto the indices with a new integer and leaving no int gaps.
+
+run_inference had a typo in the parameter name. We are passing terms and not the tags [the old documentation said that it should be terms but the variable name was wrong].
+Your implementation of train_epoch must return True if you want it to be called again. The timing budget is 3 minutes for training. If it returns False, then it wont be called again (i.e. you would train a single epoch, which in my trials, gets me almost all the way to training 10 or 20 epochs, if you use a good optimizer). It defaults to not returning anything (i.e. identical to returning False) to make the grading script act very fast for those who are still at task 1 [i.e. they would get their grade in seconds rather than >9 minutes == 3 minutes per language].
+
+ 
+
+ 
+
+Finally, Vocareum likes 4 spaces for indentation and if you already coded locally and want to move to vocareum, you might find this code useful:
+
+ 
+
+curl http://sami.haija.org/expandspaces.py | FILE=starter.py  python
+ 
+
+On Mac, you can pipe the output above to pbcopy which will place the formatted code onto your clipboard.
+
+ 
+
+If you are a linux ninja, you can merge-in the diff on starter code -- but this is completely optional.
+
+25a26,29
+>     the _index dictionaries are guaranteed to have no gaps when the method is
+>     called i.e. all integers in [0, len(*_index)-1] will be used as values.
+>     You must preserve the no-gaps property!
+> 
+28c32
+<       each parsedLine is a list: [(term1, tag1), (term2, tag2), ...] 
+---
+>       each parsedLine is a list: [(termId1, tagId1), (termId2, tagId2), ...] 
+177c181
+<   def run_inference(self, tags, lengths):
+---
+>   def run_inference(self, terms, lengths):
+181c185
+<     # logits = session.run(self.logits, {self.x: tags, self.lengths: lengths})
+---
+>     # logits = session.run(self.logits, {self.x: terms, self.lengths: lengths})
+185c189
+<       tags: numpy int matrix, like terms_matrix made by BuildMatrices.
+---
+>       terms: numpy int matrix, like terms_matrix made by BuildMatrices.
+194c198
+<     return numpy.zeros_like(tags)
+---
+>     return numpy.zeros_like(terms)
+225c229,237
+<     """
+---
+> 
+>     Return:
+>       boolean. You should return True iff you want the training to continue. If
+>       you return False (or do not return anyhting) then training will stop after
+>       the first iteration!
+>     """
+>     # <-- Your implementation goes here.
+>     # Finally, make sure you uncomment the `return True` below.
+>     # return True
+ 
+
+#pin

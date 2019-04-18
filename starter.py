@@ -558,7 +558,7 @@ def main():
     model.build_inference()
     model.build_training()
     time0 = time.time()
-    K = 30
+    K = 180
     epoch = 0
     eval_batch_size = 10
     best_val_acc = 0

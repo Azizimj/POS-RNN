@@ -1,0 +1,157 @@
+self.size_embed = 40,  self.state_size = 15, batch_size=32, learn_rate=1e-3, self.cell_type = 'rnn'
+
+[Executed at: Wed Apr 17 20:38:09 PDT 2019]
+
+/usr/local/lib/python3.6/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+from ._conv import register_converters as _register_converters
+2019-04-17 20:35:58.884893: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 AVX512F FMA
+../resource/scripts/submit.sh: line 13: 5195 Done echo "$train_test_text"
+5196 Killed | STARTER=starter3 DATASET_FILE=italian.npz DATASET_DIR=$ASNLIB python3 2>&1 >> results.txt
+2019-04-17 20:37:17.692186: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 AVX512F FMA
+/usr/local/lib/python3.6/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+from ._conv import register_converters as _register_converters
+
+
+Your Task 1a: ReadFile implementation works well, scoring: 100%
+
+
+Your Task 1b: BuildMatrices implementation works well, scoring: 100%
+
+
+Summary:
+Task,Score,MaximumScore
+Task 1a: ReadFile,20,20
+Task 1b: BuildMatrices,10,10
+Total,30,30
+tf.losses.get_total_loss Tensor("model/total_loss:0", shape=(), dtype=float32)
+tf.losses.get_losses []
+tf.losses.get_total_loss Tensor("total_loss:0", shape=(), dtype=float32)
+tf.losses.get_losses [, ]
+Test accuracy for japanese after 0 iterations is 0.030459
+iteration (0)/(222): train batch loss = 3.614, train batch accuracy = 0.019, train acc
+iteration (50)/(222): train batch loss = 3.186, train batch accuracy = 0.233, train acc
+iteration (100)/(222): train batch loss = 2.920, train batch accuracy = 0.242, train acc
+iteration (150)/(222): train batch loss = 2.658, train batch accuracy = 0.272, train acc
+iteration (200)/(222): train batch loss = 2.534, train batch accuracy = 0.339, train acc
+Test accuracy for japanese after 1 iterations is 0.502306
+iteration (0)/(222): train batch loss = 2.543, train batch accuracy = 0.408, train acc
+iteration (50)/(222): train batch loss = 2.342, train batch accuracy = 0.687, train acc
+iteration (100)/(222): train batch loss = 2.295, train batch accuracy = 0.653, train acc
+iteration (150)/(222): train batch loss = 2.206, train batch accuracy = 0.720, train acc
+iteration (200)/(222): train batch loss = 2.210, train batch accuracy = 0.687, train acc
+Test accuracy for japanese after 2 iterations is 0.773475
+iteration (0)/(222): train batch loss = 2.220, train batch accuracy = 0.662, train acc
+iteration (50)/(222): train batch loss = 2.104, train batch accuracy = 0.742, train acc
+iteration (100)/(222): train batch loss = 2.105, train batch accuracy = 0.716, train acc
+iteration (150)/(222): train batch loss = 2.050, train batch accuracy = 0.782, train acc
+iteration (200)/(222): train batch loss = 2.066, train batch accuracy = 0.740, train acc
+Test accuracy for japanese after 3 iterations is 0.814463
+iteration (0)/(222): train batch loss = 2.082, train batch accuracy = 0.725, train acc
+iteration (50)/(222): train batch loss = 2.003, train batch accuracy = 0.774, train acc
+iteration (100)/(222): train batch loss = 2.010, train batch accuracy = 0.751, train acc
+iteration (150)/(222): train batch loss = 1.973, train batch accuracy = 0.821, train acc
+iteration (200)/(222): train batch loss = 2.002, train batch accuracy = 0.769, train acc
+Test accuracy for japanese after 4 iterations is 0.839962
+iteration (0)/(222): train batch loss = 2.013, train batch accuracy = 0.748, train acc
+iteration (50)/(222): train batch loss = 1.950, train batch accuracy = 0.811, train acc
+iteration (100)/(222): train batch loss = 1.958, train batch accuracy = 0.786, train acc
+iteration (150)/(222): train batch loss = 1.935, train batch accuracy = 0.843, train acc
+iteration (200)/(222): train batch loss = 1.962, train batch accuracy = 0.815, train acc
+Test accuracy for japanese after 5 iterations is 0.869637
+iteration (0)/(222): train batch loss = 1.965, train batch accuracy = 0.787, train acc
+iteration (50)/(222): train batch loss = 1.914, train batch accuracy = 0.853, train acc
+iteration (100)/(222): train batch loss = 1.920, train batch accuracy = 0.829, train acc
+iteration (150)/(222): train batch loss = 1.905, train batch accuracy = 0.863, train acc
+iteration (200)/(222): train batch loss = 1.924, train batch accuracy = 0.840, train acc
+Test accuracy for japanese after 6 iterations is 0.886172
+iteration (0)/(222): train batch loss = 1.929, train batch accuracy = 0.818, train acc
+iteration (50)/(222): train batch loss = 1.886, train batch accuracy = 0.869, train acc
+iteration (100)/(222): train batch loss = 1.890, train batch accuracy = 0.852, train acc
+iteration (150)/(222): train batch loss = 1.885, train batch accuracy = 0.871, train acc
+iteration (200)/(222): train batch loss = 1.903, train batch accuracy = 0.856, train acc
+Test accuracy for japanese after 7 iterations is 0.899138
+iteration (0)/(222): train batch loss = 1.904, train batch accuracy = 0.844, train acc
+iteration (50)/(222): train batch loss = 1.868, train batch accuracy = 0.885, train acc
+iteration (100)/(222): train batch loss = 1.871, train batch accuracy = 0.871, train acc
+iteration (150)/(222): train batch loss = 1.873, train batch accuracy = 0.875, train acc
+iteration (200)/(222): train batch loss = 1.888, train batch accuracy = 0.872, train acc
+Test accuracy for japanese after 8 iterations is 0.908711
+iteration (0)/(222): train batch loss = 1.889, train batch accuracy = 0.868, train acc
+iteration (50)/(222): train batch loss = 1.856, train batch accuracy = 0.903, train acc
+iteration (100)/(222): train batch loss = 1.858, train batch accuracy = 0.890, train acc
+iteration (150)/(222): train batch loss = 1.864, train batch accuracy = 0.895, train acc
+iteration (200)/(222): train batch loss = 1.880, train batch accuracy = 0.882, train acc
+Test accuracy for japanese after 9 iterations is 0.915064
+iteration (0)/(222): train batch loss = 1.879, train batch accuracy = 0.886, train acc
+iteration (50)/(222): train batch loss = 1.846, train batch accuracy = 0.925, train acc
+iteration (100)/(222): train batch loss = 1.850, train batch accuracy = 0.907, train acc
+iteration (150)/(222): train batch loss = 1.857, train batch accuracy = 0.913, train acc
+iteration (200)/(222): train batch loss = 1.873, train batch accuracy = 0.894, train acc
+Test accuracy for japanese after 10 iterations is 0.918545
+iteration (0)/(222): train batch loss = 1.871, train batch accuracy = 0.905, train acc
+iteration (50)/(222): train batch loss = 1.834, train batch accuracy = 0.934, train acc
+iteration (100)/(222): train batch loss = 1.845, train batch accuracy = 0.921, train acc
+iteration (150)/(222): train batch loss = 1.851, train batch accuracy = 0.920, train acc
+iteration (200)/(222): train batch loss = 1.868, train batch accuracy = 0.890, train acc
+Test accuracy for japanese after 11 iterations is 0.921765
+iteration (0)/(222): train batch loss = 1.864, train batch accuracy = 0.914, train acc
+iteration (50)/(222): train batch loss = 1.829, train batch accuracy = 0.937, train acc
+iteration (100)/(222): train batch loss = 1.839, train batch accuracy = 0.923, train acc
+iteration (150)/(222): train batch loss = 1.845, train batch accuracy = 0.921, train acc
+iteration (200)/(222): train batch loss = 1.863, train batch accuracy = 0.893, train acc
+Final accuracy for japanese is 0.922461
+#####################################################################################
+#####################################################################################
+##########################################################################################
+self.size_embed = 40,  self.state_size = 15, batch_size=32, learn_rate=1e-3, self.cell_type = 'rnn', 1 epoch
+[Executed at: Wed Apr 17 21:48:01 PDT 2019]
+
+/usr/local/lib/python3.6/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+from ._conv import register_converters as _register_converters
+2019-04-17 21:46:38.790103: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 AVX512F FMA
+/usr/local/lib/python3.6/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+from ._conv import register_converters as _register_converters
+2019-04-17 21:47:43.117863: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 AVX512F FMA
+/usr/local/lib/python3.6/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+from ._conv import register_converters as _register_converters
+
+
+Your Task 1a: ReadFile implementation works well, scoring: 100%
+
+
+Your Task 1b: BuildMatrices implementation works well, scoring: 100%
+
+
+Summary:
+Task,Score,MaximumScore
+Task 1a: ReadFile,20,20
+Task 1b: BuildMatrices,10,10
+Total,30,30
+tf.losses.get_total_loss Tensor("model/total_loss:0", shape=(), dtype=float32)
+tf.losses.get_losses []
+tf.losses.get_total_loss Tensor("total_loss:0", shape=(), dtype=float32)
+tf.losses.get_losses [, ]
+Test accuracy for italian after 0 iterations is 0.028387
+iteration (0)/(432): train batch loss = 3.689, train batch accuracy = 0.021, train acc
+iteration (50)/(432): train batch loss = 3.213, train batch accuracy = 0.160, train acc
+iteration (100)/(432): train batch loss = 2.983, train batch accuracy = 0.187, train acc
+iteration (150)/(432): train batch loss = 2.782, train batch accuracy = 0.165, train acc
+iteration (200)/(432): train batch loss = 2.590, train batch accuracy = 0.255, train acc
+iteration (250)/(432): train batch loss = 2.662, train batch accuracy = 0.362, train acc
+iteration (300)/(432): train batch loss = 2.384, train batch accuracy = 0.599, train acc
+iteration (350)/(432): train batch loss = 2.375, train batch accuracy = 0.599, train acc
+iteration (400)/(432): train batch loss = 2.298, train batch accuracy = 0.656, train acc
+Final accuracy for italian is 0.721571
+tf.losses.get_total_loss Tensor("model/total_loss:0", shape=(), dtype=float32)
+tf.losses.get_losses []
+tf.losses.get_total_loss Tensor("total_loss:0", shape=(), dtype=float32)
+tf.losses.get_losses [, ]
+Test accuracy for japanese after 0 iterations is 0.026194
+iteration (0)/(222): train batch loss = 3.612, train batch accuracy = 0.023, train acc
+iteration (50)/(222): train batch loss = 3.121, train batch accuracy = 0.189, train acc
+iteration (100)/(222): train batch loss = 2.942, train batch accuracy = 0.242, train acc
+iteration (150)/(222): train batch loss = 2.735, train batch accuracy = 0.171, train acc
+iteration (200)/(222): train batch loss = 2.614, train batch accuracy = 0.171, train acc
+Final accuracy for japanese is 0.186407
+
+
