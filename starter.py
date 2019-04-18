@@ -5,6 +5,8 @@ import io
 import pickle
 import time
 
+tf.random.set_random_seed(110)
+# seed(110)
 
 USC_EMAIL = 'azizim@usc.edu'  # TODO(student): Fill to compete on rankings.
 PASSWORD = '3e173a6bb4a2a4ce'  # TODO(student): You will be given a password via email.
@@ -206,15 +208,17 @@ class SequenceModel(object):
         # self.cell_type = 'bidic_rnn'
         # self.cell_type = 'bidic_lstm'
         self.log_step = 10
-        # tf.reset_default_graph()
         self.sess = tf.Session()
         self.size_embed = 40  # HYP
         self.state_size = 15  # HYP
         self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
         self.learn_rate = tf.placeholder(tf.float32, [], 'lr')
-        self.dropout_keep_prob = .5  #HYP
+        self.dropout_keep_prob = None  #HYP
         self.use_fc = False
         self.epoch_return = True
+        print("size_embed {}, state_size {}, dropout_keep_prob {}, use_fc {}, epoch_return {}".format(
+            self.size_embed, self.state_size, self.dropout_keep_prob, self.use_fc, self.epoch_return
+        ))
         # self._accuracy()
 
 
@@ -331,11 +335,23 @@ class SequenceModel(object):
                                                          recurrent_regularizer=None,bias_regularizer=None,
                                                          kernel_constraint=None,recurrent_constraint=None,
                                                          bias_constraint=None, dropout=0.0)
-                # tmp_max_length = tf.reduce_max(self.lengths)
-                for i in range(self.max_length):
-                    cur_state = rnn_cell(xemb[:, i, :], [cur_state])[0]  # shape (batch, state_size)
-                    states.append(cur_state)
-                stacked_states = tf.stack(states, axis=1)  # Shape (batch, max_length, state_size)
+                # rnn_cell = tf.nn.rnn_cell.BasicRNNCell(self.state_size)
+                if self.dropout_keep_prob is not None:
+                    rnn_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_cell, output_keep_prob=self.dropout_keep_prob,
+                                                             input_keep_prob=1.0,
+                                                             state_keep_prob=1.0)
+                # for i in range(self.max_length):
+                #     cur_state = rnn_cell(xemb[:, i, :], [cur_state])[0]  # shape (batch, state_size)
+                #     states.append(cur_state)
+                # stacked_states = tf.stack(states, axis=1)  # Shape (batch, max_length, state_size)
+
+                stacked_states = tf.nn.dynamic_rnn(rnn_cell, xemb, dtype=tf.float32)[0]
+
+                rnn_cell = tf.keras.layers.RNN(rnn_cell, return_sequences=False, return_state=False,
+                                                    go_backwards =False, stateful=False, unroll=False,
+                                                    time_major =False)
+                stacked_states = rnn_cell(xemb)
+
             elif self.cell_type == 'lstm':
                 # rnn_cell = tf.keras.layers.LSTMCell(units=self.state_size, activation='tanh')
                 # rnn_cell = tf.nn.rnn_cell.LSTMCell(self.state_size,)
@@ -343,6 +359,10 @@ class SequenceModel(object):
                 #                                         forget_bias=1.0, state_is_tuple=True,
                 #                                         activation=None, reuse=None, name=None, dtype=None)
                 rnn_cell = tf.nn.rnn_cell.BasicLSTMCell(num_units=self.state_size, reuse=tf.AUTO_REUSE)
+                if self.dropout_keep_prob is not None:
+                    rnn_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_cell, output_keep_prob=self.dropout_keep_prob,
+                                                             input_keep_prob=1.0,
+                                                             state_keep_prob=1.0)
                 # rnn_cell = tf.keras.layers.LSTMCell(units=self.state_size, activation='tanh',
                 #                                     recurrent_activation='hard_sigmoid', use_bias=True,
                 #                                     kernel_initializer='glorot_uniform',
@@ -352,14 +372,17 @@ class SequenceModel(object):
                 #                                     kernel_constraint=None, recurrent_constraint=None,
                 #                                     bias_constraint=None, dropout=0.0,
                 #                                     recurrent_dropout=0.0, implementation=1)
-                rnn_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_cell, output_keep_prob=1)
                 stacked_states = tf.nn.dynamic_rnn(rnn_cell, inputs=xemb, dtype=tf.float32)[0]
             elif self.cell_type == "bidic_rnn":
                 rnn_fw_cell = tf.nn.rnn_cell.BasicRNNCell(self.state_size, reuse=tf.AUTO_REUSE)  # forward direction cell
                 rnn_bw_cell = tf.nn.rnn_cell.BasicRNNCell(self.state_size, reuse=tf.AUTO_REUSE)  # backward direction cell
                 if self.dropout_keep_prob is not None:
-                    rnn_fw_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_fw_cell, output_keep_prob=self.dropout_keep_prob)
-                    rnn_bw_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_bw_cell, output_keep_prob=self.dropout_keep_prob)
+                    rnn_fw_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_fw_cell, output_keep_prob=self.dropout_keep_prob,
+                                                                input_keep_prob=1.0,
+                                                                state_keep_prob=1.0)
+                    rnn_bw_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_bw_cell, output_keep_prob=self.dropout_keep_prob,
+                                                                input_keep_prob=1.0,
+                                                                state_keep_prob=1.0)
                 # bidirectional_dynamic_rnn: input: [batch_size, max_time, input_size]
                 #                            output: A tuple (outputs, output_states)
                 #                                    where:outputs: A tuple (output_fw, output_bw) containing the forward and the backward rnn output `Tensor`.
@@ -369,8 +392,12 @@ class SequenceModel(object):
                 lstm_fw_cell = tf.nn.rnn_cell.BasicLSTMCell(self.state_size,reuse=tf.AUTO_REUSE)  # forward direction cell
                 lstm_bw_cell = tf.nn.rnn_cell.BasicLSTMCell(self.state_size,reuse=tf.AUTO_REUSE)  # backward direction cell
                 if self.dropout_keep_prob is not None:
-                    lstm_fw_cell = tf.nn.rnn_cell.DropoutWrapper(lstm_fw_cell, output_keep_prob=self.dropout_keep_prob)
-                    lstm_bw_cell = tf.nn.rnn_cell.DropoutWrapper(lstm_bw_cell, output_keep_prob=self.dropout_keep_prob)
+                    lstm_fw_cell = tf.nn.rnn_cell.DropoutWrapper(lstm_fw_cell, output_keep_prob=self.dropout_keep_prob,
+                                                                 input_keep_prob=1.0,
+                                                                 state_keep_prob=1.0)
+                    lstm_bw_cell = tf.nn.rnn_cell.DropoutWrapper(lstm_bw_cell, output_keep_prob=self.dropout_keep_prob,
+                                                                 input_keep_prob=1.0,
+                                                                 state_keep_prob=1.0)
                 # bidirectional_dynamic_rnn: input: [batch_size, max_time, input_size]
                 #                            output: A tuple (outputs, output_states)
                 #                                    where:outputs: A tuple (output_fw, output_bw) containing the forward and the backward rnn output `Tensor`.
@@ -403,7 +430,7 @@ class SequenceModel(object):
         return self.logits
 
     # TODO(student): You must implement this.
-    def run_inference(self, terms, lengths):
+    def run_inference_(self, terms, lengths):
         """Evaluates self.logits given self.x and self.lengths.
 
         Hint: This function is straight forward and you might find this code useful:
@@ -426,6 +453,26 @@ class SequenceModel(object):
         # return tf.cast(tf.argmax(logits, axis=2), tf.int64)
         return tf.argmax(logits, axis=2)
         # return numpy.zeros_like(tags)
+
+    def run_inference(self, terms, lengths):
+        """Evaluates self.logits given self.x and self.lengths.
+
+        Hint: This function is straight forward and you might find this code useful:
+        # logits = session.run(self.logits, {self.x: terms, self.lengths: lengths})
+        # return numpy.argmax(logits, axis=2)
+
+        Args:
+            terms: numpy int matrix, like terms_matrix made by BuildMatrices.
+            lengths: numpy int vector, like lengths made by BuildMatrices.
+
+        Returns:
+            numpy int matrix of the predicted tags, with shape identical to the int
+            matrix tags i.e. each term must have its associated tag. The caller will
+            *not* process the output tags beyond the sentence length i.e. you can have
+            arbitrary values beyond length.
+        """
+        logits = self.sess.run(self.logits, {self.x: terms, self.lengths: lengths})
+        return numpy.argmax(logits, axis=2)
 
     # TODO(student): You must implement this.
     def build_training(self):
@@ -462,7 +509,7 @@ class SequenceModel(object):
         return
 
     def _accuracy(self):
-        self.predict = self.run_inference(self.x, self.lengths)
+        self.predict = self.run_inference_(self.x, self.lengths)
         self.lens_to_bin = self.lengths_vector_to_binary_matrix(self.lengths)
         self.correct = tf.multiply(tf.cast(tf.equal(self.predict, self.tags), tf.float32), self.lens_to_bin)
         # self.accuracy_op = tf.reduce_mean(tf.cast(correct, tf.float32))
