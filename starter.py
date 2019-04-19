@@ -207,13 +207,13 @@ class SequenceModel(object):
         # self.cell_type = 'lstm'
         # self.cell_type = 'bidic_rnn'
         # self.cell_type = 'bidic_lstm'
-        self.log_step = 10
+        self.log_step = 100
         self.sess = tf.Session()
         self.size_embed = 40  # HYP
         self.state_size = 15  # HYP
         self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
         self.learn_rate = tf.placeholder(tf.float32, [], 'lr')
-        self.dropout_keep_prob = 1  #HYP
+        self.dropout_keep_prob = None  #HYP
         self.use_fc = True
         self.epoch_return = True
         self.use_bn = False
@@ -424,7 +424,7 @@ class SequenceModel(object):
                 print("Wrong cell type")
 
             # logits: A Tensor of shape[batch_size, sequence_length, num_decoder_symbols] and dtype float.
-            if self.use_fc == True:
+            if self.use_fc:
                 self.logits = tf.contrib.layers.fully_connected(stacked_states, int(self.num_tags), activation_fn=tf.nn.softmax,
                                                            normalizer_fn=None, normalizer_params=None,
                                                            weights_initializer=tf.contrib.layers.xavier_initializer(),
@@ -599,7 +599,7 @@ class SequenceModel(object):
             accuracy, predict = self.sess.run(fetches, feed_dict=feed_dict)
             eval_accuracy += accuracy
             eval_iter += 1
-        print('accuracy on val: {}'.format(eval_accuracy / eval_iter))
+        # print('accuracy on val: {}'.format(eval_accuracy / eval_iter))
         return eval_accuracy / eval_iter
 
 
@@ -610,8 +610,8 @@ def main():
     # Read dataset.
     reader = DatasetReader()
     # train_filename = sys.argv[1]
-    # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged.txt"  # japonease
-    train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged_small.txt"  # japonease
+    train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged.txt"  # japonease
+    # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged_small.txt"  # japonease
     # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\it_isdt_train_tagged.txt"
     # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\it_isdt_train_tagged_small.txt"
     test_filename = train_filename.replace('_train_', '_dev_')
@@ -624,9 +624,9 @@ def main():
     model.build_inference()
     model.build_training()
     time0 = time.time()
-    K = 1
+    K = 180
     epoch = 0
-    eval_batch_size = 10
+    eval_batch_size = 32
     best_val_acc = 0
     best_val_acc_epoch = 0
     print('-' * 5 + '  Start training  ' + '-' * 5)
@@ -634,9 +634,10 @@ def main():
     # sess.run(tf.global_variables_initializer())
     while time.time()-time0 <= K:
         print("train epoch {}".format(epoch+1))
-        model.train_epoch(train_terms, train_tags, train_lengths, batch_size=20, learn_rate=1e-5)
+        model.train_epoch(train_terms, train_tags, train_lengths, batch_size=32, learn_rate=1e-2)
         print('Finished epoch %i. Evaluating ...' % (epoch + 1))
         tmp_val_acc = model.evaluate(test_terms, test_tags, test_lengths, eval_batch_size)
+        print('accuracy on val: {}'.format(tmp_val_acc))
         if tmp_val_acc > best_val_acc:
             best_val_acc = tmp_val_acc
             best_val_acc_epoch = epoch
