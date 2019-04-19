@@ -650,7 +650,8 @@ def main():
     model.build_inference()
     model.load_model('model.pkl')
     model.run_inference(test_terms, test_lengths)
-    model.evaluate(test_terms, test_tags, test_lengths, eval_batch_size)
+    tmp_val_acc = model.evaluate(test_terms, test_tags, test_lengths, eval_batch_size)
+    print('accuracy on val: {}'.format(tmp_val_acc))
 
     print('time {}'.format(time.time()-time0))
 
