@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="490b93da-5ee1-4499-8ec0-b74e7ce1a9b6" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/model.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/starter.py" beforeDir="false" afterPath="$PROJECT_DIR$/starter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/submission.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vocareum.txt" beforeDir="false" afterPath="$PROJECT_DIR$/vocareum.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,8 +16,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/starter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="209" column="27" selection-start-line="209" selection-start-column="27" selection-end-line="209" selection-end-column="27" />
+            <state relative-caret-position="188">
+              <caret line="647" column="28" lean-forward="true" selection-start-line="647" selection-start-column="28" selection-end-line="647" selection-end-column="28" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
                 <element signature="e#327#7465#0" />
@@ -221,13 +220,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1554859643014</updated>
-    </task>
-    <task id="LOCAL-00011" summary="Saturday">
-      <created>1555181254616</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1555181254616</updated>
     </task>
     <task id="LOCAL-00012" summary="Saturday">
       <created>1555189785582</created>
@@ -565,7 +557,14 @@
       <option name="project" value="LOCAL" />
       <updated>1555658841223</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="Thursday">
+      <created>1555659326100</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1555659326100</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -578,7 +577,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16263238" />
@@ -586,7 +585,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3289689" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924356" visible="true" weight="0.34697217" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924356" visible="true" weight="0.20621932" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.24222586" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -880,8 +879,8 @@ stacked_states = rnn_cell(xemb)</expression-string>
     </entry>
     <entry file="file://$PROJECT_DIR$/starter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="209" column="27" selection-start-line="209" selection-start-column="27" selection-end-line="209" selection-end-column="27" />
+        <state relative-caret-position="188">
+          <caret line="647" column="28" lean-forward="true" selection-start-line="647" selection-start-column="28" selection-end-line="647" selection-end-column="28" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
             <element signature="e#327#7465#0" />
