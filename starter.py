@@ -210,7 +210,7 @@ class SequenceModel(object):
         self.log_step = 100
         self.sess = tf.Session()
         self.size_embed = 40  # HYP
-        self.state_size = 15  # HYP
+        self.state_size = 20  # HYP
         self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
         self.learn_rate = tf.placeholder(tf.float32, [], 'lr')
         self.dropout_keep_prob = None  #HYP
