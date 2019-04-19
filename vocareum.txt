@@ -753,7 +753,7 @@ Final accuracy for japanese is 0.866330
 #########################################################################################################
 #########################################################################################################
 #########################################################################################################
-
+40	15	32	-	rnn	-	Adam	-	-	11, 0.910713	-
 [Executed at: Thu Apr 18 14:41:19 PDT 2019]
 
 /usr/local/lib/python3.6/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
@@ -854,3 +854,6 @@ iteration (100)/(222): train batch loss = 1.838, train batch accuracy = 0.915, t
 iteration (150)/(222): train batch loss = 1.841, train batch accuracy = 0.910, train acc
 iteration (200)/(222): train batch loss = 1.860, train batch accuracy = 0.898, train acc
 Final accuracy for japanese is 0.910713
+##########################################################################################
+##########################################################################################
+##########################################################################################

@@ -203,8 +203,8 @@ class SequenceModel(object):
         self.lengths = tf.placeholder(tf.int64, [None], 'lengths')
         self.tags = tf.placeholder(tf.int64, [None, self.max_length], 'tags')
         # I usually prefer int32 for space and speed, but the embedding_lookup function expects int64
-        self.cell_type = 'rnn'
-        # self.cell_type = 'lstm'
+        # self.cell_type = 'rnn'
+        self.cell_type = 'lstm'
         # self.cell_type = 'bidic_rnn'
         # self.cell_type = 'bidic_lstm'
         self.log_step = 10
@@ -213,11 +213,12 @@ class SequenceModel(object):
         self.state_size = 15  # HYP
         self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
         self.learn_rate = tf.placeholder(tf.float32, [], 'lr')
-        self.dropout_keep_prob = None  #HYP
-        self.use_fc = False
+        self.dropout_keep_prob = 1  #HYP
+        self.use_fc = True
         self.epoch_return = True
-        print("size_embed {}, state_size {}, dropout_keep_prob {}, use_fc {}, epoch_return {}".format(
-            self.size_embed, self.state_size, self.dropout_keep_prob, self.use_fc, self.epoch_return
+        self.use_bn = True
+        print("size_embed {}, state_size {}, dropout_keep_prob {}, use_fc {}, epoch_return {} usc_bn {}".format(
+            self.size_embed, self.state_size, self.dropout_keep_prob, self.use_fc, self.epoch_return, self.use_bn
         ))
         # self._accuracy()
 
@@ -314,10 +315,13 @@ class SequenceModel(object):
             xemb_ = tf.nn.embedding_lookup(params=self.embed, ids=self.x, partition_strategy='mod', name=None,
                                           validate_indices=True, max_norm=None)
             states = []
-            if self.use_fc == True:
-                cur_state = tf.zeros(shape=[1, self.state_size])
-            else:
-                cur_state = tf.zeros(shape=[1, self.num_tags])
+            # if self.use_fc == True:
+            #     cur_state = tf.zeros(shape=[1, self.state_size])
+            # else:
+            #     cur_state = tf.zeros(shape=[1, self.num_tags])
+            #     self.state_size = self.num_tags
+
+            if not self.use_fc:
                 self.state_size = self.num_tags
 
             # 2. put the time dimension on axis=1 for dynamic_rnn
@@ -328,14 +332,14 @@ class SequenceModel(object):
             # word_lengths = tf.reshape(self.word_lengths, shape=[-1])
 
             if self.cell_type == 'rnn':
-                rnn_cell = tf.keras.layers.SimpleRNNCell(self.state_size, activation='tanh', use_bias=True,
-                                                         kernel_initializer='glorot_uniform',
-                                                         recurrent_initializer='orthogonal',recurrent_dropout=0.0,
-                                                         bias_initializer='zeros',kernel_regularizer=None,
-                                                         recurrent_regularizer=None,bias_regularizer=None,
-                                                         kernel_constraint=None,recurrent_constraint=None,
-                                                         bias_constraint=None, dropout=0.0)
-                # rnn_cell = tf.nn.rnn_cell.BasicRNNCell(self.state_size)
+                # rnn_cell = tf.keras.layers.SimpleRNNCell(self.state_size, activation='tanh', use_bias=True,
+                #                                          kernel_initializer='glorot_uniform',
+                #                                          recurrent_initializer='orthogonal',recurrent_dropout=0.0,
+                #                                          bias_initializer='zeros',kernel_regularizer=None,
+                #                                          recurrent_regularizer=None,bias_regularizer=None,
+                #                                          kernel_constraint=None,recurrent_constraint=None,
+                #                                          bias_constraint=None, dropout=0.0)
+                rnn_cell = tf.nn.rnn_cell.BasicRNNCell(self.state_size)
                 if self.dropout_keep_prob is not None:
                     rnn_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_cell, output_keep_prob=self.dropout_keep_prob,
                                                              input_keep_prob=1.0,
@@ -346,12 +350,12 @@ class SequenceModel(object):
                 # stacked_states = tf.stack(states, axis=1)  # Shape (batch, max_length, state_size)
 
                 stacked_states = tf.nn.dynamic_rnn(rnn_cell, xemb, dtype=tf.float32)[0]
-
-                rnn_cell = tf.keras.layers.RNN(rnn_cell, return_sequences=False, return_state=False,
-                                                    go_backwards =False, stateful=False, unroll=False,
-                                                    time_major =False)
-                stacked_states = rnn_cell(xemb)
-
+                if self.use_bn:
+                    stacked_states = tf.keras.layers.BatchNormalization()(stacked_states)
+                # rnn_cell = tf.keras.layers.RNN(rnn_cell, return_sequences=False, return_state=False,
+                #                                     go_backwards =False, stateful=False, unroll=False,
+                #                                     time_major =False)
+                # stacked_states = rnn_cell(xemb)
             elif self.cell_type == 'lstm':
                 # rnn_cell = tf.keras.layers.LSTMCell(units=self.state_size, activation='tanh')
                 # rnn_cell = tf.nn.rnn_cell.LSTMCell(self.state_size,)
@@ -373,6 +377,8 @@ class SequenceModel(object):
                 #                                     bias_constraint=None, dropout=0.0,
                 #                                     recurrent_dropout=0.0, implementation=1)
                 stacked_states = tf.nn.dynamic_rnn(rnn_cell, inputs=xemb, dtype=tf.float32)[0]
+                if self.use_bn:
+                    stacked_states = tf.keras.layers.BatchNormalization()(stacked_states)
             elif self.cell_type == "bidic_rnn":
                 rnn_fw_cell = tf.nn.rnn_cell.BasicRNNCell(self.state_size, reuse=tf.AUTO_REUSE)  # forward direction cell
                 rnn_bw_cell = tf.nn.rnn_cell.BasicRNNCell(self.state_size, reuse=tf.AUTO_REUSE)  # backward direction cell
