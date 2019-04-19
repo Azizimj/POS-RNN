@@ -204,9 +204,9 @@ class SequenceModel(object):
         self.tags = tf.placeholder(tf.int64, [None, self.max_length], 'tags')
         # I usually prefer int32 for space and speed, but the embedding_lookup function expects int64
         # self.cell_type = 'rnn'
-        self.cell_type = 'lstm'
+        # self.cell_type = 'lstm'
         # self.cell_type = 'bidic_rnn'
-        # self.cell_type = 'bidic_lstm'
+        self.cell_type = 'bidic_lstm'
         self.log_step = 10
         self.sess = tf.Session()
         self.size_embed = 40  # HYP
@@ -394,6 +394,8 @@ class SequenceModel(object):
                 #                                    where:outputs: A tuple (output_fw, output_bw) containing the forward and the backward rnn output `Tensor`.
                 stacked_states = tf.concat(tf.nn.bidirectional_dynamic_rnn(rnn_fw_cell, rnn_bw_cell, xemb,
                                                                            dtype=tf.float32)[0], axis=2)  # [batch_size,sequence_length,hidden_size*2]
+                if self.use_bn:
+                    stacked_states = tf.keras.layers.BatchNormalization()(stacked_states)
             elif self.cell_type == 'bidic_lstm':
                 lstm_fw_cell = tf.nn.rnn_cell.BasicLSTMCell(self.state_size,reuse=tf.AUTO_REUSE)  # forward direction cell
                 lstm_bw_cell = tf.nn.rnn_cell.BasicLSTMCell(self.state_size,reuse=tf.AUTO_REUSE)  # backward direction cell
@@ -409,6 +411,8 @@ class SequenceModel(object):
                 #                                    where:outputs: A tuple (output_fw, output_bw) containing the forward and the backward rnn output `Tensor`.
                 stacked_states = tf.concat(tf.nn.bidirectional_dynamic_rnn(lstm_fw_cell, lstm_bw_cell, xemb,
                                                              dtype=tf.float32)[0], axis=2) #[batch_size,sequence_length,hidden_size*2]
+                if self.use_bn:
+                    stacked_states = tf.keras.layers.BatchNormalization()(stacked_states)
             else:
                 # cell_fw = tf.contrib.rnn.LSTMCell(self.state_size, state_is_tuple=True)
                 # cell_bw = tf.contrib.rnn.LSTMCell(self.state_size, state_is_tuple=True)
