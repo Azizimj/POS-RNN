@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="490b93da-5ee1-4499-8ec0-b74e7ce1a9b6" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/voc_code_backup.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/model.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/model.pkl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/starter.py" beforeDir="false" afterPath="$PROJECT_DIR$/starter.py" afterDir="false" />
@@ -18,21 +19,18 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/starter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="263" lean-forward="true" selection-start-line="263" selection-end-line="263" />
+            <state relative-caret-position="3418">
+              <caret line="425" column="52" selection-start-line="425" selection-start-column="52" selection-end-line="425" selection-end-column="52" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
-                <element signature="e#514#2656#0" />
                 <element signature="e#2751#4678#0" />
                 <element signature="e#4751#7465#0" />
-                <element signature="e#9106#10776#0" />
                 <element signature="e#10868#11186#0" />
                 <element signature="e#11276#11982#0" />
-                <element signature="e#14787#16419#0" />
-                <element signature="e#18027#19477#0" />
-                <element signature="e#17660#18762#0" />
+                <element signature="e#16262#18260#0" />
+                <element signature="e#18348#19920#0" />
+                <element signature="e#19986#21554#0" />
                 <element signature="e#18797#19471#0" />
-                <element signature="e#19651#20345#0" />
                 <element signature="e#20565#21620#0" />
                 <element signature="e#23983#25183#0" />
                 <element signature="e#21706#23641#0" />
@@ -96,7 +94,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="170" />
     <option name="y" value="91" />
     <option name="width" value="1026" />
@@ -223,20 +221,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1554859643014</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Friday">
-      <created>1555127922216</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1555127922216</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Friday">
-      <created>1555128037071</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1555128037071</updated>
     </task>
     <task id="LOCAL-00008" summary="Friday">
       <created>1555129561671</created>
@@ -567,7 +551,21 @@
       <option name="project" value="LOCAL" />
       <updated>1555626390375</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="Thursday">
+      <created>1555654119572</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1555654119573</updated>
+    </task>
+    <task id="LOCAL-00056" summary="Thursday">
+      <created>1555654830565</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1555654830565</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -583,12 +581,12 @@
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.09682299" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16263238" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3289689" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924356" visible="true" weight="0.39770868" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924356" visible="true" weight="0.20458265" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.24222586" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -621,6 +619,11 @@
           <url>file://$PROJECT_DIR$/starter.py</url>
           <line>353</line>
           <option name="timeStamp" value="95" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/starter.py</url>
+          <line>237</line>
+          <option name="timeStamp" value="97" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -877,21 +880,18 @@ stacked_states = rnn_cell(xemb)</expression-string>
     </entry>
     <entry file="file://$PROJECT_DIR$/starter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="263" lean-forward="true" selection-start-line="263" selection-end-line="263" />
+        <state relative-caret-position="3418">
+          <caret line="425" column="52" selection-start-line="425" selection-start-column="52" selection-end-line="425" selection-end-column="52" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#514#2656#0" />
             <element signature="e#2751#4678#0" />
             <element signature="e#4751#7465#0" />
-            <element signature="e#9106#10776#0" />
             <element signature="e#10868#11186#0" />
             <element signature="e#11276#11982#0" />
-            <element signature="e#14787#16419#0" />
-            <element signature="e#18027#19477#0" />
-            <element signature="e#17660#18762#0" />
+            <element signature="e#16262#18260#0" />
+            <element signature="e#18348#19920#0" />
+            <element signature="e#19986#21554#0" />
             <element signature="e#18797#19471#0" />
-            <element signature="e#19651#20345#0" />
             <element signature="e#20565#21620#0" />
             <element signature="e#23983#25183#0" />
             <element signature="e#21706#23641#0" />
