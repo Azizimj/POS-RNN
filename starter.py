@@ -210,7 +210,7 @@ class SequenceModel(object):
         self.log_step = 100
         self.sess = tf.Session()
         self.size_embed = 40  # HYP
-        self.state_size = 20  # HYP
+        self.state_size = 15  # HYP
         # self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
         self.learn_rate = tf.placeholder(tf.float32, [], 'lr')
         self.dropout_keep_prob = None  #HYP
@@ -594,10 +594,10 @@ class SequenceModel(object):
             x_batch = terms[i * self.batch_size:(i + 1) * self.batch_size][:]
             tags_batch = tags[i * self.batch_size:(i + 1) * self.batch_size]
             lengths_batch = lengths[i * self.batch_size:(i + 1) * self.batch_size]
-            b_ = self.lengths_to_binary(lengths_batch)
+            # b_ = self.lengths_to_binary(lengths_batch)
             feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
                          self.tags: tags_batch.astype(numpy.int64),
-                         self.b: b_, self.learn_rate: 1}
+                         self.learn_rate: 1}
             fetches = [self.accuracy_op, self.predict]
             accuracy, predict = self.sess.run(fetches, feed_dict=feed_dict)
             eval_accuracy += accuracy
@@ -613,8 +613,8 @@ def main():
     # Read dataset.
     reader = DatasetReader()
     # train_filename = sys.argv[1]
-    train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged.txt"  # japonease
-    # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged_small.txt"  # japonease
+    # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged.txt"  # japonease
+    train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged_small.txt"  # japonease
     # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\it_isdt_train_tagged.txt"
     # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\it_isdt_train_tagged_small.txt"
     test_filename = train_filename.replace('_train_', '_dev_')
@@ -627,7 +627,7 @@ def main():
     model.build_inference()
     model.build_training()
     time0 = time.time()
-    K = 180
+    K = 1
     epoch = 0
     eval_batch_size = 32
     best_val_acc = 0
