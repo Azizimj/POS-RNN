@@ -220,7 +220,6 @@ class SequenceModel(object):
         print("size_embed {}, state_size {}, dropout_keep_prob {}, use_fc {}, epoch_return {} usc_bn {}".format(
             self.size_embed, self.state_size, self.dropout_keep_prob, self.use_fc, self.epoch_return, self.use_bn
         ))
-        # self._accuracy()
 
 
     # TODO(student): You must implement this.
@@ -235,7 +234,7 @@ class SequenceModel(object):
         """
         # num_batch_ = length_vector.shape[0].value
         # if num_batch_ == None:
-        self.lens_to_bin = tf.cast(tf.sequence_mask(length_vector, 310), tf.float32)
+        self.lens_to_bin = tf.cast(tf.sequence_mask(length_vector, self.max_length), tf.float32)
 
         # if self.is_build:
         #     self.lens_to_bin = self.b
