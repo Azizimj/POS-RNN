@@ -211,7 +211,7 @@ class SequenceModel(object):
         self.sess = tf.Session()
         self.size_embed = 40  # HYP
         self.state_size = 20  # HYP
-        self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
+        # self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
         self.learn_rate = tf.placeholder(tf.float32, [], 'lr')
         self.dropout_keep_prob = None  #HYP
         self.use_fc = True
@@ -235,7 +235,7 @@ class SequenceModel(object):
         """
         # num_batch_ = length_vector.shape[0].value
         # if num_batch_ == None:
-        self.lens_to_bin = self.b
+        self.lens_to_bin = tf.cast(tf.sequence_mask(length_vector, 310), tf.float32)
 
         # if self.is_build:
         #     self.lens_to_bin = self.b
@@ -251,12 +251,12 @@ class SequenceModel(object):
         # TensorFlow broadcasting[automatic, google for it].tf.expand_dims, tf.range, casting, and comparator
         # operators. Or, you can do while -loops in TensorFlow, though if I was programming, I would look for
         # a mathematical expression i.e.the functions above.
-        len_to_bin_f = lambda x: tf.concat([tf.broadcast_to(1, [1, x]),tf.broadcast_to(0, [1, self.max_length - x])], 1)
-        a = tf.map_fn(len_to_bin_f, length_vector)
+        # len_to_bin_f = lambda x: tf.concat([tf.broadcast_to(1, [1, x]),tf.broadcast_to(0, [1, self.max_length - x])], 1)
+        # a = tf.map_fn(len_to_bin_f, length_vector)
         # for i in tf.range(length_vector.shape[0]):
             # b[i] =
 
-        self.testi = tf.cast(tf.sequence_mask(length_vector, 310), tf.int32)
+        # self.testi = tf.cast(tf.sequence_mask(length_vector, 310), tf.int32)
 
         return self.lens_to_bin
 
@@ -563,15 +563,18 @@ class SequenceModel(object):
             # x_batch = terms
             # tags_batch = tags
             # lengths_batch = lengths
-            b_ = self.lengths_to_binary(lengths_batch)
-            feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
+            # b_ = self.lengths_to_binary(lengths_batch)
+            feed_dict = {self.x: x_batch,
+                         self.lengths: lengths_batch,
                          self.tags: tags_batch.astype(numpy.int64),
-                         self.b: b_, self.learn_rate: learn_rate}
-            fetches = [self.train_op, self.loss, self.accuracy_op, self.correct,
-                       self.lengths, self.logits, self.predict, self.testi]
+                         self.learn_rate: learn_rate}
+            # fetches = [self.train_op, self.loss, self.accuracy_op, self.correct,
+            #            self.lengths, self.logits, self.predict]
+            fetches = [self.train_op, self.loss, self.accuracy_op]
             # fetches = [self.loss, self.accuracy_op, self.correct, self.lengths, self.logits,
             #            self.predict]
-            _, loss, accuracy, correct, lens, logits_, predicts, testi = self.sess.run(fetches, feed_dict=feed_dict)
+            # _, loss, accuracy, correct, lens, logits_, predicts = self.sess.run(fetches, feed_dict=feed_dict)
+            _, loss, accuracy = self.sess.run(fetches, feed_dict=feed_dict)
             losses.append(loss)
             accuracies.append(accuracy)
 
