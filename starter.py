@@ -256,7 +256,7 @@ class SequenceModel(object):
         # for i in tf.range(length_vector.shape[0]):
             # b[i] =
 
-
+        self.testi = tf.cast(tf.sequence_mask(length_vector, 310), tf.int32)
 
         return self.lens_to_bin
 
@@ -533,7 +533,7 @@ class SequenceModel(object):
             b_[i, :length_vector[i]] = 1
         return b_.astype(float)
 
-    def train_epoch(self, terms, tags, lengths, batch_size=10, learn_rate=1e-7):
+    def train_epoch(self, terms, tags, lengths, batch_size=32, learn_rate=1e-7):
         #HYP
         """Performs updates on the model given training training data.
 
@@ -567,10 +567,11 @@ class SequenceModel(object):
             feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
                          self.tags: tags_batch.astype(numpy.int64),
                          self.b: b_, self.learn_rate: learn_rate}
-            fetches = [self.train_op, self.loss, self.accuracy_op, self.correct, self.lengths, self.logits, self.predict]
+            fetches = [self.train_op, self.loss, self.accuracy_op, self.correct,
+                       self.lengths, self.logits, self.predict, self.testi]
             # fetches = [self.loss, self.accuracy_op, self.correct, self.lengths, self.logits,
             #            self.predict]
-            _, loss, accuracy, correct, lens, logits_, predicts = self.sess.run(fetches, feed_dict=feed_dict)
+            _, loss, accuracy, correct, lens, logits_, predicts, testi = self.sess.run(fetches, feed_dict=feed_dict)
             losses.append(loss)
             accuracies.append(accuracy)
 
