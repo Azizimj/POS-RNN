@@ -210,7 +210,7 @@ class SequenceModel(object):
         self.log_step = 100
         self.sess = tf.Session()
         self.size_embed = 40  # HYP
-        self.state_size = 15  # HYP
+        self.state_size = 20  # HYP
         # self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
         self.learn_rate = tf.placeholder(tf.float32, [], 'lr')
         self.dropout_keep_prob = None  #HYP
@@ -532,7 +532,7 @@ class SequenceModel(object):
             b_[i, :length_vector[i]] = 1
         return b_.astype(float)
 
-    def train_epoch(self, terms, tags, lengths, batch_size=32, learn_rate=1e-7):
+    def train_epoch(self, terms, tags, lengths, batch_size=32, learn_rate=1e-2):
         #HYP
         """Performs updates on the model given training training data.
 
@@ -613,8 +613,8 @@ def main():
     # Read dataset.
     reader = DatasetReader()
     # train_filename = sys.argv[1]
-    # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged.txt"  # japonease
-    train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged_small.txt"  # japonease
+    train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged.txt"  # japonease
+    # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged_small.txt"  # japonease
     # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\it_isdt_train_tagged.txt"
     # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\it_isdt_train_tagged_small.txt"
     test_filename = train_filename.replace('_train_', '_dev_')
@@ -627,7 +627,7 @@ def main():
     model.build_inference()
     model.build_training()
     time0 = time.time()
-    K = 1
+    K = 9*60
     epoch = 0
     eval_batch_size = 32
     best_val_acc = 0
@@ -635,12 +635,25 @@ def main():
     print('-' * 5 + '  Start training  ' + '-' * 5)
     # sess = model.sess
     # sess.run(tf.global_variables_initializer())
-    while time.time()-time0 <= K:
-        print("train epoch {}".format(epoch+1))
-        model.train_epoch(train_terms, train_tags, train_lengths, batch_size=32, learn_rate=1e-2)
+
+    def epoch_eval(train_terms, train_tags, train_lengths, batch_size, learn_rate,
+                   test_terms, test_tags, test_lengths, eval_batch_size):
+        model.train_epoch(train_terms, train_tags, train_lengths, batch_size=batch_size, learn_rate=learn_rate)
         print('Finished epoch %i. Evaluating ...' % (epoch + 1))
         tmp_val_acc = model.evaluate(test_terms, test_tags, test_lengths, eval_batch_size)
         print('accuracy on val: {}'.format(tmp_val_acc))
+        return tmp_val_acc
+
+    while time.time()-time0 <= K:
+        print("train epoch {}".format(epoch+1))
+        import IPython;
+        IPython.embed()
+        tmp_val_acc = epoch_eval(train_terms, train_tags, train_lengths, 32, 1e-2, test_terms, test_tags, test_lengths, eval_batch_size)
+        # model.train_epoch(train_terms, train_tags, train_lengths, batch_size=32, learn_rate=1e-2)
+        # print('Finished epoch %i. Evaluating ...' % (epoch + 1))
+        # tmp_val_acc = model.evaluate(test_terms, test_tags, test_lengths, eval_batch_size)
+        # print('accuracy on val: {}'.format(tmp_val_acc))
+
         if tmp_val_acc > best_val_acc:
             best_val_acc = tmp_val_acc
             best_val_acc_epoch = epoch

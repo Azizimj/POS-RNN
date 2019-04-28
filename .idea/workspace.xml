@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="490b93da-5ee1-4499-8ec0-b74e7ce1a9b6" name="Default Changelist" comment="">
+    <list default="true" id="490b93da-5ee1-4499-8ec0-b74e7ce1a9b6" name="Default Changelist" comment="Friday">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/9.pdf.lnk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/checkpoint" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/grade_script.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model.ckpt.data-00000-of-00001" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model.ckpt.index" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model.ckpt.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/photo_2019-04-10_23-18-15.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/starter.py" beforeDir="false" afterPath="$PROJECT_DIR$/starter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/voc_code_backup.txt" beforeDir="false" afterPath="$PROJECT_DIR$/voc_code_backup.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vocareum.txt" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,27 +26,27 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/starter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="241">
-              <caret line="254" column="18" lean-forward="true" selection-start-line="253" selection-start-column="18" selection-end-line="254" selection-end-column="18" />
+            <state relative-caret-position="191">
+              <caret line="650" column="81" lean-forward="true" selection-start-line="650" selection-start-column="81" selection-end-line="650" selection-end-column="81" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
-                <element signature="e#327#7465#0" />
-                <element signature="e#514#2656#0" />
-                <element signature="e#4751#7465#0" />
-                <element signature="e#10868#11186#0" />
-                <element signature="e#11276#11982#0" />
-                <element signature="e#12355#22879#0" />
-                <element signature="e#14256#16230#0" />
-                <element signature="e#16262#18260#0" />
-                <element signature="e#18348#19920#0" />
-                <element signature="e#19986#21554#0" />
-                <element signature="e#18797#19471#0" />
-                <element signature="e#20565#21620#0" />
-                <element signature="e#23983#25183#0" />
-                <element signature="e#21706#23641#0" />
-                <element signature="e#23676#24140#0" />
-                <element signature="e#24198#24394#0" />
-                <element signature="e#27083#28017#0" />
+                <element signature="e#370#7508#0" />
+                <element signature="e#9424#11235#0" />
+                <element signature="e#11327#11645#0" />
+                <element signature="e#11735#12441#0" />
+                <element signature="e#12528#23468#0" />
+                <element signature="e#14381#16355#0" />
+                <element signature="e#16415#18413#0" />
+                <element signature="e#18478#20050#0" />
+                <element signature="e#20116#21684#0" />
+                <element signature="e#21719#22393#0" />
+                <element signature="e#23570#24625#0" />
+                <element signature="e#24680#25577#0" />
+                <element signature="e#25663#27598#0" />
+                <element signature="e#27633#28098#0" />
+                <element signature="e#28156#28352#0" />
+                <element signature="e#28443#31091#0" />
+                <element signature="e#31241#32167#0" />
               </folding>
             </state>
           </provider>
@@ -105,6 +116,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -116,7 +128,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -220,27 +231,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1554859643014</updated>
-    </task>
-    <task id="LOCAL-00015" summary="Saturday">
-      <created>1555192188023</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1555192188023</updated>
-    </task>
-    <task id="LOCAL-00016" summary="Saturday">
-      <created>1555192225804</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1555192225804</updated>
-    </task>
-    <task id="LOCAL-00017" summary="Saturday">
-      <created>1555192252457</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1555192252457</updated>
     </task>
     <task id="LOCAL-00018" summary="Saturday">
       <created>1555192263705</created>
@@ -564,7 +554,28 @@
       <option name="project" value="LOCAL" />
       <updated>1555728991978</updated>
     </task>
-    <option name="localTasksCounter" value="64" />
+    <task id="LOCAL-00064" summary="Friday">
+      <created>1555729343632</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1555729343632</updated>
+    </task>
+    <task id="LOCAL-00065" summary="Friday">
+      <created>1555729382375</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1555729382375</updated>
+    </task>
+    <task id="LOCAL-00066" summary="Friday">
+      <created>1555729536300</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1555729536300</updated>
+    </task>
+    <option name="localTasksCounter" value="67" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -580,13 +591,13 @@
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16263238" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1323752" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3289689" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49924356" weight="0.20621932" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.2487725" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924356" visible="true" weight="0.5253683" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.2487725" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3289689" />
@@ -616,7 +627,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/starter.py</url>
-          <line>353</line>
+          <line>352</line>
           <option name="timeStamp" value="95" />
         </line-breakpoint>
       </breakpoints>
@@ -872,27 +883,27 @@ stacked_states = rnn_cell(xemb)</expression-string>
     </entry>
     <entry file="file://$PROJECT_DIR$/starter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="254" column="18" lean-forward="true" selection-start-line="253" selection-start-column="18" selection-end-line="254" selection-end-column="18" />
+        <state relative-caret-position="191">
+          <caret line="650" column="81" lean-forward="true" selection-start-line="650" selection-start-column="81" selection-end-line="650" selection-end-column="81" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#327#7465#0" />
-            <element signature="e#514#2656#0" />
-            <element signature="e#4751#7465#0" />
-            <element signature="e#10868#11186#0" />
-            <element signature="e#11276#11982#0" />
-            <element signature="e#12355#22879#0" />
-            <element signature="e#14256#16230#0" />
-            <element signature="e#16262#18260#0" />
-            <element signature="e#18348#19920#0" />
-            <element signature="e#19986#21554#0" />
-            <element signature="e#18797#19471#0" />
-            <element signature="e#20565#21620#0" />
-            <element signature="e#23983#25183#0" />
-            <element signature="e#21706#23641#0" />
-            <element signature="e#23676#24140#0" />
-            <element signature="e#24198#24394#0" />
-            <element signature="e#27083#28017#0" />
+            <element signature="e#370#7508#0" />
+            <element signature="e#9424#11235#0" />
+            <element signature="e#11327#11645#0" />
+            <element signature="e#11735#12441#0" />
+            <element signature="e#12528#23468#0" />
+            <element signature="e#14381#16355#0" />
+            <element signature="e#16415#18413#0" />
+            <element signature="e#18478#20050#0" />
+            <element signature="e#20116#21684#0" />
+            <element signature="e#21719#22393#0" />
+            <element signature="e#23570#24625#0" />
+            <element signature="e#24680#25577#0" />
+            <element signature="e#25663#27598#0" />
+            <element signature="e#27633#28098#0" />
+            <element signature="e#28156#28352#0" />
+            <element signature="e#28443#31091#0" />
+            <element signature="e#31241#32167#0" />
           </folding>
         </state>
       </provider>

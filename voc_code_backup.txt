@@ -4,7 +4,7 @@ import tensorflow as tf
 
 USC_EMAIL = 'azizim@usc.edu'  # TODO(student): Fill to compete on rankings.
 PASSWORD = '3e173a6bb4a2a4ce'  # TODO(student): You will be given a password via email.
-
+TRAIN_TIME_MINUTES = 11
 
 class DatasetReader(object):
 
@@ -195,17 +195,19 @@ class SequenceModel(object):
         # self.cell_type = 'lstm'
         # self.cell_type = 'bidic_rnn'
         # self.cell_type = 'bidic_lstm'
-        self.log_step = 50
-        # tf.reset_default_graph()
+        self.log_step = 100
         self.sess = tf.Session()
         self.size_embed = 40  # HYP
-        self.state_size = 15  # HYP
-        self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
+        self.state_size = 50  # HYP
+        # self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
         self.learn_rate = tf.placeholder(tf.float32, [], 'lr')
-        self.dropout_keep_prob = .8
-        self.use_fc = False
+        self.dropout_keep_prob = None  #HYP
+        self.use_fc = True
         self.epoch_return = True
-        # self._accuracy()
+        self.use_bn = False
+        print("size_embed {}, state_size {}, dropout_keep_prob {}, use_fc {}, epoch_return {} usc_bn {}".format(
+            self.size_embed, self.state_size, self.dropout_keep_prob, self.use_fc, self.epoch_return, self.use_bn
+        ))
 
     # TODO(student): You must implement this.
     def lengths_vector_to_binary_matrix(self, length_vector):
@@ -218,7 +220,8 @@ class SequenceModel(object):
         """
         # num_batch_ = length_vector.shape[0].value
         # if num_batch_ == None:
-        self.lens_to_bin = self.b
+        # self.lens_to_bin = self.b
+        self.lens_to_bin = tf.cast(tf.sequence_mask(length_vector, self.max_length), tf.float32)
 
         # if self.is_build:
         #     self.lens_to_bin = self.b
@@ -282,7 +285,6 @@ class SequenceModel(object):
             - Use lengths_vector_to_binary_matrix
             - You might use tf.reshape, tf.cast, and/or tensor broadcasting.
         """
-        # TODO(student): make logits an RNN on x.
         # tf.reset_default_graph()
         # if 'embed:0' not in [v.name for v in tf.global_variables()]:
         with tf.variable_scope("model", reuse=tf.AUTO_REUSE):
@@ -294,11 +296,14 @@ class SequenceModel(object):
             xemb_ = tf.nn.embedding_lookup(params=self.embed, ids=self.x, partition_strategy='mod', name=None,
                                           validate_indices=True, max_norm=None)
             states = []
-            if self.use_fc == True:
+            if self.use_fc:
                 cur_state = tf.zeros(shape=[1, self.state_size])
             else:
                 cur_state = tf.zeros(shape=[1, self.num_tags])
                 self.state_size = self.num_tags
+
+            # if not self.use_fc:
+                # self.state_size = int(self.num_tags)
 
             # 2. put the time dimension on axis=1 for dynamic_rnn
             s = tf.shape(xemb_)  # store old shape
@@ -308,19 +313,32 @@ class SequenceModel(object):
             # word_lengths = tf.reshape(self.word_lengths, shape=[-1])
 
             if self.cell_type == 'rnn':
-                rnn_cell = tf.keras.layers.SimpleRNNCell(self.state_size, activation='tanh', use_bias=True,
-                                                         kernel_initializer='glorot_uniform',
-                                                         recurrent_initializer='orthogonal',recurrent_dropout=0.0,
-                                                         bias_initializer='zeros',kernel_regularizer=None,
-                                                         recurrent_regularizer=None,bias_regularizer=None,
-                                                         kernel_constraint=None,recurrent_constraint=None,
-                                                         bias_constraint=None, dropout=0.0)
-                # rnn_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_cell, output_keep_prob=self.dropout_keep_prob)
-                # tmp_max_length = tf.reduce_max(self.lengths)
-                for i in range(self.max_length):
-                    cur_state = rnn_cell(xemb[:, i, :], [cur_state])[0]  # shape (batch, state_size)
-                    states.append(cur_state)
-                stacked_states = tf.stack(states, axis=1)  # Shape (batch, max_length, state_size)
+                #rnn_cell = tf.keras.layers.SimpleRNNCell(self.state_size, activation='tanh', use_bias=True,
+                 #                                        kernel_initializer='glorot_uniform',
+                  #                                       recurrent_initializer='orthogonal',recurrent_dropout=0.0,
+                   #                                      bias_initializer='zeros',kernel_regularizer=None,
+                    #                                     recurrent_regularizer=None,bias_regularizer=None,
+                     #                                    kernel_constraint=None,recurrent_constraint=None,
+                      #                                   bias_constraint=None, dropout=0.0)
+                rnn_cell = tf.nn.rnn_cell.BasicRNNCell(self.state_size)
+                if self.dropout_keep_prob is not None:
+                    rnn_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_cell, output_keep_prob=self.dropout_keep_prob,
+                                                             input_keep_prob=1.0,
+                                                             state_keep_prob=1.0)
+                #for i in range(self.max_length):
+                 #   cur_state = rnn_cell(xemb[:, i, :], [cur_state])[0]  # shape (batch, state_size)
+                  #  states.append(cur_state)
+                #stacked_states = tf.stack(states, axis=1)  # Shape (batch, max_length, state_size)
+
+                stacked_states = tf.nn.dynamic_rnn(rnn_cell, xemb, dtype=tf.float32)[0]
+                if self.use_bn:
+                    stacked_states = tf.keras.layers.BatchNormalization()(stacked_states)
+                    
+                # rnn_cell = tf.keras.layers.RNN(rnn_cell, return_sequences=False, return_state=False,
+                #                                     go_backwards =False, stateful=False, unroll=False,
+                #                                     time_major =False)
+                # stacked_states = rnn_cell(xemb)
+                
             elif self.cell_type == 'lstm':
                 # rnn_cell = tf.keras.layers.LSTMCell(units=self.state_size, activation='tanh')
                 # rnn_cell = tf.nn.rnn_cell.LSTMCell(self.state_size,)
@@ -328,6 +346,10 @@ class SequenceModel(object):
                 #                                         forget_bias=1.0, state_is_tuple=True,
                 #                                         activation=None, reuse=None, name=None, dtype=None)
                 rnn_cell = tf.nn.rnn_cell.BasicLSTMCell(num_units=self.state_size, reuse=tf.AUTO_REUSE)
+                if self.dropout_keep_prob is not None:
+                    rnn_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_cell, output_keep_prob=self.dropout_keep_prob,
+                                                             input_keep_prob=1.0,
+                                                             state_keep_prob=1.0)
                 # rnn_cell = tf.keras.layers.LSTMCell(units=self.state_size, activation='tanh',
                 #                                     recurrent_activation='hard_sigmoid', use_bias=True,
                 #                                     kernel_initializer='glorot_uniform',
@@ -337,30 +359,43 @@ class SequenceModel(object):
                 #                                     kernel_constraint=None, recurrent_constraint=None,
                 #                                     bias_constraint=None, dropout=0.0,
                 #                                     recurrent_dropout=0.0, implementation=1)
-                rnn_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_cell, output_keep_prob=1)
                 stacked_states = tf.nn.dynamic_rnn(rnn_cell, inputs=xemb, dtype=tf.float32)[0]
+                if self.use_bn:
+                    stacked_states = tf.keras.layers.BatchNormalization()(stacked_states)
             elif self.cell_type == "bidic_rnn":
                 rnn_fw_cell = tf.nn.rnn_cell.BasicRNNCell(self.state_size, reuse=tf.AUTO_REUSE)  # forward direction cell
                 rnn_bw_cell = tf.nn.rnn_cell.BasicRNNCell(self.state_size, reuse=tf.AUTO_REUSE)  # backward direction cell
                 if self.dropout_keep_prob is not None:
-                    rnn_fw_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_fw_cell, output_keep_prob=self.dropout_keep_prob)
-                    rnn_bw_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_bw_cell, output_keep_prob=self.dropout_keep_prob)
+                    rnn_fw_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_fw_cell, output_keep_prob=self.dropout_keep_prob,
+                                                                input_keep_prob=1.0,
+                                                                state_keep_prob=1.0)
+                    rnn_bw_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_bw_cell, output_keep_prob=self.dropout_keep_prob,
+                                                                input_keep_prob=1.0,
+                                                                state_keep_prob=1.0)
                 # bidirectional_dynamic_rnn: input: [batch_size, max_time, input_size]
                 #                            output: A tuple (outputs, output_states)
                 #                                    where:outputs: A tuple (output_fw, output_bw) containing the forward and the backward rnn output `Tensor`.
                 stacked_states = tf.concat(tf.nn.bidirectional_dynamic_rnn(rnn_fw_cell, rnn_bw_cell, xemb,
                                                                            dtype=tf.float32)[0], axis=2)  # [batch_size,sequence_length,hidden_size*2]
+                if self.use_bn:
+                    stacked_states = tf.keras.layers.BatchNormalization()(stacked_states)
             elif self.cell_type == 'bidic_lstm':
                 lstm_fw_cell = tf.nn.rnn_cell.BasicLSTMCell(self.state_size,reuse=tf.AUTO_REUSE)  # forward direction cell
                 lstm_bw_cell = tf.nn.rnn_cell.BasicLSTMCell(self.state_size,reuse=tf.AUTO_REUSE)  # backward direction cell
                 if self.dropout_keep_prob is not None:
-                    lstm_fw_cell = tf.nn.rnn_cell.DropoutWrapper(lstm_fw_cell, output_keep_prob=self.dropout_keep_prob)
-                    lstm_bw_cell = tf.nn.rnn_cell.DropoutWrapper(lstm_bw_cell, output_keep_prob=self.dropout_keep_prob)
+                    lstm_fw_cell = tf.nn.rnn_cell.DropoutWrapper(lstm_fw_cell, output_keep_prob=self.dropout_keep_prob,
+                                                                 input_keep_prob=1.0,
+                                                                 state_keep_prob=1.0)
+                    lstm_bw_cell = tf.nn.rnn_cell.DropoutWrapper(lstm_bw_cell, output_keep_prob=self.dropout_keep_prob,
+                                                                 input_keep_prob=1.0,
+                                                                 state_keep_prob=1.0)
                 # bidirectional_dynamic_rnn: input: [batch_size, max_time, input_size]
                 #                            output: A tuple (outputs, output_states)
                 #                                    where:outputs: A tuple (output_fw, output_bw) containing the forward and the backward rnn output `Tensor`.
                 stacked_states = tf.concat(tf.nn.bidirectional_dynamic_rnn(lstm_fw_cell, lstm_bw_cell, xemb,
                                                              dtype=tf.float32)[0], axis=2) #[batch_size,sequence_length,hidden_size*2]
+                if self.use_bn:
+                    stacked_states = tf.keras.layers.BatchNormalization()(stacked_states)
             else:
                 # cell_fw = tf.contrib.rnn.LSTMCell(self.state_size, state_is_tuple=True)
                 # cell_bw = tf.contrib.rnn.LSTMCell(self.state_size, state_is_tuple=True)
@@ -372,16 +407,12 @@ class SequenceModel(object):
                 print("Wrong cell type")
 
             # logits: A Tensor of shape[batch_size, sequence_length, num_decoder_symbols] and dtype float.
-            if self.use_fc == True:
-                self.logits = tf.contrib.layers.fully_connected(stacked_states, self.num_tags, activation_fn=tf.nn.softmax,
-                                                           normalizer_fn=None, normalizer_params=None,
-                                                           weights_initializer=tf.contrib.layers.xavier_initializer(),
-                                                           weights_regularizer=None, biases_initializer=tf.zeros_initializer(),
-                                                           biases_regularizer=None, reuse=None, variables_collections=None,
-                                                           outputs_collections=None, trainable=True, scope=None)
+            if self.use_fc:
+                self.logits = tf.contrib.layers.fully_connected(stacked_states, int(self.num_tags), activation_fn=tf.nn.tanh)
             else:
                 self.logits = stacked_states
                 # self.logits = tf.cast(self.logits, dtype=tf.int32)
+
             self._accuracy()
             self.build_training()
         return self.logits
@@ -462,15 +493,18 @@ class SequenceModel(object):
                                                      average_across_batch=True, softmax_loss_function=None, name=None)
         tf.losses.add_loss(self.loss, loss_collection=tf.GraphKeys.LOSSES)
         # g_s = tf.Variable(0, trainable=False)
-        # l_r = tf.train.exponential_decay(self.learn_rate, g_s, 500, .96, staircase=True)
+        # l_r = tf.train.exponential_decay(self.learn_rate, g_s, 500, .9, staircase=True)
         l_r = self.learn_rate
-        # opt = tf.train.AdamOptimizer(l_r) #HYP
-        opt = tf.train.AdamOptimizer()  # HYP
+        opt = tf.train.AdamOptimizer(learning_rate=l_r) #HYP
+        # opt = tf.train.AdamOptimizer()  # HYP
+        # opt = tf.train.AdadeltaOptimizer(1e-2)
+        # opt = tf.train.GradientDescentOptimizer(learning_rate=1e-2)
+        # opt = tf.train.MomentumOptimizer(learning_rate=l_r, momentum=.2)
         # opt = tf.train.AdamOptimizer(learning_rate=0.001,beta1=0.9,beta2=0.999,epsilon=1e-08,use_locking=False,name='Adam')
         self.train_op = opt.minimize(self.loss, var_list=tf.trainable_variables())
-        print('tf.losses.get_total_loss', tf.losses.get_total_loss(add_regularization_losses=True,
-                                       name='total_loss'))  # should return a valid tensor
-        print('tf.losses.get_losses', tf.losses.get_losses())  # should return a non-empty list
+        #print('tf.losses.get_total_loss', tf.losses.get_total_loss(add_regularization_losses=True,
+         #                              name='total_loss'))  # should return a valid tensor
+        #print('tf.losses.get_losses', tf.losses.get_losses())  # should return a non-empty list
         self.sess.run(tf.global_variables_initializer())
         return
     
@@ -489,7 +523,7 @@ class SequenceModel(object):
             b_[i, :length_vector[i]] = 1
         return b_.astype(float)
 
-    def train_epoch(self, terms, tags, lengths, batch_size=32, learn_rate=1e-3):
+    def train_epoch(self, terms, tags, lengths, batch_size=32, learn_rate=6e-3):
         """Performs updates on the model given training training data.
         
         This will be called with numpy arrays similar to the ones created in 
@@ -515,7 +549,8 @@ class SequenceModel(object):
         losses = []
         accuracies = []
         num_training = len(terms)
-        for i in range(num_training // batch_size):
+        max_itera_ = num_training // batch_size
+        for i in range(max_itera_):
         # for i in range(50):
             x_batch = terms[i * batch_size:(i + 1) * batch_size][:]
             tags_batch = tags[i * batch_size:(i + 1) * batch_size]
@@ -523,21 +558,20 @@ class SequenceModel(object):
             # x_batch = terms
             # tags_batch = tags
             # lengths_batch = lengths
-            b_ = self.lengths_to_binary(lengths_batch)
+            # b_ = self.lengths_to_binary(lengths_batch)
             feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
                          self.tags: tags_batch.astype(numpy.int64),
-                         self.b: b_, self.learn_rate: learn_rate}
-            fetches = [self.train_op, self.loss, self.accuracy_op, self.correct, self.lengths, self.logits, self.predict]
+                         self.learn_rate: learn_rate}
+            fetches = [self.train_op, self.loss, self.accuracy_op]
             # fetches = [self.loss, self.accuracy_op, self.correct, self.lengths, self.logits,
             #            self.predict]
-            _, loss, accuracy, correct, lens, logits_, predicts = self.sess.run(fetches, feed_dict=feed_dict)
-            losses.append(loss)
-            accuracies.append(accuracy)
+            _, loss, accuracy = self.sess.run(fetches, feed_dict=feed_dict)
+            #losses.append(loss)
+            #accuracies.append(accuracy)
 
             if step % self.log_step == 0:
-                #train_acc = self.evaluate(terms, tags, lengths, self.batch_size)
                 print('iteration (%d)/(%d): train batch loss = %.3f, train batch accuracy = %.3f, train acc' %
-                      (step, num_training // batch_size, loss, accuracy))
+                      (step, max_itera_, loss, accuracy))
             step += 1
         # Finally, make sure you uncomment the `return True` below.
         return True
@@ -551,10 +585,10 @@ class SequenceModel(object):
             x_batch = terms[i * self.batch_size:(i + 1) * self.batch_size][:]
             tags_batch = tags[i * self.batch_size:(i + 1) * self.batch_size]
             lengths_batch = lengths[i * self.batch_size:(i + 1) * self.batch_size]
-            b_ = self.lengths_to_binary(lengths_batch)
+            # b_ = self.lengths_to_binary(lengths_batch)
             feed_dict = {self.x: x_batch, self.lengths: lengths_batch,
                          self.tags: tags_batch.astype(numpy.int64),
-                         self.b: b_, self.learn_rate: learn_rate}
+                         self.learn_rate: learn_rate}
             fetches = [self.accuracy_op, self.predict]
             accuracy, predict = self.sess.run(fetches, feed_dict=feed_dict)
             eval_accuracy += accuracy
