@@ -1,0 +1,1 @@
+curl http://sami.haija.org/cs544/a5/submit.sh | bash

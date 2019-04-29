@@ -2,8 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="490b93da-5ee1-4499-8ec0-b74e7ce1a9b6" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/model.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/old/grade_script.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/old/sami_notes.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/old/vocareum.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/run.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/starter_voc.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/starter.py" beforeDir="false" afterPath="$PROJECT_DIR$/starter.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,8 +21,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/starter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="326">
-              <caret line="579" column="80" selection-start-line="579" selection-start-column="16" selection-end-line="579" selection-end-column="80" />
+            <state relative-caret-position="258">
+              <caret line="644" lean-forward="true" selection-start-line="644" selection-end-line="644" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
                 <element signature="e#370#7508#0" />
@@ -32,7 +37,6 @@
                 <element signature="e#27599#28064#0" />
                 <element signature="e#28122#28318#0" />
                 <element signature="e#31207#32133#0" />
-                <element signature="e#32152#35447#0" />
               </folding>
             </state>
           </provider>
@@ -41,23 +45,28 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/starter_voc.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="565" column="33" lean-forward="true" selection-end-line="647" />
+            <state relative-caret-position="464">
+              <caret line="654" selection-start-line="654" selection-end-line="654" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
                 <element signature="e#311#8079#0" />
                 <element signature="e#430#3026#0" />
                 <element signature="e#3132#5260#0" />
                 <element signature="e#5342#8079#0" />
-                <element signature="e#10216#11983#0" />
-                <element signature="e#12075#12393#0" />
-                <element signature="e#12485#13191#0" />
-                <element signature="e#13276#24063#0" />
-                <element signature="e#24148#25215#0" />
-                <element signature="e#25270#26470#0" />
-                <element signature="e#26556#28725#0" />
-                <element signature="e#28760#29225#0" />
-                <element signature="e#29283#29479#0" />
+                <element signature="e#10339#12106#0" />
+                <element signature="e#12198#12516#0" />
+                <element signature="e#12608#13314#0" />
+                <element signature="e#15193#17172#0" />
+                <element signature="e#17387#19444#0" />
+                <element signature="e#19296#21027#0" />
+                <element signature="e#21093#22842#0" />
+                <element signature="e#22877#23551#0" />
+                <element signature="e#24290#25357#0" />
+                <element signature="e#25412#26612#0" />
+                <element signature="e#26698#28866#0" />
+                <element signature="e#28901#29366#0" />
+                <element signature="e#29424#29620#0" />
+                <element signature="e#29711#32566#0" />
                 <element signature="e#32229#33162#0" />
                 <element signature="e#33181#34142#0" />
               </folding>
@@ -161,7 +170,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.starter_voc">
+  <component name="RunManager" selected="Python.starter">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="HW5" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -253,8 +262,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.starter_voc" />
         <item itemvalue="Python.starter" />
+        <item itemvalue="Python.starter_voc" />
         <item itemvalue="Python.test_tf" />
       </list>
     </recent_temporary>
@@ -269,13 +278,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1554859643014</updated>
-    </task>
-    <task id="LOCAL-00019" summary="Saturday">
-      <created>1555193469305</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1555193469305</updated>
     </task>
     <task id="LOCAL-00020" summary="Saturday">
       <created>1555194342436</created>
@@ -613,7 +615,14 @@
       <option name="project" value="LOCAL" />
       <updated>1556411771218</updated>
     </task>
-    <option name="localTasksCounter" value="68" />
+    <task id="LOCAL-00068" summary="Friday">
+      <created>1556500247770</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1556500247771</updated>
+    </task>
+    <option name="localTasksCounter" value="69" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -634,7 +643,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3289689" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49924356" weight="0.1391162" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924356" visible="true" weight="0.10638298" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.2487725" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -921,8 +930,8 @@ stacked_states = rnn_cell(xemb)</expression-string>
     </entry>
     <entry file="file://$PROJECT_DIR$/starter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="326">
-          <caret line="579" column="80" selection-start-line="579" selection-start-column="16" selection-end-line="579" selection-end-column="80" />
+        <state relative-caret-position="258">
+          <caret line="644" lean-forward="true" selection-start-line="644" selection-end-line="644" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
             <element signature="e#370#7508#0" />
@@ -937,30 +946,34 @@ stacked_states = rnn_cell(xemb)</expression-string>
             <element signature="e#27599#28064#0" />
             <element signature="e#28122#28318#0" />
             <element signature="e#31207#32133#0" />
-            <element signature="e#32152#35447#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/starter_voc.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="565" column="33" lean-forward="true" selection-end-line="647" />
+        <state relative-caret-position="464">
+          <caret line="654" selection-start-line="654" selection-end-line="654" />
           <folding>
             <element signature="e#0#17#0" expanded="true" />
             <element signature="e#311#8079#0" />
             <element signature="e#430#3026#0" />
             <element signature="e#3132#5260#0" />
             <element signature="e#5342#8079#0" />
-            <element signature="e#10216#11983#0" />
-            <element signature="e#12075#12393#0" />
-            <element signature="e#12485#13191#0" />
-            <element signature="e#13276#24063#0" />
-            <element signature="e#24148#25215#0" />
-            <element signature="e#25270#26470#0" />
-            <element signature="e#26556#28725#0" />
-            <element signature="e#28760#29225#0" />
-            <element signature="e#29283#29479#0" />
+            <element signature="e#10339#12106#0" />
+            <element signature="e#12198#12516#0" />
+            <element signature="e#12608#13314#0" />
+            <element signature="e#15193#17172#0" />
+            <element signature="e#17387#19444#0" />
+            <element signature="e#19296#21027#0" />
+            <element signature="e#21093#22842#0" />
+            <element signature="e#22877#23551#0" />
+            <element signature="e#24290#25357#0" />
+            <element signature="e#25412#26612#0" />
+            <element signature="e#26698#28866#0" />
+            <element signature="e#28901#29366#0" />
+            <element signature="e#29424#29620#0" />
+            <element signature="e#29711#32566#0" />
             <element signature="e#32229#33162#0" />
             <element signature="e#33181#34142#0" />
           </folding>
