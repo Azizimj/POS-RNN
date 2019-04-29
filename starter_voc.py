@@ -199,10 +199,11 @@ class SequenceModel(object):
         self.cell_type = 'bidic_rnn'
         # self.cell_type = 'bidic_lstm'
         self.rnn_act = 'tanh' #
+        # self.rnn_act = 'relu' #
         self.log_step = 200
         self.sess = tf.Session()
-        self.size_embed = 100  # HYP
-        self.state_size = 40  # HYP
+        self.size_embed = 90  # HYP
+        self.state_size = 30  # HYP
         # self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
         # self.learn_rate = tf.placeholder(tf.float32, [], 'lr')
         self.learn_rate = 1e-2
@@ -505,6 +506,8 @@ class SequenceModel(object):
                 an exception). Equivalently, tf.losses.get_losses() should return a
                 non-empty list.
         """
+        # import os
+        # os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
         # <-- Your implementation goes here.
         # logits: A Tensor of shape [batch_size, sequence_length, num_decoder_symbols] and dtype float.
         # targets: A Tensor of shape[batch_size, sequence_length] and dtype int.
