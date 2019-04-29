@@ -203,14 +203,14 @@ class SequenceModel(object):
         self.lengths = tf.placeholder(tf.int64, [None], 'lengths')
         self.tags = tf.placeholder(tf.int64, [None, self.max_length], 'tags')
         # I usually prefer int32 for space and speed, but the embedding_lookup function expects int64
-        self.cell_type = 'rnn'
+        # self.cell_type = 'rnn'
         # self.cell_type = 'lstm'
-        # self.cell_type = 'bidic_rnn'
+        self.cell_type = 'bidic_rnn'
         # self.cell_type = 'bidic_lstm'
         self.log_step = 100
         self.sess = tf.Session()
         self.size_embed = 40  # HYP
-        self.state_size = 20  # HYP
+        self.state_size = 40  # HYP
         # self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
         self.learn_rate = tf.placeholder(tf.float32, [], 'lr')
         self.dropout_keep_prob = None  #HYP
@@ -311,7 +311,7 @@ class SequenceModel(object):
 
             self.lens_to_bin = self.lengths_vector_to_binary_matrix(self.lengths)
             # terms_batch = tf.placeholder(tf.int32, shape=[None, None]) #####
-            xemb_ = tf.nn.embedding_lookup(params=self.embed, ids=self.x, partition_strategy='mod', name=None,
+            xemb = tf.nn.embedding_lookup(params=self.embed, ids=self.x, partition_strategy='mod', name=None,
                                           validate_indices=True, max_norm=None)
             states = []
             # if self.use_fc == True:
@@ -324,10 +324,10 @@ class SequenceModel(object):
                 self.state_size = int(self.num_tags)
 
             # 2. put the time dimension on axis=1 for dynamic_rnn
-            s = tf.shape(xemb_)  # store old shape
+            # s = tf.shape(xemb_)  # store old shape
             # shape = (batch x sentence, word, dim of char embeddings)
             # xemb = tf.reshape(xemb_, shape=[-1, s[-2], s[-1]])  # (batch_size, timesteps, features)
-            xemb = xemb_
+            # xemb = xemb_
             # word_lengths = tf.reshape(self.word_lengths, shape=[-1])
 
             if self.cell_type == 'rnn':
@@ -503,10 +503,9 @@ class SequenceModel(object):
                                                      weights=self.lens_to_bin, average_across_timesteps=True,
                                                      average_across_batch=True, softmax_loss_function=None, name=None)
         tf.losses.add_loss(self.loss, loss_collection=tf.GraphKeys.LOSSES)
-        # g_s = tf.Variable(0, trainable=False)
-        # l_r = tf.train.exponential_decay(self.learn_rate, g_s, 500, .96, staircase=True)
-        # l_r = self.learn_rate
-        l_r = 1e-2
+        l_r = self.learn_rate
+        g_s = tf.Variable(0, trainable=False)
+        l_r = tf.train.exponential_decay(l_r, g_s, 500, .95, staircase=True)
         opt = tf.train.AdamOptimizer(learning_rate=l_r) #HYP
         # opt = tf.train.AdamOptimizer()  # HYP
         # opt = tf.train.AdamOptimizer(learning_rate=0.001,beta1=0.9,beta2=0.999,epsilon=1e-08,use_locking=False,name='Adam')
@@ -627,7 +626,7 @@ def main():
     model.build_inference()
     model.build_training()
     time0 = time.time()
-    K = 9*60
+    K = 4*60
     epoch = 0
     eval_batch_size = 32
     best_val_acc = 0
@@ -646,9 +645,9 @@ def main():
 
     while time.time()-time0 <= K:
         print("train epoch {}".format(epoch+1))
-        import IPython;
-        IPython.embed()
-        tmp_val_acc = epoch_eval(train_terms, train_tags, train_lengths, 32, 1e-2, test_terms, test_tags, test_lengths, eval_batch_size)
+        # import IPython;
+        # IPython.embed()
+        tmp_val_acc = epoch_eval(train_terms, train_tags, train_lengths, 32, 1e-3, test_terms, test_tags, test_lengths, eval_batch_size)
         # model.train_epoch(train_terms, train_tags, train_lengths, batch_size=32, learn_rate=1e-2)
         # print('Finished epoch %i. Evaluating ...' % (epoch + 1))
         # tmp_val_acc = model.evaluate(test_terms, test_tags, test_lengths, eval_batch_size)
