@@ -4,6 +4,7 @@
     <list default="true" id="490b93da-5ee1-4499-8ec0-b74e7ce1a9b6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/aws_runs.txt" beforeDir="false" afterPath="$PROJECT_DIR$/aws_runs.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/starter3.py" beforeDir="false" afterPath="$PROJECT_DIR$/starter3.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,7 +17,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/starter3.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
+            <state relative-caret-position="271">
               <caret line="219" column="27" lean-forward="true" selection-start-line="219" selection-start-column="27" selection-end-line="219" selection-end-column="27" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
@@ -44,11 +45,23 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/grader/e2e_grader.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="226">
-              <caret line="155" column="17" lean-forward="true" selection-start-line="155" selection-start-column="17" selection-end-line="155" selection-end-column="17" />
+            <state relative-caret-position="158">
+              <caret line="116" column="32" lean-forward="true" selection-start-line="116" selection-start-column="32" selection-end-line="116" selection-end-column="32" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/grader/e2e_grader2.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="240">
+              <caret line="127" column="20" lean-forward="true" selection-start-line="127" selection-start-column="20" selection-end-line="127" selection-end-column="20" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -86,6 +99,7 @@
       <find>run_inference</find>
       <find>tf.keras</find>
       <find>return True</find>
+      <find>results</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -97,6 +111,7 @@
         <option value="$PROJECT_DIR$/test_tf.py" />
         <option value="$PROJECT_DIR$/starter.py" />
         <option value="$PROJECT_DIR$/starter_voc.py" />
+        <option value="$PROJECT_DIR$/grader/e2e_grader2.py" />
         <option value="$PROJECT_DIR$/starter3.py" />
       </list>
     </option>
@@ -262,34 +277,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1554859643014</updated>
-    </task>
-    <task id="LOCAL-00024" summary="Saturday">
-      <created>1555197324178</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1555197324178</updated>
-    </task>
-    <task id="LOCAL-00025" summary="Saturday">
-      <created>1555197686813</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1555197686813</updated>
-    </task>
-    <task id="LOCAL-00026" summary="Saturday">
-      <created>1555198219015</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1555198219015</updated>
-    </task>
-    <task id="LOCAL-00027" summary="Saturday">
-      <created>1555198449015</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1555198449016</updated>
     </task>
     <task id="LOCAL-00028" summary="Saturday">
       <created>1555198896772</created>
@@ -606,7 +593,35 @@
       <option name="project" value="LOCAL" />
       <updated>1556604571678</updated>
     </task>
-    <option name="localTasksCounter" value="73" />
+    <task id="LOCAL-00073" summary="Friday">
+      <created>1556605477114</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1556605477114</updated>
+    </task>
+    <task id="LOCAL-00074" summary="Friday">
+      <created>1556605504957</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1556605504957</updated>
+    </task>
+    <task id="LOCAL-00075" summary="Friday">
+      <created>1556607017649</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1556607017649</updated>
+    </task>
+    <task id="LOCAL-00076" summary="Monday">
+      <created>1556607054254</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1556607054254</updated>
+    </task>
+    <option name="localTasksCounter" value="77" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -633,7 +648,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3289689" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.3289689" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.3764321" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.0883797" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50075644" side_tool="true" weight="0.30932897" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.3289689" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -646,12 +661,12 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Saturday" />
     <MESSAGE value="Sunday" />
-    <MESSAGE value="Monday" />
     <MESSAGE value="Tuesday" />
     <MESSAGE value="Wednesday" />
     <MESSAGE value="Thursday" />
     <MESSAGE value="Friday" />
-    <option name="LAST_COMMIT_MESSAGE" value="Friday" />
+    <MESSAGE value="Monday" />
+    <option name="LAST_COMMIT_MESSAGE" value="Monday" />
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateCodeFragment">
@@ -962,9 +977,19 @@ stacked_states = rnn_cell(xemb)</expression-string>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/grader/e2e_grader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="158">
+          <caret line="116" column="32" lean-forward="true" selection-start-line="116" selection-start-column="32" selection-end-line="116" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/starter3.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
+        <state relative-caret-position="271">
           <caret line="219" column="27" lean-forward="true" selection-start-line="219" selection-start-column="27" selection-end-line="219" selection-end-column="27" />
           <folding>
             <element signature="e#0#17#0" expanded="true" />
@@ -991,10 +1016,10 @@ stacked_states = rnn_cell(xemb)</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grader/e2e_grader.py">
+    <entry file="file://$PROJECT_DIR$/grader/e2e_grader2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="226">
-          <caret line="155" column="17" lean-forward="true" selection-start-line="155" selection-start-column="17" selection-end-line="155" selection-end-column="17" />
+        <state relative-caret-position="240">
+          <caret line="127" column="20" lean-forward="true" selection-start-line="127" selection-start-column="20" selection-end-line="127" selection-end-column="20" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
