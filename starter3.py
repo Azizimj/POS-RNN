@@ -197,12 +197,12 @@ class SequenceModel(object):
         # self.cell_type = 'rnn'
         # self.cell_type = 'lstm'
         # self.cell_type = 'bidic_rnn'
-        # self.cell_type = 'bidic_lstm'
-        self.cell_type = 'multi_rnn'
+        self.cell_type = 'bidic_lstm'
+        # self.cell_type = 'multi_rnn'
         self.rnn_n_layers = 10
         # self.multi_cell_type = 'rnn'
-        # self.multi_cell_type = 'lstm'
-        self.multi_cell_type = 'GRU'
+        self.multi_cell_type = 'lstm'
+        # self.multi_cell_type = 'GRU'
         # self.rnn_act = 'tanh' #
         self.rnn_act = None
         # self.rnn_act = 'relu' #
@@ -210,8 +210,8 @@ class SequenceModel(object):
         self.fc_act = None
         # self.log_step = 200
         self.sess = tf.Session()
-        self.size_embed = 100  # HYP
-        self.state_size = 50  # HYP
+        self.size_embed = 120  # HYP
+        self.state_size = 67  # HYP
         # self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
         # self.learn_rate = tf.placeholder(tf.float32, [], 'lr')
         self.learn_rate = 1e-2
@@ -226,10 +226,12 @@ class SequenceModel(object):
         self.use_fc_bn = True
         self.shuffle = True
         print(
-            "size_embed: {}, state_size: {}, batch size: {}, lr: {}, cell type: {}, use_fc: {},"
-            " dropout_keep_prob: {}, usc_bn: {} fc_keep_prob {}".format(
+            "#\n ##SPEC## size_embed: {}, state_size: {}, batch size: {}, lr: {}, cell type: {}, use_fc: {},"
+            " dropout_keep_prob: {}, fc_keep_prob: {}, usc_bn: {} usc_fc_bn: {}, rnn_n_layers: {},"
+            " multi_cell_type: {} \n#".format(
                 self.size_embed, self.state_size, self.batch_size, self.learn_rate, self.cell_type,
-                self.use_fc, self.dropout_keep_prob, self.use_bn, self.keep_prob_fc))
+                self.use_fc, self.dropout_keep_prob, self.keep_prob_fc,
+                self.use_bn, self.use_fc_bn, self.rnn_n_layers, self.multi_cell_type))
 
     # TODO(student): You must implement this.
     def lengths_vector_to_binary_matrix(self, length_vector):
@@ -424,7 +426,7 @@ class SequenceModel(object):
                                            axis=2)  # [batch_size,sequence_length,hidden_size*2]
                 if self.use_bn:
                     stacked_states = tf.keras.layers.BatchNormalization()(stacked_states)
-            if self.cell_type == 'multi_rnn':
+            elif self.cell_type == 'multi_rnn':
                 if self.multi_cell_type == 'rnn':
                     rnn_cell = tf.nn.rnn_cell.MultiRNNCell([tf.nn.rnn_cell.BasicRNNCell(self.state_size)
                                                             for i in range(self.rnn_n_layers)], state_is_tuple=True)
