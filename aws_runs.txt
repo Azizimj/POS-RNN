@@ -366,7 +366,22 @@ size_embed: 100, state_size: 50, batch size: 32, lr: 0.01, cell type: bidic_lstm
   [italian] accuracy 0.95319
   Accuracies for italian are: 0.0150729,0.95319
   Final accuracy for italian, after 2 iterations, is 0.953442
-
-
-
+########################################################################
+size_embed: 120, state_size: 67, batch size: 32, lr: 0.01, cell type: bidic_lstm, use_fc: True, dropout_keep_prob: None, fc_keep_prob: None, usc_bn: True usc_fc_bn: True, rnn_n_layers: 10, multi_cell_type: lstm
+[japanese] accuracy 0.0375076
+  [japanese] accuracy 0.942999
+  [japanese] accuracy 0.947263
+  [japanese] accuracy 0.949352
+  Accuracies for japanese are: 0.0375076,0.942999,0.947263,0.949352
+  Final accuracy for japanese, after 4 iterations, is 0.947785
+[italian] accuracy 0.0150729
+  [italian] accuracy 0.954363
+  Accuracies for italian are: 0.0150729,0.954363
+########################
+size_embed: 150, state_size: 70, batch size: 32, lr: 0.01, cell type: bidic_lstm, use_fc: True, dropout_keep_prob: None, fc_keep_prob: None, usc_bn: True usc_fc_bn: True, rnn_n_layers: 10, multi_cell_type: lstm
+[japanese] accuracy 0.0374206
+  [japanese] accuracy 0.942825
+  [japanese] accuracy 0.947611
+  Accuracies for japanese are: 0.0374206,0.942825,0.947611
+  Final accuracy for japanese, after 3 iterations, is 0.949091
 
