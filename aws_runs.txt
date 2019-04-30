@@ -1,0 +1,350 @@
+ubuntu@ip-172-31-60-138:~/hw5$ python2 grader/e2e_grader.pyc python3
+Running test cases...
+2019-04-29 06:58:45.276708: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-04-29 06:58:45.281344: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2300055000 Hz
+2019-04-29 06:58:45.282063: I tensorflow/compiler/xla/service/service.cc:150] XLA service 0x55c578c64e60 executing computations on platform Host. Devices:
+2019-04-29 06:58:45.282092: I tensorflow/compiler/xla/service/service.cc:158]   StreamExecutor device (0): <undefined>, <undefined>
+size_embed: 100, state_size: 40, batch size: 32, lr: 0.01, cell type: rnn, use_fc: True, dropout_keep_prob: None, usc_bn: False
+
+
+Your Task 1a: ReadFile implementation works well, scoring: 100%
+
+
+Your Task 1b: BuildMatrices implementation works well, scoring: 100%
+
+
+Your Task 2a: lengths_vector_to_binary_matrix implementation works well, scoring: 0%
+
+
+Summary:
+Task,Score,MaximumScore
+Task 1a: ReadFile,20,20
+Task 1b: BuildMatrices,10,10
+Task 2a: lengths_vector_to_binary_matrix,0,0
+Total,30,30
+
+2019-04-29 06:58:47.173280: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-04-29 06:58:47.177842: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2300055000 Hz
+2019-04-29 06:58:47.179106: I tensorflow/compiler/xla/service/service.cc:150] XLA service 0x5644d33651f0 executing computations on platform Host. Devices:
+2019-04-29 06:58:47.179134: I tensorflow/compiler/xla/service/service.cc:158]   StreamExecutor device (0): <undefined>, <undefined>
+size_embed: 100, state_size: 40, batch size: 32, lr: 0.01, cell type: rnn, use_fc: True, dropout_keep_prob: None, usc_bn: False
+WARNING:tensorflow:From /home/ubuntu/anaconda3/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+WARNING:tensorflow:From /home/ubuntu/hw5/starter.py:331: BasicRNNCell.__init__ (from tensorflow.python.ops.rnn_cell_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+This class is equivalent as tf.keras.layers.SimpleRNNCell, and will be replaced by that in Tensorflow 2.0.
+WARNING:tensorflow:From /home/ubuntu/hw5/starter.py:341: dynamic_rnn (from tensorflow.python.ops.rnn) is deprecated and will be removed in a future version.
+Instructions for updating:
+Please use `keras.layers.RNN(cell)`, which is equivalent to this API
+
+WARNING: The TensorFlow contrib module will not be included in TensorFlow 2.0.
+For more information, please see:
+  * https://github.com/tensorflow/community/blob/master/rfcs/20180907-contrib-sunset.md
+  * https://github.com/tensorflow/addons
+If you depend on functionality not listed there, please file an issue.
+
+WARNING:tensorflow:From /home/ubuntu/anaconda3/lib/python3.6/site-packages/tensorflow/python/ops/array_grad.py:425: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+  [japanese] accuracy 0.0237577
+  [japanese] accuracy 0.855104
+  [japanese] accuracy 0.87599
+  [japanese] accuracy 0.881385
+  [japanese] accuracy 0.883735
+  [japanese] accuracy 0.890088
+  [japanese] accuracy 0.888696
+  [japanese] accuracy 0.888957
+  [japanese] accuracy 0.889914
+  [japanese] accuracy 0.888608
+  [japanese] accuracy 0.893917
+  First 10 accuracies for japanese are: 0.0237577,0.855104,0.87599,0.881385,0.883735,0.890088,0.888696,0.888957,0.889914,0.888608
+  Final accuracy for japanese, after 11 iterations, is 0.891567
+2019-04-29 07:00:36.965769: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-04-29 07:00:36.970784: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2300055000 Hz
+2019-04-29 07:00:36.970988: I tensorflow/compiler/xla/service/service.cc:150] XLA service 0x5642ded2bed0 executing computations on platform Host. Devices:
+2019-04-29 07:00:36.971018: I tensorflow/compiler/xla/service/service.cc:158]   StreamExecutor device (0): <undefined>, <undefined>
+size_embed: 100, state_size: 40, batch size: 32, lr: 0.01, cell type: rnn, use_fc: True, dropout_keep_prob: None, usc_bn: False
+WARNING:tensorflow:From /home/ubuntu/anaconda3/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+WARNING:tensorflow:From /home/ubuntu/hw5/starter.py:331: BasicRNNCell.__init__ (from tensorflow.python.ops.rnn_cell_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+This class is equivalent as tf.keras.layers.SimpleRNNCell, and will be replaced by that in Tensorflow 2.0.
+WARNING:tensorflow:From /home/ubuntu/hw5/starter.py:341: dynamic_rnn (from tensorflow.python.ops.rnn) is deprecated and will be removed in a future version.
+Instructions for updating:
+Please use `keras.layers.RNN(cell)`, which is equivalent to this API
+
+WARNING: The TensorFlow contrib module will not be included in TensorFlow 2.0.
+For more information, please see:
+  * https://github.com/tensorflow/community/blob/master/rfcs/20180907-contrib-sunset.md
+  * https://github.com/tensorflow/addons
+If you depend on functionality not listed there, please file an issue.
+
+WARNING:tensorflow:From /home/ubuntu/anaconda3/lib/python3.6/site-packages/tensorflow/python/ops/array_grad.py:425: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+  [italian] accuracy 0.0185061
+  [italian] accuracy 0.895746
+  [italian] accuracy 0.906465
+  [italian] accuracy 0.89784
+  [italian] accuracy 0.899096
+
+  Accuracies for italian are: 0.0185061,0.895746,0.906465,0.89784,0.899096
+  Final accuracy for italian, after 5 iterations, is 0.902864
+Be patient... Training secret language and sending predictions to server ...
+2019-04-29 07:04:28.878533: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-04-29 07:04:28.883866: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2300055000 Hz
+2019-04-29 07:04:28.884158: I tensorflow/compiler/xla/service/service.cc:150] XLA service 0x561e8176b240 executing computations on platform Host. Devices:
+2019-04-29 07:04:28.884192: I tensorflow/compiler/xla/service/service.cc:158]   StreamExecutor device (0): <undefined>, <undefined>
+size_embed: 100, state_size: 40, batch size: 32, lr: 0.01, cell type: rnn, use_fc: True, dropout_keep_prob: None, usc_bn: False
+WARNING:tensorflow:From /home/ubuntu/anaconda3/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+WARNING:tensorflow:From /home/ubuntu/hw5/starter.py:331: BasicRNNCell.__init__ (from tensorflow.python.ops.rnn_cell_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+This class is equivalent as tf.keras.layers.SimpleRNNCell, and will be replaced by that in Tensorflow 2.0.
+WARNING:tensorflow:From /home/ubuntu/hw5/starter.py:341: dynamic_rnn (from tensorflow.python.ops.rnn) is deprecated and will be removed in a future version.
+Instructions for updating:
+Please use `keras.layers.RNN(cell)`, which is equivalent to this API
+
+WARNING: The TensorFlow contrib module will not be included in TensorFlow 2.0.
+For more information, please see:
+  * https://github.com/tensorflow/community/blob/master/rfcs/20180907-contrib-sunset.md
+  * https://github.com/tensorflow/addons
+If you depend on functionality not listed there, please file an issue.
+
+WARNING:tensorflow:From /home/ubuntu/anaconda3/lib/python3.6/site-packages/tensorflow/python/ops/array_grad.py:425: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+
+
+
+All done
+##########################################################
+ubuntu@ip-172-31-60-138:~/hw5$ python2 grader/e2e_grader.pyc python3
+Running test cases...
+2019-04-29 21:35:07.295005: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-04-29 21:35:07.299596: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2300055000 Hz
+2019-04-29 21:35:07.299955: I tensorflow/compiler/xla/service/service.cc:150] XLA service 0x558bc4c69830 executing computations on platform Host. Devices:
+2019-04-29 21:35:07.299984: I tensorflow/compiler/xla/service/service.cc:158]   StreamExecutor device (0): <undefined>, <undefined>
+size_embed: 100, state_size: 40, batch size: 32, lr: 0.01, cell type: bidic_rnn, use_fc: True, dropout_keep_prob: None, usc_bn: False fc_keep_prob None
+
+
+Your Task 1a: ReadFile implementation works well, scoring: 100%
+
+
+Your Task 1b: BuildMatrices implementation works well, scoring: 100%
+
+
+Your Task 2a: lengths_vector_to_binary_matrix implementation works well, scoring: 0%
+
+
+Summary:
+Task,Score,MaximumScore
+Task 1a: ReadFile,20,20
+Task 1b: BuildMatrices,10,10
+Task 2a: lengths_vector_to_binary_matrix,0,0
+Total,30,30
+
+2019-04-29 21:35:09.133638: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-04-29 21:35:09.138851: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2300055000 Hz
+2019-04-29 21:35:09.139246: I tensorflow/compiler/xla/service/service.cc:150] XLA service 0x558a16bb6090 executing computations on platform Host. Devices:
+2019-04-29 21:35:09.139278: I tensorflow/compiler/xla/service/service.cc:158]   StreamExecutor device (0): <undefined>, <undefined>
+size_embed: 100, state_size: 40, batch size: 32, lr: 0.01, cell type: bidic_rnn, use_fc: True, dropout_keep_prob: None, usc_bn: False fc_keep_prob None
+WARNING:tensorflow:From /home/ubuntu/anaconda3/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+WARNING:tensorflow:From /home/ubuntu/hw5/starter.py:377: BasicRNNCell.__init__ (from tensorflow.python.ops.rnn_cell_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+This class is equivalent as tf.keras.layers.SimpleRNNCell, and will be replaced by that in Tensorflow 2.0.
+WARNING:tensorflow:From /home/ubuntu/hw5/starter.py:391: bidirectional_dynamic_rnn (from tensorflow.python.ops.rnn) is deprecated and will be removed in a future version.
+Instructions for updating:
+Please use `keras.layers.Bidirectional(keras.layers.RNN(cell))`, which is equivalent to this API
+WARNING:tensorflow:From /home/ubuntu/anaconda3/lib/python3.6/site-packages/tensorflow/python/ops/rnn.py:443: dynamic_rnn (from tensorflow.python.ops.rnn) is deprecated and will be removed in a future version.
+Instructions for updating:
+Please use `keras.layers.RNN(cell)`, which is equivalent to this API
+
+WARNING: The TensorFlow contrib module will not be included in TensorFlow 2.0.
+For more information, please see:
+  * https://github.com/tensorflow/community/blob/master/rfcs/20180907-contrib-sunset.md
+  * https://github.com/tensorflow/addons
+If you depend on functionality not listed there, please file an issue.
+
+WARNING:tensorflow:From /home/ubuntu/anaconda3/lib/python3.6/site-packages/tensorflow/python/ops/array_grad.py:425: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+  [japanese] accuracy 0.0447307
+  [japanese] accuracy 0.851536
+  [japanese] accuracy 0.890958
+  [japanese] accuracy 0.912105
+  [japanese] accuracy 0.910974
+  [japanese] accuracy 0.913236
+  [japanese] accuracy 0.91254
+  [japanese] accuracy 0.915673
+  [japanese] accuracy 0.918632
+  Accuracies for japanese are: 0.0447307,0.851536,0.890958,0.912105,0.910974,0.913236,0.91254,0.915673,0.918632
+  Final accuracy for japanese, after 9 iterations, is 0.912975
+2019-04-29 21:36:53.810970: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-04-29 21:36:53.816127: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2300055000 Hz
+2019-04-29 21:36:53.816335: I tensorflow/compiler/xla/service/service.cc:150] XLA service 0x5605b2b4dc10 executing computations on platform Host. Devices:
+2019-04-29 21:36:53.816366: I tensorflow/compiler/xla/service/service.cc:158]   StreamExecutor device (0): <undefined>, <undefined>
+size_embed: 100, state_size: 40, batch size: 32, lr: 0.01, cell type: bidic_rnn, use_fc: True, dropout_keep_prob: None, usc_bn: False fc_keep_prob None
+WARNING:tensorflow:From /home/ubuntu/anaconda3/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+WARNING:tensorflow:From /home/ubuntu/hw5/starter.py:377: BasicRNNCell.__init__ (from tensorflow.python.ops.rnn_cell_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+This class is equivalent as tf.keras.layers.SimpleRNNCell, and will be replaced by that in Tensorflow 2.0.
+WARNING:tensorflow:From /home/ubuntu/hw5/starter.py:391: bidirectional_dynamic_rnn (from tensorflow.python.ops.rnn) is deprecated and will be removed in a future version.
+Instructions for updating:
+Please use `keras.layers.Bidirectional(keras.layers.RNN(cell))`, which is equivalent to this API
+WARNING:tensorflow:From /home/ubuntu/anaconda3/lib/python3.6/site-packages/tensorflow/python/ops/rnn.py:443: dynamic_rnn (from tensorflow.python.ops.rnn) is deprecated and will be removed in a future version.
+Instructions for updating:
+Please use `keras.layers.RNN(cell)`, which is equivalent to this API
+
+WARNING: The TensorFlow contrib module will not be included in TensorFlow 2.0.
+For more information, please see:
+  * https://github.com/tensorflow/community/blob/master/rfcs/20180907-contrib-sunset.md
+  * https://github.com/tensorflow/addons
+If you depend on functionality not listed there, please file an issue.
+
+WARNING:tensorflow:From /home/ubuntu/anaconda3/lib/python3.6/site-packages/tensorflow/python/ops/array_grad.py:425: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+  [italian] accuracy 0.0354212
+  [italian] accuracy 0.883855
+  [italian] accuracy 0.89181
+  [italian] accuracy 0.899766
+  Accuracies for italian are: 0.0354212,0.883855,0.89181,0.899766
+  Final accuracy for italian, after 4 iterations, is 0.907804
+Be patient... Training secret language and sending predictions to server ...
+2019-04-29 21:40:30.301451: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-04-29 21:40:30.307103: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2300055000 Hz
+2019-04-29 21:40:30.307310: I tensorflow/compiler/xla/service/service.cc:150] XLA service 0x5636aaae31c0 executing computations on platform Host. Devices:
+2019-04-29 21:40:30.307342: I tensorflow/compiler/xla/service/service.cc:158]   StreamExecutor device (0): <undefined>, <undefined>
+size_embed: 100, state_size: 40, batch size: 32, lr: 0.01, cell type: bidic_rnn, use_fc: True, dropout_keep_prob: None, usc_bn: False fc_keep_prob None
+WARNING:tensorflow:From /home/ubuntu/anaconda3/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+WARNING:tensorflow:From /home/ubuntu/hw5/starter.py:377: BasicRNNCell.__init__ (from tensorflow.python.ops.rnn_cell_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+This class is equivalent as tf.keras.layers.SimpleRNNCell, and will be replaced by that in Tensorflow 2.0.
+WARNING:tensorflow:From /home/ubuntu/hw5/starter.py:391: bidirectional_dynamic_rnn (from tensorflow.python.ops.rnn) is deprecated and will be removed in a future version.
+Instructions for updating:
+Please use `keras.layers.Bidirectional(keras.layers.RNN(cell))`, which is equivalent to this API
+WARNING:tensorflow:From /home/ubuntu/anaconda3/lib/python3.6/site-packages/tensorflow/python/ops/rnn.py:443: dynamic_rnn (from tensorflow.python.ops.rnn) is deprecated and will be removed in a future version.
+Instructions for updating:
+Please use `keras.layers.RNN(cell)`, which is equivalent to this API
+
+WARNING: The TensorFlow contrib module will not be included in TensorFlow 2.0.
+For more information, please see:
+  * https://github.com/tensorflow/community/blob/master/rfcs/20180907-contrib-sunset.md
+  * https://github.com/tensorflow/addons
+If you depend on functionality not listed there, please file an issue.
+
+WARNING:tensorflow:From /home/ubuntu/anaconda3/lib/python3.6/site-packages/tensorflow/python/ops/array_grad.py:425: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+All done
+####################################################################################
+size_embed: 100, state_size: 40, batch size: 32, lr: 0.01, cell type: bidic_rnn, use_fc: True, dropout_keep_prob: None, usc_bn: True fc_keep_prob None
+[japanese] accuracy 0.0235837
+  [japanese] accuracy 0.902271
+  [japanese] accuracy 0.92629
+  [japanese] accuracy 0.927247
+  [japanese] accuracy 0.931338
+  [japanese] accuracy 0.928379
+  Accuracies for japanese are: 0.0235837,0.902271,0.92629,0.927247,0.931338,0.928379
+  Final accuracy for japanese, after 6 iterations, is 0.929684
+[italian] accuracy 0.0197622
+  [italian] accuracy 0.906883
+  [italian] accuracy 0.924133
+  Accuracies for italian are: 0.0197622,0.906883,0.924133
+  Final accuracy for italian, after 3 iterations, is 0.932340
+###########################################################################################
+size_embed: 100, state_size: 40, batch size: 32, lr: 0.01, cell type: bidic_rnn, use_fc: True, dropout_keep_prob: None, usc_bn: True fc_keep_prob None
+[japanese] accuracy 0.0235837
+  [japanese] accuracy 0.909581
+  [japanese] accuracy 0.92864
+  [japanese] accuracy 0.931425
+  [japanese] accuracy 0.932382
+  Accuracies for japanese are: 0.0235837,0.909581,0.92864,0.931425,0.932382
+  Final accuracy for japanese, after 5 iterations, is 0.932643
+[italian] accuracy 0.0197622
+  [italian] accuracy 0.911824
+  Accuracies for italian are: 0.0197622,0.911824
+  Final accuracy for italian, after 2 iterations, is 0.915592
+#############
+size_embed: 100, state_size: 45, batch size: 30, lr: 0.01, cell type: bidic_rnn, use_fc: True, dropout_keep_prob: None, usc_bn: True fc_keep_prob None
+[japanese] accuracy 0.0400313
+  [japanese] accuracy 0.899051
+  [japanese] accuracy 0.931251
+  [japanese] accuracy 0.936124
+  [japanese] accuracy 0.935428
+  [japanese] accuracy 0.936559
+  Accuracies for japanese are: 0.0400313,0.899051,0.931251,0.936124,0.935428,0.936559
+  Final accuracy for japanese, after 6 iterations, is 0.933426
+[italian] accuracy 0.0199297
+  [italian] accuracy 0.895579
+  [italian] accuracy 0.916011
+  Accuracies for italian are: 0.0199297,0.895579,0.916011
+  Final accuracy for italian, after 3 iterations, is 0.917016
+##################
+size_embed: 80, state_size: 35, batch size: 32, lr: 0.01, cell type: bidic_rnn, use_fc: True, dropout_keep_prob: None, usc_bn: True fc_keep_prob None
+[japanese] accuracy 0.0166217
+  [japanese] accuracy 0.910539
+  [japanese] accuracy 0.928379
+  [japanese] accuracy 0.932991
+  [japanese] accuracy 0.935254
+  [japanese] accuracy 0.935602
+  Accuracies for japanese are: 0.0166217,0.910539,0.928379,0.932991,0.935254,0.935602
+  Final accuracy for japanese, after 6 iterations, is 0.933078
+[italian] accuracy 0.0169151
+  [italian] accuracy 0.885865
+  [italian] accuracy 0.923045
+  Accuracies for italian are: 0.0169151,0.885865,0.923045
+  Final accuracy for italian, after 3 iterations, is 0.924971
+#############################################################
+size_embed: 110, state_size: 42, batch size: 32, lr: 0.01, cell type: bidic_rnn, use_fc: True, dropout_keep_prob: None, usc_bn: True fc_keep_prob None
+[japanese] accuracy 0.0274128
+  [japanese] accuracy 0.900966
+  [japanese] accuracy 0.926203
+  [japanese] accuracy 0.928727
+  [japanese] accuracy 0.930293
+  [japanese] accuracy 0.932295
+  Accuracies for japanese are: 0.0274128,0.900966,0.926203,0.928727,0.930293,0.932295
+  Final accuracy for japanese, after 6 iterations, is 0.934557
+[italian] accuracy 0.0253726
+  [italian] accuracy 0.897588
+  [italian] accuracy 0.92338
+  Accuracies for italian are: 0.0253726,0.897588,0.92338
+  Final accuracy for italian, after 3 iterations, is 0.929409
+#################################################################
+size_embed: 200, state_size: 100, batch size: 32, lr: 0.01, cell type: bidic_rnn, use_fc: True, dropout_keep_prob: None, usc_bn: True fc_keep_prob None
+[japanese] accuracy 0.021234
+  [japanese] accuracy 0.942651
+  [japanese] accuracy 0.945784
+  [japanese] accuracy 0.940562
+  Accuracies for japanese are: 0.021234,0.942651,0.945784,0.940562
+  Final accuracy for japanese, after 4 iterations, is 0.941868
+[italian] accuracy 0.0268799
+  [italian] accuracy 0.926059
+  Accuracies for italian are: 0.0268799,0.926059
+  Final accuracy for italian, after 2 iterations, is 0.930665
+################################################################
+size_embed: 200, state_size: 150, batch size: 32, lr: 0.01, cell type: bidic_rnn, use_fc: True, dropout_keep_prob: None, usc_bn: True fc_keep_prob None
+[japanese] accuracy 0.0293273
+  [japanese] accuracy 0.938561
+  [japanese] accuracy 0.941084
+  Accuracies for japanese are: 0.0293273,0.938561,0.941084
+  Final accuracy for japanese, after 3 iterations, is 0.943086
+[italian] accuracy 0.0232792
+  [italian] accuracy 0.925976
+  Accuracies for italian are: 0.0232792,0.925976
+  Final accuracy for italian, after 2 iterations, is 0.930581
+###########################################################################
+
+
+
+

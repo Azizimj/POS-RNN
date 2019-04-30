@@ -606,7 +606,7 @@ class SequenceModel(object):
                 # step += 1
 
         # Finally, make sure you uncomment the `return True` below.
-        return True
+        return False #True
 
     # TODO(student): You can implement this to help you, but we will not call it.
     def evaluate(self, terms, tags, lengths, batch_size, learn_rate):
