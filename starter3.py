@@ -216,6 +216,7 @@ class SequenceModel(object):
         # self.learn_rate = tf.placeholder(tf.float32, [], 'lr')
         self.learn_rate = 1e-2
         self.batch_size = 32
+
         self.num_epoch_done = 0
         self.max_epoch = 20
         self.dropout_keep_prob = None  # HYP
