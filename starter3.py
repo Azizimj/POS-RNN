@@ -197,8 +197,9 @@ class SequenceModel(object):
         # self.cell_type = 'rnn'
         # self.cell_type = 'lstm'
         # self.cell_type = 'bidic_rnn'
-        self.cell_type = 'bidic_lstm'
+        # self.cell_type = 'bidic_lstm'
         # self.cell_type = 'multi_rnn'
+        self.cell_type = 'resnet_rnn'
         self.rnn_n_layers = 10
         # self.multi_cell_type = 'rnn'
         self.multi_cell_type = 'lstm'
@@ -208,10 +209,10 @@ class SequenceModel(object):
         # self.rnn_act = 'relu' #
         # self.fc_act = tf.nn.tanh
         self.fc_act = None
-        # self.log_step = 200
+        self.log_step = 20
         self.sess = tf.Session()
-        self.size_embed = 120  # HYP
-        self.state_size = 67  # HYP
+        self.size_embed = 100  # HYP
+        self.state_size = 40  # HYP
         # self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
         # self.learn_rate = tf.placeholder(tf.float32, [], 'lr')
         self.learn_rate = 1e-2
@@ -225,6 +226,8 @@ class SequenceModel(object):
         self.use_bn = True
         self.use_fc_bn = True
         self.shuffle = True
+        self.window = 5
+        self.start_state = 0
         print(
             "#\n ##SPEC## size_embed: {}, state_size: {}, batch size: {}, lr: {}, cell type: {}, use_fc: {},"
             " dropout_keep_prob: {}, fc_keep_prob: {}, usc_bn: {} usc_fc_bn: {}, rnn_n_layers: {},"
@@ -372,8 +375,8 @@ class SequenceModel(object):
                                                         activation=self.rnn_act)
                 if self.dropout_keep_prob is not None:
                     rnn_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_cell, output_keep_prob=self.dropout_keep_prob,
-                                                             input_keep_prob=1.0,
-                                                             state_keep_prob=1.0)
+                                                             input_keep_prob=self.dropout_keep_prob,
+                                                             state_keep_prob=self.dropout_keep_prob)
                 # rnn_cell = tf.keras.layers.LSTMCell(units=self.state_size, activation='tanh',
                 #                                     recurrent_activation='hard_sigmoid', use_bias=True,
                 #                                     kernel_initializer='glorot_uniform',
@@ -413,11 +416,11 @@ class SequenceModel(object):
                                                             activation=self.rnn_act)  # backward direction cell
                 if self.dropout_keep_prob is not None:
                     lstm_fw_cell = tf.nn.rnn_cell.DropoutWrapper(lstm_fw_cell, output_keep_prob=self.dropout_keep_prob,
-                                                                 input_keep_prob=1.0,
-                                                                 state_keep_prob=1.0)
+                                                                 input_keep_prob=self.dropout_keep_prob,
+                                                                 state_keep_prob=self.dropout_keep_prob)
                     lstm_bw_cell = tf.nn.rnn_cell.DropoutWrapper(lstm_bw_cell, output_keep_prob=self.dropout_keep_prob,
-                                                                 input_keep_prob=1.0,
-                                                                 state_keep_prob=1.0)
+                                                                 input_keep_prob=self.dropout_keep_prob,
+                                                                 state_keep_prob=self.dropout_keep_prob)
                 # bidirectional_dynamic_rnn: input: [batch_size, max_time, input_size]
                 #                            output: A tuple (outputs, output_states)
                 #                                    where:outputs: A tuple (output_fw, output_bw) containing the forward and the backward rnn output `Tensor`.
@@ -446,6 +449,45 @@ class SequenceModel(object):
                 stacked_states = tf.nn.dynamic_rnn(rnn_cell, xemb, dtype=tf.float32)[0]
                 if self.use_bn:
                     stacked_states = tf.keras.layers.BatchNormalization()(stacked_states)
+            elif self.cell_type == 'resnet_rnn':
+                # rnn_cell = tf.nn.rnn_cell.BasicLSTMCell(num_units=self.state_size, reuse=tf.AUTO_REUSE,
+                #                                         activation=self.rnn_act)
+                # rnn_cell = tf.nn.rnn_cell.BasicRNNCell(self.state_size, activation=self.rnn_act)
+                rnn_cell = tf.keras.layers.SimpleRNNCell(self.state_size, activation=self.rnn_act)
+                last_states = []
+                for i in range(self.max_length):
+                    last_states.append(rnn_cell(xemb[:, i, :], [cur_state])[0])
+                    cur_state = tf.reduce_mean(last_states[max(0, i-self.window):i+1], axis=0)
+                    states.append(cur_state)
+                last_states = []
+                # for i in range(self.max_length):
+                #     last_states.append(rnn_cell(xemb[:, i, :], [cur_state])[0])
+                #     cur_state = tf.reduce_mean(last_states[max(0, i-self.window):i+1], axis=0)
+                #     states.append(cur_state)
+                # last_states = []
+
+
+                stacked_states = tf.stack(states, axis=1)  # Shape (batch, max_length, state_size)
+                if self.use_bn:
+                    stacked_states = tf.keras.layers.BatchNormalization()(stacked_states)
+            elif self.cell_type == 'res+bi_lstm':
+                lstm_fw_cell = tf.nn.rnn_cell.BasicLSTMCell(self.state_size, reuse=tf.AUTO_REUSE,
+                                                            activation=self.rnn_act)  # forward direction cell
+                lstm_bw_cell = tf.nn.rnn_cell.BasicLSTMCell(self.state_size, reuse=tf.AUTO_REUSE,
+                                                            activation=self.rnn_act)  # backward direction cell
+                if self.dropout_keep_prob is not None:
+                    lstm_fw_cell = tf.nn.rnn_cell.DropoutWrapper(lstm_fw_cell, output_keep_prob=self.dropout_keep_prob,
+                                                                 input_keep_prob=1.0,
+                                                                 state_keep_prob=1.0)
+                    lstm_bw_cell = tf.nn.rnn_cell.DropoutWrapper(lstm_bw_cell, output_keep_prob=self.dropout_keep_prob,
+                                                                 input_keep_prob=1.0,
+                                                                 state_keep_prob=1.0)
+                # bidirectional_dynamic_rnn: input: [batch_size, max_time, input_size]
+                #                            output: A tuple (outputs, output_states)
+                #                                    where:outputs: A tuple (output_fw, output_bw) containing the forward and the backward rnn output `Tensor`.
+                stacked_states = tf.concat(tf.nn.bidirectional_dynamic_rnn(lstm_fw_cell, lstm_bw_cell, xemb,
+                                                                           dtype=tf.float32)[0],
+                                           axis=2)  # [batch_size,sequence_length,hidden_size*2]
             else:
                 # cell_fw = tf.contrib.rnn.LSTMCell(self.state_size, state_is_tuple=True)
                 # cell_bw = tf.contrib.rnn.LSTMCell(self.state_size, state_is_tuple=True)
@@ -605,7 +647,7 @@ class SequenceModel(object):
         self.num_epoch_done += 1
         if self.num_epoch_done >= self.max_epoch:
             pass
-        # step = 0
+        step = 0
         losses = []
         accuracies = []
         num_training = len(terms)
@@ -670,9 +712,11 @@ def main():
     rate, batch size, etc)."""
     # Read dataset.
     reader = DatasetReader
-    train_filename = sys.argv[1]
+    # train_filename = sys.argv[1]
+    # train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\it_isdt_train_tagged_small.txt"
+    train_filename = "F:\Acad\Spring19\CSCI544_NLP\code_hw\HW3\HW_data\ja_gsd_train_tagged_small.txt"
     eval_batch_size = 10
-    print(train_filename)
+    # print(train_filename)
     test_filename = train_filename.replace('_train_', '_dev_')
     term_index, tag_index, train_data, test_data = reader.ReadData(train_filename, test_filename)
     (train_terms, train_tags, train_lengths) = train_data
@@ -681,7 +725,7 @@ def main():
     model = SequenceModel(train_tags.shape[1], len(term_index), len(tag_index))
     model.build_inference()
     model.build_training()
-    for j in xrange(10):
+    for j in range(1):
         model.train_epoch(train_terms, train_tags, train_lengths)
         print('Finished epoch %i. Evaluating ...' % (j + 1))
         # model.evaluate(test_terms, test_tags, test_lengths, eval_batch_size)
