@@ -199,7 +199,8 @@ class SequenceModel(object):
         # self.cell_type = 'bidic_rnn'
         # self.cell_type = 'bidic_lstm'
         # self.cell_type = 'multi_rnn'
-        self.cell_type = 'resnet_rnn'
+        # self.cell_type = 'resnet_rnn'
+        self.cell_type = 'res+bi_lstm'
         self.rnn_n_layers = 10
         # self.multi_cell_type = 'rnn'
         self.multi_cell_type = 'lstm'
@@ -460,11 +461,11 @@ class SequenceModel(object):
                     cur_state = tf.reduce_mean(last_states[max(0, i-self.window):i+1], axis=0)
                     states.append(cur_state)
                 last_states = []
-                # for i in range(self.max_length):
-                #     last_states.append(rnn_cell(xemb[:, i, :], [cur_state])[0])
-                #     cur_state = tf.reduce_mean(last_states[max(0, i-self.window):i+1], axis=0)
-                #     states.append(cur_state)
-                # last_states = []
+                for j in range(self.max_length-1, -1, -1):
+                    last_states.append(rnn_cell(xemb[:, j, :], [cur_state])[0])
+                    cur_state = tf.reduce_mean(last_states[max(0, (self.max_length-j-1)-self.window):j+1], axis=0)
+                    states.append(cur_state)
+                last_states = []
 
 
                 stacked_states = tf.stack(states, axis=1)  # Shape (batch, max_length, state_size)
@@ -477,17 +478,24 @@ class SequenceModel(object):
                                                             activation=self.rnn_act)  # backward direction cell
                 if self.dropout_keep_prob is not None:
                     lstm_fw_cell = tf.nn.rnn_cell.DropoutWrapper(lstm_fw_cell, output_keep_prob=self.dropout_keep_prob,
-                                                                 input_keep_prob=1.0,
-                                                                 state_keep_prob=1.0)
+                                                                 input_keep_prob=self.dropout_keep_prob,
+                                                                 state_keep_prob=self.dropout_keep_prob)
                     lstm_bw_cell = tf.nn.rnn_cell.DropoutWrapper(lstm_bw_cell, output_keep_prob=self.dropout_keep_prob,
-                                                                 input_keep_prob=1.0,
-                                                                 state_keep_prob=1.0)
-                # bidirectional_dynamic_rnn: input: [batch_size, max_time, input_size]
-                #                            output: A tuple (outputs, output_states)
-                #                                    where:outputs: A tuple (output_fw, output_bw) containing the forward and the backward rnn output `Tensor`.
+                                                                 input_keep_prob=self.dropout_keep_prob,
+                                                                 state_keep_prob=self.dropout_keep_prob)
                 stacked_states = tf.concat(tf.nn.bidirectional_dynamic_rnn(lstm_fw_cell, lstm_bw_cell, xemb,
-                                                                           dtype=tf.float32)[0],
-                                           axis=2)  # [batch_size,sequence_length,hidden_size*2]
+                                                                           dtype=tf.float32)[0], axis=2)  # [batch_size,sequence_length,hidden_size*2]
+                rnn_cell = tf.keras.layers.SimpleRNNCell(self.state_size, activation=self.rnn_act)
+                last_states = []
+                for i in range(self.max_length):
+                    last_states.append(rnn_cell(xemb[:, i, :], [cur_state])[0])
+                    cur_state = tf.reduce_mean(last_states[max(0, i - self.window):i + 1], axis=0)
+                    states.append(cur_state)
+                last_states = []
+                stacked_states_2 = tf.stack(states, axis=1)  # Shape (batch, max_length, state_size)
+                stacked_states = tf.concat([stacked_states, stacked_states_2], axis=2)
+                if self.use_bn:
+                    stacked_states = tf.keras.layers.BatchNormalization()(stacked_states)
             else:
                 # cell_fw = tf.contrib.rnn.LSTMCell(self.state_size, state_is_tuple=True)
                 # cell_bw = tf.contrib.rnn.LSTMCell(self.state_size, state_is_tuple=True)
