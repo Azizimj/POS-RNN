@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="490b93da-5ee1-4499-8ec0-b74e7ce1a9b6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/index.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grader/e2e_grader.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/grader/sps.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/starter3.py" beforeDir="false" afterPath="$PROJECT_DIR$/starter3.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/starter3_locall.py" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -20,26 +16,29 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/starter3.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="276">
-              <caret line="422" column="103" selection-start-line="422" selection-start-column="103" selection-end-line="422" selection-end-column="103" />
+            <state relative-caret-position="283">
+              <caret line="216" column="27" selection-start-line="216" selection-start-column="27" selection-end-line="216" selection-end-column="27" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
                 <element signature="e#311#8077#0" />
                 <element signature="e#11003#12770#0" />
                 <element signature="e#12862#13180#0" />
                 <element signature="e#13272#13978#0" />
+                <element signature="e#14197#33768#0" />
                 <element signature="e#15857#17899#0" />
                 <element signature="e#17959#20038#0" />
                 <element signature="e#20103#21960#0" />
+                <element signature="e#22026#23825#0" />
                 <element signature="e#23890#25343#0" />
-                <element signature="e#25501#26428#0" />
+                <element signature="e#25803#27353#0" />
+                <element signature="e#26961#29044#0" />
+                <element signature="e#29576#32160#0" />
                 <element signature="e#25378#26052#0" />
                 <element signature="e#27053#28120#0" />
                 <element signature="e#28175#29375#0" />
                 <element signature="e#29461#31700#0" />
                 <element signature="e#31735#32200#0" />
                 <element signature="e#32258#32454#0" />
-                <element signature="e#32545#35523#0" />
                 <element signature="e#35685#36618#0" />
                 <element signature="e#36637#37598#0" />
               </folding>
@@ -278,20 +277,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1554859643014</updated>
-    </task>
-    <task id="LOCAL-00028" summary="Saturday">
-      <created>1555198896772</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1555198896772</updated>
-    </task>
-    <task id="LOCAL-00029" summary="Saturday">
-      <created>1555215929823</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1555215929823</updated>
     </task>
     <task id="LOCAL-00030" summary="Saturday">
       <created>1555215968105</created>
@@ -622,7 +607,21 @@
       <option name="project" value="LOCAL" />
       <updated>1556607054254</updated>
     </task>
-    <option name="localTasksCounter" value="77" />
+    <task id="LOCAL-00077" summary="Thursday">
+      <created>1556832732932</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1556832732933</updated>
+    </task>
+    <task id="LOCAL-00078" summary="Thursday">
+      <created>1556834170824</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1556834170824</updated>
+    </task>
+    <option name="localTasksCounter" value="79" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -643,8 +642,8 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3289689" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924356" visible="true" weight="0.31260228" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.38134205" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924356" visible="true" weight="0.24713585" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.22422259" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3289689" />
@@ -664,18 +663,23 @@
     <MESSAGE value="Sunday" />
     <MESSAGE value="Tuesday" />
     <MESSAGE value="Wednesday" />
-    <MESSAGE value="Thursday" />
     <MESSAGE value="Friday" />
     <MESSAGE value="Monday" />
-    <option name="LAST_COMMIT_MESSAGE" value="Monday" />
+    <MESSAGE value="Thursday" />
+    <option name="LAST_COMMIT_MESSAGE" value="Thursday" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/starter3.py</url>
-          <line>459</line>
-          <option name="timeStamp" value="2" />
+          <line>475</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/starter3.py</url>
+          <line>533</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -755,47 +759,47 @@ stacked_states = rnn_cell(xemb)</expression-string>
     </expressions>
     <expressions id="evaluateExpression">
       <expression>
-        <expression-string>tf.reduce_sum(last_states[max(0, i-self.window):i+1], axis=0)</expression-string>
+        <expression-string>tf.concat([stacked_states, stacked_states_2, stacked_states_lstm], axis=2)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.reduce_sum(last_states[max(0, i-self.window):i+1])</expression-string>
+        <expression-string>tf.concat([stacked_states, stacked_states_2], axis=2)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.math.add(last_states[max(0, i-self.window):i+1])</expression-string>
+        <expression-string>tf.concat([stacked_states, stacked_states_2], axis=1)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.concat(last_states[max(0, i-self.window):i+1], axis=0)</expression-string>
+        <expression-string>stacked_states</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.reduce_sum([last_states[max(0, i-self.window):i+1],last_states[max(0, i-self.window):i+1]], axis=-1)</expression-string>
+        <expression-string>stacked_states_2</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.reduce_sum([last_states[max(0, i-self.window):i+1],last_states[max(0, i-self.window):i+1]], axis=1)</expression-string>
+        <expression-string>(self.max_length-j-1)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.reduce_sum([last_states[max(0, i-self.window):i+1],last_states[max(0, i-self.window):i+1]], axis=2)</expression-string>
+        <expression-string>last_states[max(0, (self.max_length-j-1)-self.window):(self.max_length-j-1)+1]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.reduce_sum([last_states[max(0, i-self.window):i+1],last_states[max(0, i-self.window):i+1]], axis=0)</expression-string>
+        <expression-string>self.window</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.reduce_sum([last_states[max(0, i-self.window):i+1]]*3, axis=0)</expression-string>
+        <expression-string>last_states</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -962,13 +966,6 @@ stacked_states = rnn_cell(xemb)</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://E:/program/Anaconda/envs/tf_2/Lib/site-packages/tensorflow/python/framework/ops.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="131">
-          <caret line="1661" selection-start-line="1661" selection-end-line="1661" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://E:/program/python3/Lib/site-packages/matplotlib/contour.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="158">
@@ -976,28 +973,38 @@ stacked_states = rnn_cell(xemb)</expression-string>
         </state>
       </provider>
     </entry>
+    <entry file="file://E:/program/Anaconda/envs/tf_2/Lib/site-packages/tensorflow/python/framework/ops.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="131">
+          <caret line="1661" selection-start-line="1661" selection-end-line="1661" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/starter3.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="422" column="103" selection-start-line="422" selection-start-column="103" selection-end-line="422" selection-end-column="103" />
+        <state relative-caret-position="283">
+          <caret line="216" column="27" selection-start-line="216" selection-start-column="27" selection-end-line="216" selection-end-column="27" />
           <folding>
             <element signature="e#0#17#0" expanded="true" />
             <element signature="e#311#8077#0" />
             <element signature="e#11003#12770#0" />
             <element signature="e#12862#13180#0" />
             <element signature="e#13272#13978#0" />
+            <element signature="e#14197#33768#0" />
             <element signature="e#15857#17899#0" />
             <element signature="e#17959#20038#0" />
             <element signature="e#20103#21960#0" />
+            <element signature="e#22026#23825#0" />
             <element signature="e#23890#25343#0" />
-            <element signature="e#25501#26428#0" />
+            <element signature="e#25803#27353#0" />
+            <element signature="e#26961#29044#0" />
+            <element signature="e#29576#32160#0" />
             <element signature="e#25378#26052#0" />
             <element signature="e#27053#28120#0" />
             <element signature="e#28175#29375#0" />
             <element signature="e#29461#31700#0" />
             <element signature="e#31735#32200#0" />
             <element signature="e#32258#32454#0" />
-            <element signature="e#32545#35523#0" />
             <element signature="e#35685#36618#0" />
             <element signature="e#36637#37598#0" />
           </folding>
