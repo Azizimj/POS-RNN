@@ -4,7 +4,7 @@ import tensorflow as tf
 
 USC_EMAIL = 'azizim@usc.edu'  # TODO(student): Fill to compete on rankings.
 PASSWORD = '3e173a6bb4a2a4ce'  # TODO(student): You will be given a password via email.
-TRAIN_TIME_MINUTES = 11
+TRAIN_TIME_MINUTES = 111111
 tf.random.set_random_seed(110)
 
 
@@ -197,11 +197,11 @@ class SequenceModel(object):
         # self.cell_type = 'rnn'
         # self.cell_type = 'lstm'
         # self.cell_type = 'bidic_rnn'
-        # self.cell_type = 'bidic_lstm'
+        self.cell_type = 'bidic_lstm'
         # self.cell_type = 'multi_rnn'
         # self.cell_type = 'resnet_rnn'
         # self.cell_type = 'res+bi_lstm'
-        self.cell_type = 'bi_res+bi_lstm'
+        # self.cell_type = 'bi_res+bi_lstm'
         self.rnn_n_layers = 10
         # self.multi_cell_type = 'rnn'
         self.multi_cell_type = 'lstm'
@@ -213,12 +213,12 @@ class SequenceModel(object):
         self.fc_act = None
         self.log_step = 20
         self.sess = tf.Session()
-        self.size_embed = 200  # HYP
-        self.state_size = 50  # HYP
+        self.size_embed = 150  # HYP
+        self.state_size = 60  # HYP
         # self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
         # self.learn_rate = tf.placeholder(tf.float32, [], 'lr')
         self.learn_rate = 1e-2
-        self.batch_size = 32
+        self.batch_size = 10
         self.num_epoch_done = 0
         self.max_epoch = 20
         self.dropout_keep_prob = None  # HYP
@@ -691,7 +691,7 @@ class SequenceModel(object):
         # self.batch_size = batch_size
         batch_size = self.batch_size
         self.num_epoch_done += 1
-        if self.num_epoch_done >= self.max_epoch:
+        if self.num_epoch_done > self.max_epoch:
             pass
         step = 0
         losses = []
