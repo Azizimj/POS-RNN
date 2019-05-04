@@ -1,0 +1,2 @@
+activate tf_2 / python should have tf
+python2 grader/e2e_grader.pyc python
