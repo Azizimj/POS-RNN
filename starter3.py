@@ -197,11 +197,11 @@ class SequenceModel(object):
         # self.cell_type = 'rnn'
         # self.cell_type = 'lstm'
         # self.cell_type = 'bidic_rnn'
-        self.cell_type = 'bidic_lstm'
+        # self.cell_type = 'bidic_lstm'
         # self.cell_type = 'multi_rnn'
         # self.cell_type = 'resnet_rnn'
         # self.cell_type = 'res+bi_lstm'
-        # self.cell_type = 'bi_res+bi_lstm'
+        self.cell_type = 'bi_res+bi_lstm'
         self.rnn_n_layers = 10
         # self.multi_cell_type = 'rnn'
         self.multi_cell_type = 'lstm'
@@ -215,10 +215,11 @@ class SequenceModel(object):
         self.sess = tf.Session()
         self.size_embed = 150  # HYP
         self.state_size = 60  # HYP
+        self.resnet_state_size = 40
         # self.b = tf.placeholder(tf.float32, [None, self.max_length], 'b')
         # self.learn_rate = tf.placeholder(tf.float32, [], 'lr')
         self.learn_rate = 1e-2
-        self.batch_size = 10
+        self.batch_size = 50
         self.num_epoch_done = 0
         self.max_epoch = 20
         self.dropout_keep_prob = None  # HYP
@@ -327,9 +328,11 @@ class SequenceModel(object):
             states = []
             if self.use_fc:
                 cur_state = tf.zeros(shape=[1, self.state_size])
-                cur_state_2 = tf.zeros(shape=[1, self.state_size]) # for bid resnet
+                cur_state_1 = tf.zeros(shape=[1, self.resnet_state_size]) # for bid resnet
+                cur_state_2 = tf.zeros(shape=[1, self.resnet_state_size])
             else:
                 cur_state = tf.zeros(shape=[1, self.num_tags])
+                cur_state_1 = tf.zeros(shape=[1, self.num_tags])
                 cur_state_2 = tf.zeros(shape=[1, self.num_tags])
                 self.state_size = self.num_tags
 
@@ -457,12 +460,12 @@ class SequenceModel(object):
                 # rnn_cell = tf.nn.rnn_cell.BasicLSTMCell(num_units=self.state_size, reuse=tf.AUTO_REUSE,
                 #                                         activation=self.rnn_act)
                 # rnn_cell = tf.nn.rnn_cell.BasicRNNCell(self.state_size, activation=self.rnn_act)
-                rnn_cell = tf.keras.layers.SimpleRNNCell(self.state_size, activation=self.rnn_act)
+                rnn_cell = tf.keras.layers.SimpleRNNCell(self.resnet_state_size, activation=self.rnn_act)
                 last_states = []
                 for i in range(self.max_length):
-                    last_states.append(rnn_cell(xemb[:, i, :], [cur_state])[0])
-                    cur_state = tf.reduce_mean(last_states[max(0, i-self.window):i+1], axis=0)
-                    states.append(cur_state)
+                    last_states.append(rnn_cell(xemb[:, i, :], [cur_state_1])[0])
+                    cur_state_1 = tf.reduce_mean(last_states[max(0, i-self.window):i+1], axis=0)
+                    states.append(cur_state_1)
                 last_states = []
                 stacked_states = tf.stack(states, axis=1)  # Shape (batch, max_length, state_size)
                 states_2 = []
@@ -515,12 +518,12 @@ class SequenceModel(object):
                                                                  state_keep_prob=self.dropout_keep_prob)
                 stacked_states_lstm = tf.concat(tf.nn.bidirectional_dynamic_rnn(lstm_fw_cell, lstm_bw_cell, xemb,
                                                                            dtype=tf.float32)[0], axis=2)
-                rnn_cell = tf.keras.layers.SimpleRNNCell(self.state_size, activation=self.rnn_act)
+                rnn_cell = tf.keras.layers.SimpleRNNCell(self.resnet_state_size, activation=self.rnn_act)
                 last_states = []
                 for i in range(self.max_length):
-                    last_states.append(rnn_cell(xemb[:, i, :], [cur_state])[0])
-                    cur_state = tf.reduce_mean(last_states[max(0, i - self.window):i + 1], axis=0)
-                    states.append(cur_state)
+                    last_states.append(rnn_cell(xemb[:, i, :], [cur_state_1])[0])
+                    cur_state_1 = tf.reduce_mean(last_states[max(0, i - self.window):i + 1], axis=0)
+                    states.append(cur_state_1)
                 last_states = []
                 stacked_states = tf.stack(states, axis=1)  # Shape (batch, max_length, state_size)
                 states_2 = []

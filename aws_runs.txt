@@ -449,3 +449,26 @@ azizim@usc.edu	95.5	95	>85th
   [italian] accuracy 0.952437
   Accuracies for italian are: 0.0162452,0.952437
   Final accuracy for italian, after 2 iterations, is 0.955368
+###############################################################
+ ##SPEC## size_embed: 150, state_size: 60, batch size: 50, lr: 0.01, cell type: bi_res+bi_lstm, use_fc: True, dropout_keep_prob: None, fc_keep_prob: None, usc_bn: True usc_fc_bn: True, rnn_n_layers: 10, multi_cell_type: lstm
+timed
+[japanese] accuracy 0.0401184
+  [japanese] accuracy 0.940301
+  [japanese] accuracy 0.945871
+  [japanese] accuracy 0.946393
+  Accuracies for japanese are: 0.0401184,0.940301,0.945871,0.946393
+  Final accuracy for japanese, after 4 iterations, is 0.944478
+ [italian] accuracy 0.0130631
+  Accuracies for italian are: 0.0130631
+  Final accuracy for italian, after 1 iterations, is 0.953274
+#################################################################
+##SPEC## size_embed: 170, state_size: 75, batch size: 50, lr: 0.01, cell type: bidic_lstm, use_fc: True, dropout_keep_prob: None, fc_keep_prob: None, usc_bn: True usc_fc_bn: True, rnn_n_layers: 10, multi_cell_type: lstm
+[japanese] accuracy 0.0181881
+  [japanese] accuracy 0.94004
+  [japanese] accuracy 0.946567
+  Accuracies for japanese are: 0.0181881,0.94004,0.946567
+  Final accuracy for japanese, after 3 iterations, is 0.951962
+[italian] accuracy 0.0198459
+  [italian] accuracy 0.950846
+  Accuracies for italian are: 0.0198459,0.950846
+  Final accuracy for italian, after 2 iterations, is 0.953023
