@@ -1,2 +1,0 @@
-bash run.sh
-python2 grader/e2e_grader.py python3
